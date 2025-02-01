@@ -3,7 +3,7 @@ package com.api.v2.doctors.dto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import jakarta.validation.Valid;
 
-public record DoctorRegistrationDto(
+public record DoctorHiringDto(
         @Valid PersonRegistrationDto personRegistrationDto,
         String medicalLicenseNumber
 ) {

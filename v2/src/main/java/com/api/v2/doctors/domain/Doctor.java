@@ -36,6 +36,10 @@ public class Doctor {
         this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
     }
 
+    public static Doctor create(Person person, String medicalLicenseNumber) {
+        return new Doctor(person, medicalLicenseNumber);
+    }
+
     public ObjectId getId() {
         return id;
     }
