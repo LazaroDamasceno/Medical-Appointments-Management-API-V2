@@ -1,14 +1,19 @@
 package com.api.v2.people.dtos;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public record PersonModificationDto(
-        String firstName,
+        @NotBlank String firstName,
         String middleName,
-        String lastName,
-        LocalDate birthDate,
-        String email,
-        String phoneNumber,
-        String gender
+        @NotBlank String lastName,
+        @NotNull LocalDate birthDate,
+        @Email @NotBlank String email,
+        @NotBlank @Size(min = 10, max = 10) String phoneNumber,
+        @NotBlank @Size(min = 1) String gender
 ) {
 }
