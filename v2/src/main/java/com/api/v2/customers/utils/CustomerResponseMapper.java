@@ -5,9 +5,9 @@ import com.api.v2.customers.dtos.CustomerResponseDto;
 import com.api.v2.people.utils.PersonResponseMapper;
 
 public class CustomerResponseMapper {
-    public static CustomerResponseDto map(Customer customer) {
+    public static CustomerResponseDto mapToDto(Customer customer) {
         return new CustomerResponseDto(
-                PersonResponseMapper.map(customer.getPerson()),
+                PersonResponseMapper.mapToDto(customer.getPerson()),
                 customer.getAddress()
         );
     }
