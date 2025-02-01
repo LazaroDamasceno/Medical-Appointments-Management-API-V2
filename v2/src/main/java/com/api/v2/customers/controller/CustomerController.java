@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v2/")
+@RequestMapping("api/v2/customers")
 public class CustomerController {
 
     private final CustomerRegistrationService registrationService;

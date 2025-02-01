@@ -88,4 +88,8 @@ public class Doctor {
     public ZoneOffset getTerminatedAtZoneOffset() {
         return terminatedAtZoneOffset;
     }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 }
