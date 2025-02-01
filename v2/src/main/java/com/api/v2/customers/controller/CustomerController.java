@@ -1,10 +1,10 @@
 package com.api.v2.customers.controller;
 
+import com.api.v2.customers.dtos.CustomerModificationDto;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.customers.dtos.CustomerResponseDto;
 import com.api.v2.customers.services.CustomerModificationService;
 import com.api.v2.customers.services.CustomerRegistrationService;
-import com.api.v2.people.dtos.PersonModificationDto;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +28,7 @@ public class CustomerController {
     }
 
     @PatchMapping("{id}")
-    public void modify(@PathVariable String id, @Valid @RequestBody PersonModificationDto modificationDto) {
+    public void modify(@PathVariable String id, @Valid @RequestBody CustomerModificationDto modificationDto) {
         modificationService.modify(id, modificationDto);
     }
 }

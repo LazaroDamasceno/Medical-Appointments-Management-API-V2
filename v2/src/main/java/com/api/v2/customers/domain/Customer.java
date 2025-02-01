@@ -65,4 +65,8 @@ public class Customer {
     public void setPerson(Person person) {
         this.person = person;
     }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }
