@@ -17,12 +17,13 @@ public class Doctor {
     private ObjectId id;
     private Person person;
     private String medicalLicenseNumber;
-    private LocalDateTime createdAt;
-    private ZoneId createdAtZoneId;
-    private ZoneOffset createdAtZoneOffset;
-    private LocalDateTime modifiedAt;
-    private ZoneId modifiedAtZoneId;
-    private ZoneOffset modifiedAtZoneOffset;
+    private LocalDateTime hiredAt;
+    private ZoneId hiredAtZoneId;
+    private ZoneOffset hiredAtZoneOffset;
+    private LocalDateTime terminatedAt;
+    private ZoneId terminatedAtZoneId;
+    private ZoneOffset terminatedAtZoneOffset;
+
 
     public Doctor() {
     }
@@ -31,13 +32,25 @@ public class Doctor {
         this.id = new ObjectId();
         this.person = person;
         this.medicalLicenseNumber = medicalLicenseNumber;
-        this.createdAt = LocalDateTime.now();
-        this.createdAtZoneId = ZoneId.systemDefault();
-        this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
+        this.hiredAt = LocalDateTime.now();
+        this.hiredAtZoneId = ZoneId.systemDefault();
+        this.hiredAtZoneOffset = OffsetDateTime.now().getOffset();
     }
 
     public static Doctor create(Person person, String medicalLicenseNumber) {
         return new Doctor(person, medicalLicenseNumber);
+    }
+
+    public void markAsTerminated() {
+        terminatedAt = LocalDateTime.now();
+        terminatedAtZoneId = ZoneId.systemDefault();
+        terminatedAtZoneOffset = OffsetDateTime.now().getOffset();
+    }
+
+    public void markAsRehired() {
+        terminatedAt = null;
+        terminatedAtZoneId = null;
+        terminatedAtZoneOffset = null;
     }
 
     public ObjectId getId() {
@@ -52,27 +65,27 @@ public class Doctor {
         return medicalLicenseNumber;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getHiredAt() {
+        return hiredAt;
     }
 
-    public ZoneId getCreatedAtZoneId() {
-        return createdAtZoneId;
+    public ZoneId getHiredAtZoneId() {
+        return hiredAtZoneId;
     }
 
-    public ZoneOffset getCreatedAtZoneOffset() {
-        return createdAtZoneOffset;
+    public ZoneOffset getHiredAtZoneOffset() {
+        return hiredAtZoneOffset;
     }
 
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
+    public LocalDateTime getTerminatedAt() {
+        return terminatedAt;
     }
 
-    public ZoneId getModifiedAtZoneId() {
-        return modifiedAtZoneId;
+    public ZoneId getTerminatedAtZoneId() {
+        return terminatedAtZoneId;
     }
 
-    public ZoneOffset getModifiedAtZoneOffset() {
-        return modifiedAtZoneOffset;
+    public ZoneOffset getTerminatedAtZoneOffset() {
+        return terminatedAtZoneOffset;
     }
 }
