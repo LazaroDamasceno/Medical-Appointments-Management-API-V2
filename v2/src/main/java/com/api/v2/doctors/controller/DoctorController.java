@@ -6,6 +6,7 @@ import com.api.v2.doctors.services.*;
 import com.api.v2.people.dtos.PersonModificationDto;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,8 @@ public class DoctorController {
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<DoctorResponseResource>> hire(@RequestBody DoctorHiringDto hiringDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public EntityModel<DoctorResponseResource> hire(@RequestBody DoctorHiringDto hiringDto) {
         return hiringService.hire(hiringDto);
     }
 
