@@ -2,7 +2,7 @@ package com.api.v2.customers.controller;
 
 import com.api.v2.customers.dtos.CustomerModificationDto;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
-import com.api.v2.customers.dtos.CustomerResponseDto;
+import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.services.CustomerModificationService;
 import com.api.v2.customers.services.CustomerRegistrationService;
 import com.api.v2.customers.services.CustomerRetrievalService;

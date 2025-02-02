@@ -1,7 +1,7 @@
 package com.api.v2.customers.services;
 
 import com.api.v2.customers.domain.CustomerRepository;
-import com.api.v2.customers.dtos.CustomerResponseDto;
+import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.customers.utils.CustomerResponseMapper;
 import org.springframework.stereotype.Service;

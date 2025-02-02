@@ -36,7 +36,7 @@ public class DoctorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EntityModel<DoctorResponseResource> hire(@RequestBody DoctorHiringDto hiringDto) {
+    public DoctorResponseResource hire(@RequestBody DoctorHiringDto hiringDto) {
         return hiringService.hire(hiringDto);
     }
 

@@ -32,7 +32,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
     }
 
     @Override
-    public EntityModel<DoctorResponseResource> hire(@Valid DoctorHiringDto hiringDto) {
+    public DoctorResponseResource hire(@Valid DoctorHiringDto hiringDto) {
         onDuplicatedSsn(hiringDto.personRegistrationDto().ssn());
         onDuplicatedEmail(hiringDto.personRegistrationDto().email());
         onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());
@@ -40,8 +40,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         Doctor doctor = Doctor.create(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
         DoctorResponseResource responseDto = DoctorResponseMapper.mapToDto(savedDoctor);
-        return EntityModel
-                .of(responseDto)
+        return responseDto
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(hiringDto.medicalLicenseNumber())

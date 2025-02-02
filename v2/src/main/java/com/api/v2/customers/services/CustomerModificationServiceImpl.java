@@ -3,7 +3,7 @@ package com.api.v2.customers.services;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.dtos.CustomerModificationDto;
-import com.api.v2.customers.dtos.CustomerResponseDto;
+import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.customers.utils.CustomerResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
