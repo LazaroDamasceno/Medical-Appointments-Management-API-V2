@@ -23,7 +23,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
 
     @Override
     public CustomerResponseDto findById(String id) {
-        return CustomerResponseMapper.mapToDto(customerFinderUtil.findById(id));
+        return CustomerResponseMapper.mapToResource(customerFinderUtil.findById(id));
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
         return customerRepository
                 .findAll()
                 .stream()
-                .map(CustomerResponseMapper::mapToDto)
+                .map(CustomerResponseMapper::mapToResource)
                 .toList();
     }
 }

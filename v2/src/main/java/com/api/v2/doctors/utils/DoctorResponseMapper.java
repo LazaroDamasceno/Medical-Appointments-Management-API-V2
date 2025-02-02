@@ -5,9 +5,9 @@ import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.people.utils.PersonResponseMapper;
 
 public class DoctorResponseMapper {
-    public static DoctorResponseResource mapToDto(Doctor doctor) {
+    public static DoctorResponseResource mapToResource(Doctor doctor) {
         return new DoctorResponseResource(
-                PersonResponseMapper.mapToDto(doctor.getPerson()),
+                PersonResponseMapper.mapToResource(doctor.getPerson()),
                 doctor.getMedicalLicenseNumber()
         );
     }

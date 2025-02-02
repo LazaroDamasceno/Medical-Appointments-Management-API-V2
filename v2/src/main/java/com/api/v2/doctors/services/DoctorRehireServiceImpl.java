@@ -39,7 +39,7 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsRehired();
         Doctor rehiredDoctor = doctorRepository.save(doctor);
-        return DoctorResponseMapper.mapToDto(rehiredDoctor)
+        return DoctorResponseMapper.mapToResource(rehiredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).rehire(medicalLicenseNumber)

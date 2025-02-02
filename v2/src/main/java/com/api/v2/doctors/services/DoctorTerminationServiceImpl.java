@@ -38,7 +38,7 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsTerminated();
         Doctor terminaredDoctor = doctorRepository.save(doctor);
-        return DoctorResponseMapper.mapToDto(terminaredDoctor)
+        return DoctorResponseMapper.mapToResource(terminaredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).terminate(medicalLicenseNumber)

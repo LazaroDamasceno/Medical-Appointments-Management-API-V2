@@ -28,7 +28,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     @Override
     public DoctorResponseResource findByMedicalLicenseNumber(String medicalLicenseNumber) {
         return DoctorResponseMapper
-                .mapToDto(doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber))
+                .mapToResource(doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber))
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber)
@@ -44,7 +44,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
         return doctorRepository
                 .findAll()
                 .stream()
-                .map(DoctorResponseMapper::mapToDto)
+                .map(DoctorResponseMapper::mapToResource)
                 .toList();
     }
 }

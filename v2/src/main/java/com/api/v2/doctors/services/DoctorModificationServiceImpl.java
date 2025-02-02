@@ -40,7 +40,7 @@ public class DoctorModificationServiceImpl implements DoctorModificationService 
         doctor.setPerson(modifiedPerson);
         Doctor modifiedDoctor = doctorRepository.save(doctor);
         return DoctorResponseMapper
-                .mapToDto(modifiedDoctor)
+                .mapToResource(modifiedDoctor)
                 .add(
                     linkTo(
                             methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber)

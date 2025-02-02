@@ -5,7 +5,7 @@ import com.api.v2.people.dtos.PersonResponseDto;
 
 public class PersonResponseMapper {
 
-    public static PersonResponseDto mapToDto(Person person) {
+    public static PersonResponseDto mapToResource(Person person) {
         return new PersonResponseDto(
                 person.getFullName(),
                 person.getId().toString()
