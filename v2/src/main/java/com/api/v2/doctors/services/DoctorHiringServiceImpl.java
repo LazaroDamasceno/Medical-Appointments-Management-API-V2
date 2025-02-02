@@ -13,7 +13,6 @@ import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -44,9 +43,6 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         return EntityModel
                 .of(responseDto)
                 .add(
-                        linkTo(
-                                methodOn(DoctorController.class).hire(hiringDto)
-                        ).withSelfRel(),
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(hiringDto.medicalLicenseNumber())
                         ).withRel("find_doctor_by_medical_license_number"),

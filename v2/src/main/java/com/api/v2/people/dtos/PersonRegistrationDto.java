@@ -13,7 +13,7 @@ public record PersonRegistrationDto(
         @NotBlank String lastName,
         @NotNull LocalDate birthDate,
         String ssn,
-        @Email String email,
+        @Email @NotBlank String email,
         @NotBlank @Size(min = 10, max = 10) String phoneNumber,
         @NotBlank @Size(min = 1) String gender
 ) {

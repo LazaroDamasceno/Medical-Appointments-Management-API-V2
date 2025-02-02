@@ -44,9 +44,6 @@ public class DoctorModificationServiceImpl implements DoctorModificationService 
                 .of(responseResource)
                 .add(
                     linkTo(
-                            methodOn(DoctorController.class).modify(medicalLicenseNumber, modificationDto)
-                    ).withSelfRel(),
-                    linkTo(
                             methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber)
                     ).withRel("find_doctor_by_medical_license_number"),
                     linkTo(
