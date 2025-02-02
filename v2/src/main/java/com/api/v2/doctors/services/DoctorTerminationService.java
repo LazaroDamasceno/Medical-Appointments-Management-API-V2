@@ -1,7 +1,8 @@
 package com.api.v2.doctors.services;
 
-import org.springframework.http.ResponseEntity;
+import com.api.v2.doctors.resources.DoctorResponseResource;
+import org.springframework.hateoas.EntityModel;
 
 public interface DoctorTerminationService {
-    ResponseEntity<Void> terminate(String medicalLicenseNumber);
+    EntityModel<DoctorResponseResource> terminate(String medicalLicenseNumber);
 }
