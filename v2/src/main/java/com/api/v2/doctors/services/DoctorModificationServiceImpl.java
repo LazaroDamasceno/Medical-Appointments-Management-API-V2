@@ -6,6 +6,7 @@ import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.people.domain.Person;
 import com.api.v2.people.dtos.PersonModificationDto;
 import com.api.v2.people.services.interfaces.PersonModificationService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,10 +26,11 @@ public class DoctorModificationServiceImpl implements DoctorModificationService 
     }
 
     @Override
-    public void modify(String medicalLicenseNumber, PersonModificationDto modificationDto) {
+    public ResponseEntity<Void> modify(String medicalLicenseNumber, PersonModificationDto modificationDto) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         Person modifiedPerson = personModificationService.modify(doctor.getPerson(), modificationDto);
         doctor.setPerson(modifiedPerson);
         doctorRepository.save(doctor);
+        return ResponseEntity.noContent().build();
     }
 }

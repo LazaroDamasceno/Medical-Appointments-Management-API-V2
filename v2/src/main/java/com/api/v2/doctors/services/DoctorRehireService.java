@@ -1,5 +1,7 @@
 package com.api.v2.doctors.services;
 
+import org.springframework.http.ResponseEntity;
+
 public interface DoctorRehireService {
-    void rehire(String medicalLicenseNumber);
+    ResponseEntity<Void> rehire(String medicalLicenseNumber);
 }
