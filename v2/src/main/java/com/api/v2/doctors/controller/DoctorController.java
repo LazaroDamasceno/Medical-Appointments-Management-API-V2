@@ -42,7 +42,7 @@ public class DoctorController {
     }
 
     @PutMapping("{medicalLicenseNumber}")
-    public ResponseEntity<Void> modify(
+    public EntityModel<DoctorResponseResource> modify(
             @PathVariable String medicalLicenseNumber,
             @Valid @RequestBody PersonModificationDto modificationDto
     ) {

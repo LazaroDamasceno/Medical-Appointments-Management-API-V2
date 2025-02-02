@@ -45,6 +45,9 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                 .of(responseDto)
                 .add(
                         linkTo(
+                                methodOn(DoctorController.class).hire(hiringDto)
+                        ).withSelfRel(),
+                        linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(hiringDto.medicalLicenseNumber())
                         ).withRel("find_doctor_by_medical_license_number"),
                         linkTo(
