@@ -9,7 +9,6 @@ import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -32,16 +31,14 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
     }
 
     @Override
-    public EntityModel<DoctorResponseResource> terminate(String medicalLicenseNumber) {
+    public DoctorResponseResource terminate(String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onTerminatedDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.create(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsTerminated();
         Doctor terminaredDoctor = doctorRepository.save(doctor);
-        DoctorResponseResource responseResource = DoctorResponseMapper.mapToDto(terminaredDoctor);
-        return EntityModel
-                .of(responseResource)
+        return DoctorResponseMapper.mapToDto(terminaredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).terminate(medicalLicenseNumber)

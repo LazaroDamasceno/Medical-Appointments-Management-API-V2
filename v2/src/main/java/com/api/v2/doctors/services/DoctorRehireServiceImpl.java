@@ -32,16 +32,14 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public EntityModel<DoctorResponseResource> rehire(String medicalLicenseNumber) {
+    public DoctorResponseResource rehire(String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.create(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsRehired();
         Doctor rehiredDoctor = doctorRepository.save(doctor);
-        DoctorResponseResource responseResource = DoctorResponseMapper.mapToDto(rehiredDoctor);
-        return EntityModel
-                .of(responseResource)
+        return DoctorResponseMapper.mapToDto(rehiredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).rehire(medicalLicenseNumber)

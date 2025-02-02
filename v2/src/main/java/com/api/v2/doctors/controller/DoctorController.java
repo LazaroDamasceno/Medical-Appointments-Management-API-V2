@@ -5,7 +5,6 @@ import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.services.*;
 import com.api.v2.people.dtos.PersonModificationDto;
 import jakarta.validation.Valid;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +40,7 @@ public class DoctorController {
     }
 
     @PutMapping("{medicalLicenseNumber}")
-    public EntityModel<DoctorResponseResource> modify(
+    public DoctorResponseResource modify(
             @PathVariable String medicalLicenseNumber,
             @Valid @RequestBody PersonModificationDto modificationDto
     ) {
@@ -49,12 +48,12 @@ public class DoctorController {
     }
 
     @PatchMapping("{medicalLicenseNumber}/rehiring")
-    public EntityModel<DoctorResponseResource> rehire(@PathVariable String medicalLicenseNumber) {
+    public DoctorResponseResource rehire(@PathVariable String medicalLicenseNumber) {
         return rehireService.rehire(medicalLicenseNumber);
     }
 
     @PatchMapping("{medicalLicenseNumber}/termination")
-    public EntityModel<DoctorResponseResource> terminate(@PathVariable String medicalLicenseNumber) {
+    public DoctorResponseResource terminate(@PathVariable String medicalLicenseNumber) {
         return terminationService.terminate(medicalLicenseNumber);
     }
 

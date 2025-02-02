@@ -39,8 +39,8 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
         Doctor doctor = Doctor.create(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
-        DoctorResponseResource responseDto = DoctorResponseMapper.mapToDto(savedDoctor);
-        return responseDto
+        return DoctorResponseMapper
+                .mapToDto(savedDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(hiringDto.medicalLicenseNumber())

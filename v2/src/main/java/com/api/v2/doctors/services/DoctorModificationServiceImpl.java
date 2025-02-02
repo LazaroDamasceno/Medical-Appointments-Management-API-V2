@@ -33,15 +33,14 @@ public class DoctorModificationServiceImpl implements DoctorModificationService 
     }
 
     @Override
-    public EntityModel<DoctorResponseResource> modify(String medicalLicenseNumber, PersonModificationDto modificationDto) {
+    public DoctorResponseResource modify(String medicalLicenseNumber, PersonModificationDto modificationDto) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onTerminatedDoctor(doctor);
         Person modifiedPerson = personModificationService.modify(doctor.getPerson(), modificationDto);
         doctor.setPerson(modifiedPerson);
         Doctor modifiedDoctor = doctorRepository.save(doctor);
-        DoctorResponseResource responseResource = DoctorResponseMapper.mapToDto(modifiedDoctor);
-        return EntityModel
-                .of(responseResource)
+        return DoctorResponseMapper
+                .mapToDto(modifiedDoctor)
                 .add(
                     linkTo(
                             methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber)

@@ -1,8 +1,9 @@
 package com.api.v2.medical_slots.resources;
 
 import com.api.v2.doctors.resources.DoctorResponseResource;
+import org.springframework.hateoas.RepresentationModel;
 
-public class MedicalSlotResponseResource {
+public class MedicalSlotResponseResource extends RepresentationModel<MedicalSlotResponseResource> {
 
     private DoctorResponseResource doctor;
     private String availableAt;
