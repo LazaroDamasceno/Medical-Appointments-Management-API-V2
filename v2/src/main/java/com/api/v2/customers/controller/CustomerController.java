@@ -34,8 +34,8 @@ public class CustomerController {
     }
 
     @PatchMapping("{id}")
-    public void modify(@PathVariable String id, @Valid @RequestBody CustomerModificationDto modificationDto) {
-        modificationService.modify(id, modificationDto);
+    public CustomerResponseDto modify(@PathVariable String id, @Valid @RequestBody CustomerModificationDto modificationDto) {
+        return modificationService.modify(id, modificationDto);
     }
 
     @GetMapping("{id}")

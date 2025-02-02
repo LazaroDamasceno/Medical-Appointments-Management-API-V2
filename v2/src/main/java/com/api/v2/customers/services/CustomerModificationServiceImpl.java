@@ -3,7 +3,9 @@ package com.api.v2.customers.services;
 import com.api.v2.customers.domain.Customer;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.dtos.CustomerModificationDto;
+import com.api.v2.customers.dtos.CustomerResponseDto;
 import com.api.v2.customers.utils.CustomerFinderUtil;
+import com.api.v2.customers.utils.CustomerResponseMapper;
 import com.api.v2.people.domain.Person;
 import com.api.v2.people.services.interfaces.PersonModificationService;
 import jakarta.validation.Valid;
@@ -26,11 +28,12 @@ public class CustomerModificationServiceImpl implements CustomerModificationServ
     }
 
     @Override
-    public void modify(String id, @Valid CustomerModificationDto modificationDto) {
+    public CustomerResponseDto modify(String id, @Valid CustomerModificationDto modificationDto) {
         Customer customer = customerFinderUtil.findById(id);
         Person modifiedPerson = personModificationService.modify(customer.getPerson(), modificationDto.personModificationDto());
         customer.setPerson(modifiedPerson);
         customer.setAddress(modificationDto.address());
-        customerRepository.save(customer);
+        Customer modifiedCustomer = customerRepository.save(customer);
+        return CustomerResponseMapper.mapToDto(modifiedCustomer);
     }
 }
