@@ -33,7 +33,7 @@ public class CustomerController {
         return registrationService.register(registrationDto);
     }
 
-    @PatchMapping("{id}")
+    @PutMapping("{id}")
     public CustomerResponseDto modify(@PathVariable String id, @Valid @RequestBody CustomerModificationDto modificationDto) {
         return modificationService.modify(id, modificationDto);
     }
