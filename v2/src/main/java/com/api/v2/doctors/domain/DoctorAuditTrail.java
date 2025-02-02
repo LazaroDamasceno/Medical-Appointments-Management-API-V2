@@ -1,5 +1,6 @@
 package com.api.v2.doctors.domain;
 
+import com.api.v2.doctors.domain.exposed.Doctor;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 

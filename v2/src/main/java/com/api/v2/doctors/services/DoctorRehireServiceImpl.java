@@ -1,7 +1,7 @@
 package com.api.v2.doctors.services;
 
 import com.api.v2.doctors.controller.DoctorController;
-import com.api.v2.doctors.domain.Doctor;
+import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
 import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;

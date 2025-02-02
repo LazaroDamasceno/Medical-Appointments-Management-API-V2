@@ -1,6 +1,6 @@
 package com.api.v2.doctors.utils;
 
-import com.api.v2.doctors.domain.Doctor;
+import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.exceptions.NonExistentDoctorException;
 import org.springframework.stereotype.Component;

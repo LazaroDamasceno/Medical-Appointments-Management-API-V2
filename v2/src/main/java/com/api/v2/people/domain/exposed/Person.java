@@ -1,4 +1,4 @@
-package com.api.v2.people.domain;
+package com.api.v2.people.domain.exposed;
 
 import com.api.v2.people.dtos.PersonModificationDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
@@ -27,9 +27,6 @@ public class Person {
     private LocalDateTime modifiedAt;
     private ZoneId modifiedAtZoneId;
     private ZoneOffset modifiedAtZoneOffset;
-
-    public Person() {
-    }
 
     private Person(PersonRegistrationDto registrationDto) {
         this.id = new ObjectId();

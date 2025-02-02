@@ -1,6 +1,6 @@
 package com.api.v2.customers.utils;
 
-import com.api.v2.customers.domain.Customer;
+import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import org.bson.types.ObjectId;

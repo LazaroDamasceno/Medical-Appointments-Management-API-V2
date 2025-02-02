@@ -1,6 +1,6 @@
 package com.api.v2.medical_slots.domain;
 
-import com.api.v2.doctors.domain.Doctor;
+import com.api.v2.doctors.domain.exposed.Doctor;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,9 +28,6 @@ public class MedicalSlot {
     private LocalDateTime completedAt;
     private ZoneId completedAtZoneId;
     private ZoneOffset completedAtZoneOffset;
-
-    public MedicalSlot() {
-    }
 
     private MedicalSlot(Doctor doctor, LocalDateTime availableAt) {
         this.id = new ObjectId();

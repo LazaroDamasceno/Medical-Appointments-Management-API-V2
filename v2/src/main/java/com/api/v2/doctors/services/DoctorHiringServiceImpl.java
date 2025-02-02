@@ -1,13 +1,13 @@
 package com.api.v2.doctors.services;
 
 import com.api.v2.doctors.controller.DoctorController;
-import com.api.v2.doctors.domain.Doctor;
+import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
-import com.api.v2.people.domain.Person;
+import com.api.v2.people.domain.exposed.Person;
 import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;

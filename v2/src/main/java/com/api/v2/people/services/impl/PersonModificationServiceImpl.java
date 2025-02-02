@@ -1,6 +1,6 @@
 package com.api.v2.people.services.impl;
 
-import com.api.v2.people.domain.Person;
+import com.api.v2.people.domain.exposed.Person;
 import com.api.v2.people.domain.PersonAuditTrail;
 import com.api.v2.people.domain.PersonAuditTrailRepository;
 import com.api.v2.people.domain.PersonRepository;

@@ -1,6 +1,6 @@
-package com.api.v2.doctors.domain;
+package com.api.v2.doctors.domain.exposed;
 
-import com.api.v2.people.domain.Person;
+import com.api.v2.people.domain.exposed.Person;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,11 +24,7 @@ public class Doctor {
     private ZoneId terminatedAtZoneId;
     private ZoneOffset terminatedAtZoneOffset;
 
-
-    public Doctor() {
-    }
-
-    public Doctor(Person person, String medicalLicenseNumber) {
+    private Doctor(Person person, String medicalLicenseNumber) {
         this.id = new ObjectId();
         this.person = person;
         this.medicalLicenseNumber = medicalLicenseNumber;

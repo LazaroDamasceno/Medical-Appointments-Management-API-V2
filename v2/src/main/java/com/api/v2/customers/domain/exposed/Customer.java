@@ -1,7 +1,7 @@
-package com.api.v2.customers.domain;
+package com.api.v2.customers.domain.exposed;
 
 import com.api.v2.common.Address;
-import com.api.v2.people.domain.Person;
+import com.api.v2.people.domain.exposed.Person;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,9 +21,6 @@ public class Customer {
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
-
-    public Customer() {
-    }
 
     private Customer(Address address, Person person) {
         this.id = new ObjectId();
