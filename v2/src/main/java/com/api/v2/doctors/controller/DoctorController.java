@@ -50,12 +50,12 @@ public class DoctorController {
     }
 
     @PatchMapping("{medicalLicenseNumber}/rehiring")
-    public ResponseEntity<Void> rehire(@PathVariable String medicalLicenseNumber) {
+    public EntityModel<DoctorResponseResource> rehire(@PathVariable String medicalLicenseNumber) {
         return rehireService.rehire(medicalLicenseNumber);
     }
 
     @PatchMapping("{medicalLicenseNumber}/termination")
-    public ResponseEntity<Void> terminate(@PathVariable String medicalLicenseNumber) {
+    public EntityModel<DoctorResponseResource> terminate(@PathVariable String medicalLicenseNumber) {
         return terminationService.terminate(medicalLicenseNumber);
     }
 
