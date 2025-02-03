@@ -48,10 +48,7 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
                         ).withRel("find_doctor_by_medical_license_number"),
                         linkTo(
                                 methodOn(DoctorController.class).rehire(medicalLicenseNumber)
-                        ).withRel("rehire_doctor_by_medical_license_number"),
-                        linkTo(
-                                methodOn(DoctorController.class).findAll()
-                        ).withRel("find_all_doctors")
+                        ).withRel("rehire_doctor_by_medical_license_number")
                 );
     }
 

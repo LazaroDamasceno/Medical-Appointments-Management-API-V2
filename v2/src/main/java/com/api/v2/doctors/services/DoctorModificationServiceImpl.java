@@ -47,10 +47,7 @@ public class DoctorModificationServiceImpl implements DoctorModificationService 
                     ).withRel("find_doctor_by_medical_license_number"),
                     linkTo(
                             methodOn(DoctorController.class).terminate(medicalLicenseNumber)
-                    ).withRel("terminate_doctor_by_medical_license_number"),
-                    linkTo(
-                            methodOn(DoctorController.class).findAll()
-                    ).withRel("find_all_doctors")
+                    ).withRel("terminate_doctor_by_medical_license_number")
                 );
     }
 

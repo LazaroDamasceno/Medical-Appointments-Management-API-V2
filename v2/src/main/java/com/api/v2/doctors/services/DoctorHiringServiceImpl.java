@@ -47,10 +47,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                         ).withRel("find_doctor_by_medical_license_number"),
                         linkTo(
                                 methodOn(DoctorController.class).terminate(hiringDto.medicalLicenseNumber())
-                        ).withRel("terminate_doctor_by_medical_license_number"),
-                        linkTo(
-                                methodOn(DoctorController.class).findAll()
-                        ).withRel("find_all_doctors")
+                        ).withRel("terminate_doctor_by_medical_license_number")
                 );
     }
 
