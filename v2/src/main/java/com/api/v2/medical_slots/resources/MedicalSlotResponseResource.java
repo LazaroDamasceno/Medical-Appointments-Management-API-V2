@@ -5,20 +5,27 @@ import org.springframework.hateoas.RepresentationModel;
 
 public class MedicalSlotResponseResource extends RepresentationModel<MedicalSlotResponseResource> {
 
-    private DoctorResponseResource doctor;
-    private String availableAt;
-    private String canceledAt;
-    private String completedAt;
+    private final String id;
+    private final DoctorResponseResource doctor;
+    private final String availableAt;
+    private final String canceledAt;
+    private final String completedAt;
 
-    public MedicalSlotResponseResource(DoctorResponseResource doctor,
+    public MedicalSlotResponseResource(String id,
+                                        DoctorResponseResource doctor,
                                        String availableAt,
                                        String canceledAt,
                                        String completedAt
     ) {
+        this.id = id;
         this.doctor = doctor;
         this.availableAt = availableAt;
         this.canceledAt = canceledAt;
         this.completedAt = completedAt;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public DoctorResponseResource getDoctor() {

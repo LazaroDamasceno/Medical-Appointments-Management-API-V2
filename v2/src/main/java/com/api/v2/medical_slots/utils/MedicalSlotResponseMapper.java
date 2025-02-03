@@ -8,6 +8,7 @@ public class MedicalSlotResponseMapper {
     public static MedicalSlotResponseResource mapToResource(MedicalSlot medicalSlot) {
         if (medicalSlot.getCanceledAt() == null && medicalSlot.getCompletedAt() != null) {
             return new MedicalSlotResponseResource(
+                    medicalSlot.getId().toString(),
                     DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                     "%s%s[%s]".formatted(
                             medicalSlot.getAvailableAt(),
@@ -24,6 +25,7 @@ public class MedicalSlotResponseMapper {
         }
         if (medicalSlot.getCanceledAt() != null && medicalSlot.getCompletedAt() == null) {
             return new MedicalSlotResponseResource(
+                    medicalSlot.getId().toString(),
                     DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                     "%s%s[%s]".formatted(
                             medicalSlot.getAvailableAt(),
@@ -39,6 +41,7 @@ public class MedicalSlotResponseMapper {
             );
         }
         return new MedicalSlotResponseResource(
+                medicalSlot.getId().toString(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 "%s%s[%s]".formatted(
                         medicalSlot.getAvailableAt(),
