@@ -10,7 +10,6 @@ import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
 import com.api.v2.people.dtos.PersonModificationDto;
 import com.api.v2.people.services.interfaces.PersonModificationService;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
