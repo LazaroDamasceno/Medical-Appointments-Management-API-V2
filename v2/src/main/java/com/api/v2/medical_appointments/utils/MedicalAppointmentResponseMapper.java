@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.utils;
 
+import com.api.v2.common.DateTimeFormatter;
 import com.api.v2.customers.utils.CustomerResponseMapper;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
@@ -14,13 +15,13 @@ public class MedicalAppointmentResponseMapper {
                     medicalAppointment.getId().toString(),
                     CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
                             medicalAppointment.getBookedAtZoneId()
                     ),
                     null,
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getCompletedAt(),
                             medicalAppointment.getCompletedAtZoneOffset(),
                             medicalAppointment.getCompletedAtZoneId()
@@ -32,12 +33,12 @@ public class MedicalAppointmentResponseMapper {
                     medicalAppointment.getId().toString(),
                     CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
                             medicalAppointment.getBookedAtZoneId()
                     ),
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getCanceledAt(),
                             medicalAppointment.getCanceledAtZoneOffset(),
                             medicalAppointment.getCanceledAtZoneId()
@@ -49,7 +50,7 @@ public class MedicalAppointmentResponseMapper {
                 medicalAppointment.getId().toString(),
                 CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                 DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalAppointment.getBookedAt(),
                         medicalAppointment.getBookedAtZoneOffset(),
                         medicalAppointment.getBookedAtZoneId()
@@ -64,12 +65,12 @@ public class MedicalAppointmentResponseMapper {
             return new SimplifiedMedicalAppointmentResponseDto(
                     medicalAppointment.getId().toString(),
                     CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
                             medicalAppointment.getBookedAtZoneId()
                     ),
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getCanceledAt(),
                             medicalAppointment.getCanceledAtZoneOffset(),
                             medicalAppointment.getCanceledAtZoneId()
@@ -81,13 +82,13 @@ public class MedicalAppointmentResponseMapper {
             return new SimplifiedMedicalAppointmentResponseDto(
                     medicalAppointment.getId().toString(),
                     CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
                             medicalAppointment.getBookedAtZoneId()
                     ),
                     null,
-                    "%s%s[%s]".formatted(
+                    DateTimeFormatter.format(
                             medicalAppointment.getCompletedAt(),
                             medicalAppointment.getCompletedAtZoneOffset(),
                             medicalAppointment.getCompletedAtZoneId()
@@ -97,7 +98,7 @@ public class MedicalAppointmentResponseMapper {
         return new SimplifiedMedicalAppointmentResponseDto(
                 medicalAppointment.getId().toString(),
                 CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalAppointment.getBookedAt(),
                         medicalAppointment.getBookedAtZoneOffset(),
                         medicalAppointment.getBookedAtZoneId()

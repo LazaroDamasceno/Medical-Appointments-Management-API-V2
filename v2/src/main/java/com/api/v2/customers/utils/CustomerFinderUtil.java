@@ -6,8 +6,6 @@ import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class CustomerFinderUtil {
 

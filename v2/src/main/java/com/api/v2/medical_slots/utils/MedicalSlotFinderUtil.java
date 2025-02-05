@@ -6,8 +6,6 @@ import com.api.v2.medical_slots.exceptions.NonExistentMedicalSlotException;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class MedicalSlotFinderUtil {
 

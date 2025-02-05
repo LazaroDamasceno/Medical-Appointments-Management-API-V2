@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.utils;
 
+import com.api.v2.common.DateTimeFormatter;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
@@ -28,13 +29,13 @@ public class MedicalSlotResponseMapper {
                 medicalSlot.getId().toString(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getAvailableAtZoneId()
                 ),
                 null,
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getCompletedAt(),
                         medicalSlot.getCompletedAtZoneOffset(),
                         medicalSlot.getCompletedAtZoneId()
@@ -47,12 +48,12 @@ public class MedicalSlotResponseMapper {
                 medicalSlot.getId().toString(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 null,
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getAvailableAtZoneId()
                 ),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getCanceledAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getCanceledAtZoneId()
@@ -66,12 +67,12 @@ public class MedicalSlotResponseMapper {
                 medicalSlot.getId().toString(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getAvailableAtZoneId()
                 ),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getCanceledAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getCanceledAtZoneId()
@@ -85,7 +86,7 @@ public class MedicalSlotResponseMapper {
                 medicalSlot.getId().toString(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getAvailableAtZoneId()
@@ -100,7 +101,7 @@ public class MedicalSlotResponseMapper {
                 medicalSlot.getId().toString(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 null,
-                "%s%s[%s]".formatted(
+                DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
                         medicalSlot.getAvailableAtZoneId()
