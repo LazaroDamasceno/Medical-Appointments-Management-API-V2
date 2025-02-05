@@ -17,14 +17,12 @@ public class DoctorFinderUtil {
     }
 
     public Doctor findByMedicalLicenseNumber(String medicalLicenseNumber) {
-        Optional<Doctor> optionalDoctor = doctorRepository
+        return doctorRepository
                 .findAll()
                 .stream()
                 .filter(d -> d.getMedicalLicenseNumber().equals(medicalLicenseNumber))
-                .findFirst();
-        if (optionalDoctor.isEmpty()) {
-            throw new NonExistentDoctorException(medicalLicenseNumber);
-        }
-        return optionalDoctor.get();
+                .findFirst()
+                .orElseThrow(() -> new NonExistentDoctorException(medicalLicenseNumber));
+
     }
 }

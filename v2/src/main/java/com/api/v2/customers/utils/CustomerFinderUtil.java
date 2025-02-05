@@ -18,14 +18,11 @@ public class CustomerFinderUtil {
     }
 
     public Customer findById(String id) {
-        Optional<Customer> optionalCustomer = customerRepository
+        return customerRepository
                 .findAll()
                 .stream()
                 .filter(c -> c.getPerson().getId().equals(new ObjectId(id)))
-                .findFirst();
-        if (optionalCustomer.isEmpty()) {
-            throw new NonExistentCustomerException(id);
-        }
-        return optionalCustomer.get();
+                .findFirst()
+                .orElseThrow(() -> new NonExistentCustomerException(id));
     }
 }

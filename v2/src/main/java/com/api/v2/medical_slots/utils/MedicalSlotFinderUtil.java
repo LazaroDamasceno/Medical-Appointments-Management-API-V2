@@ -18,10 +18,8 @@ public class MedicalSlotFinderUtil {
     }
 
     public MedicalSlot findById(String id) {
-        Optional<MedicalSlot> optionalMedicalSlot = medicalSlotRepository.findById(new ObjectId(id));
-        if (optionalMedicalSlot.isEmpty()) {
-            throw new NonExistentMedicalSlotException(id);
-        }
-        return optionalMedicalSlot.get();
+        return medicalSlotRepository
+                .findById(new ObjectId(id))
+                .orElseThrow(() ->  new NonExistentMedicalSlotException(id));
     }
 }
