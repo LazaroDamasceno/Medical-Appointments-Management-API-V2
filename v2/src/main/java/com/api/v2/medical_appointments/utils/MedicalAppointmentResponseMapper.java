@@ -12,7 +12,7 @@ public class MedicalAppointmentResponseMapper {
         if (medicalAppointment.getCompletedAt() != null && medicalAppointment.getCanceledAt() == null) {
             return new MedicalAppointmentResponseResource(
                     medicalAppointment.getId().toString(),
-                    CustomerResponseMapper.mapToResource(medicalAppointment.getCustomer()),
+                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
                     "%s%s[%s]".formatted(
                             medicalAppointment.getBookedAt(),
@@ -30,7 +30,7 @@ public class MedicalAppointmentResponseMapper {
         if (medicalAppointment.getCompletedAt() == null && medicalAppointment.getCanceledAt() != null) {
             return new MedicalAppointmentResponseResource(
                     medicalAppointment.getId().toString(),
-                    CustomerResponseMapper.mapToResource(medicalAppointment.getCustomer()),
+                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
                     "%s%s[%s]".formatted(
                             medicalAppointment.getBookedAt(),
@@ -47,7 +47,7 @@ public class MedicalAppointmentResponseMapper {
         }
         return new MedicalAppointmentResponseResource(
                 medicalAppointment.getId().toString(),
-                CustomerResponseMapper.mapToResource(medicalAppointment.getCustomer()),
+                CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                 DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
                 "%s%s[%s]".formatted(
                         medicalAppointment.getBookedAt(),
@@ -63,6 +63,7 @@ public class MedicalAppointmentResponseMapper {
         if (medicalAppointment.getCompletedAt() == null && medicalAppointment.getCanceledAt() != null) {
             return new SimplifiedMedicalAppointmentResponseDto(
                     medicalAppointment.getId().toString(),
+                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     "%s%s[%s]".formatted(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
@@ -79,6 +80,7 @@ public class MedicalAppointmentResponseMapper {
         if (medicalAppointment.getCompletedAt() != null && medicalAppointment.getCanceledAt() == null) {
             return new SimplifiedMedicalAppointmentResponseDto(
                     medicalAppointment.getId().toString(),
+                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     "%s%s[%s]".formatted(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
@@ -94,6 +96,7 @@ public class MedicalAppointmentResponseMapper {
         }
         return new SimplifiedMedicalAppointmentResponseDto(
                 medicalAppointment.getId().toString(),
+                CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                 "%s%s[%s]".formatted(
                         medicalAppointment.getBookedAt(),
                         medicalAppointment.getBookedAtZoneOffset(),

@@ -1,6 +1,7 @@
 package com.api.v2.medical_slots.domain;
 
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,6 +17,7 @@ public class MedicalSlot {
     @BsonId
     private ObjectId id;
     private Doctor doctor;
+    private MedicalAppointment medicalAppointment;
     private LocalDateTime availableAt;
     private ZoneId availableAtZoneId;
     private ZoneOffset availableAtZoneOffset;
@@ -102,6 +104,10 @@ public class MedicalSlot {
 
     public ZoneOffset getCompletedAtZoneOffset() {
         return completedAtZoneOffset;
+    }
+
+    public MedicalAppointment getMedicalAppointment() {
+        return medicalAppointment;
     }
 
     public void markAsCanceled() {

@@ -6,7 +6,7 @@ import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.people.utils.PersonResponseMapper;
 
 public class CustomerResponseMapper {
-    public static CustomerResponseDto mapToResource(Customer customer) {
+    public static CustomerResponseDto mapToDto(Customer customer) {
         return new CustomerResponseDto(
                 PersonResponseMapper.mapToResource(customer.getPerson()),
                 AddressResponseMapper.mapToString(customer.getAddress())

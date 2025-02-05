@@ -34,6 +34,6 @@ public class CustomerModificationServiceImpl implements CustomerModificationServ
         customer.setPerson(modifiedPerson);
         customer.setAddress(modificationDto.address());
         Customer modifiedCustomer = customerRepository.save(customer);
-        return CustomerResponseMapper.mapToResource(modifiedCustomer);
+        return CustomerResponseMapper.mapToDto(modifiedCustomer);
     }
 }
