@@ -51,7 +51,10 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                                         customer.getId().toString(),
                                         medicalAppointment.getId().toString()
                                 )
-                        ).withRel("cancel_medical_appointment_by_id")
+                        ).withRel("cancel_medical_appointment_by_id"),
+                        linkTo(
+                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                        ).withRel("find_medical_appointments_by_customer")
                 );
     }
 
@@ -68,6 +71,25 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                 .stream()
                 .filter(medicalAppointment -> medicalAppointment.getCustomer().getId().equals(customer.getId()))
                 .map(MedicalAppointmentResponseMapper::mapToResource)
+                .peek(resource ->
+                        resource.add(
+                                linkTo(
+                                        methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                                ).withSelfRel(),
+                                linkTo(
+                                        methodOn(MedicalAppointmentController.class).findById(
+                                                customer.getId().toString(),
+                                                resource.getId()
+                                        )
+                                ).withRel("find_medical_appointment_by_id"),
+                                linkTo(
+                                        methodOn(MedicalAppointmentController.class).cancel(
+                                                customer.getId().toString(),
+                                                resource.getId()
+                                        )
+                                ).withRel("cancel_medical_appointment_by_id")
+                        )
+                )
                 .toList();
     }
 
