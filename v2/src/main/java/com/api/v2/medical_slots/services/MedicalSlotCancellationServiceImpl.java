@@ -1,8 +1,11 @@
 package com.api.v2.medical_slots.services;
 
+import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
+import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
@@ -13,22 +16,33 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
 
     private final MedicalSlotRepository medicalSlotRepository;
     private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final DoctorFinderUtil doctorFinderUtil;
 
     public MedicalSlotCancellationServiceImpl(MedicalSlotRepository medicalSlotRepository,
-                                              MedicalSlotFinderUtil medicalSlotFinderUtil
+                                              MedicalSlotFinderUtil medicalSlotFinderUtil,
+                                              DoctorFinderUtil doctorFinderUtil
     ) {
         this.medicalSlotRepository = medicalSlotRepository;
         this.medicalSlotFinderUtil = medicalSlotFinderUtil;
+        this.doctorFinderUtil = doctorFinderUtil;
     }
 
     @Override
-    public MedicalSlotResponseResource cancel(String id) {
+    public MedicalSlotResponseResource cancel(String medicalLicenseNumber, String id) {
+        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
+        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         onCanceledMedicalSlot(medicalSlot);
         onCompletedMedicalSlot(medicalSlot);
         medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalSlotResponseMapper.mapToResource(canceledMedicalSlot);
+    }
+
+    private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
+        if (!medicalSlot.getDoctor().getId().equals(doctor.getId())) {
+            throw new InaccessibleMedicalSlotException(doctor.getId().toString(), medicalSlot.getId().toString());
+        }
     }
 
     private void onCanceledMedicalSlot(MedicalSlot medicalSlot) {
