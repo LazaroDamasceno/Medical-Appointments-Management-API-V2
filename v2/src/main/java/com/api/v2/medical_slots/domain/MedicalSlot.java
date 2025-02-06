@@ -118,6 +118,7 @@ public class MedicalSlot {
         canceledAt = LocalDateTime.now();
         canceledAtZoneId = ZoneId.systemDefault();
         canceledAtZoneOffset = OffsetDateTime.now().getOffset();
+
     }
 
     public void markAsCompleted() {

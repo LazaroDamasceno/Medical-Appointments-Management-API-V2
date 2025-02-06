@@ -50,7 +50,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findByMedicalAppointment(medicalAppointment);
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
-        medicalSlot.setMedicalAppointment(canceledMedicalAppointment);
+        medicalSlot.setMedicalAppointment(null);
         medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalAppointmentResponseMapper
