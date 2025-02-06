@@ -52,7 +52,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                                 methodOn(MedicalSlotController.class).findByDoctor(medicalLicenseNumber)
                         ).withRel("find_medical_slot_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(savedMedicalSlot.getId().toString())
+                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, savedMedicalSlot.getId().toString())
                         ).withRel("cancel_medical_slot_by_id")
                 );
     }

@@ -33,9 +33,9 @@ public class MedicalSlotController {
         return registrationService.register(medicalLicenseNumber, availableAt);
     }
 
-    @PatchMapping("{id}/cancellation")
-    public MedicalSlotResponseResource cancel(@PathVariable String id) {
-        return cancellationService.cancel(id);
+    @PatchMapping("medical-license-number/{medicalLicenseNumber}/slot-id/{slotId}/cancellation")
+    public MedicalSlotResponseResource cancel(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
+        return cancellationService.cancel(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{id}")

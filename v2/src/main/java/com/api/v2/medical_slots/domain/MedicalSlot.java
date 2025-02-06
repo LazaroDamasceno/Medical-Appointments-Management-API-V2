@@ -110,6 +110,10 @@ public class MedicalSlot {
         return medicalAppointment;
     }
 
+    public void setMedicalAppointment(MedicalAppointment medicalAppointment) {
+        this.medicalAppointment = medicalAppointment;
+    }
+
     public void markAsCanceled() {
         canceledAt = LocalDateTime.now();
         canceledAtZoneId = ZoneId.systemDefault();

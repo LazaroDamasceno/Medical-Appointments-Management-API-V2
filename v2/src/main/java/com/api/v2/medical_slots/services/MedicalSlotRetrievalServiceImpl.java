@@ -44,7 +44,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                                 methodOn(MedicalSlotController.class).findByDoctor(medicalSlot.getDoctor().getMedicalLicenseNumber())
                         ).withRel("find_medical_slots_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(id)
+                                methodOn(MedicalSlotController.class).cancel(medicalSlot.getDoctor().getId().toString(), id)
                         ).withRel("cancel_medical_slot_by_id")
                 );
     }
@@ -62,7 +62,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                                     methodOn(MedicalSlotController.class).findByDoctor(medicalLicenseNumber)
                             ).withSelfRel(),
                             linkTo(
-                                    methodOn(MedicalSlotController.class).cancel(slot.getId())
+                                    methodOn(MedicalSlotController.class).cancel(slot.getDoctor().getMedicalLicenseNumber(), slot.getId())
                             ).withRel("cancel_medical_slot_by_id")
                     )
                 )
