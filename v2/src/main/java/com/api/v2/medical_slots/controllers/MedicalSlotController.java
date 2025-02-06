@@ -26,19 +26,19 @@ public class MedicalSlotController {
         this.retrievalService = retrievalService;
     }
 
-    @PostMapping("medical-license-number/{medicalLicenseNumber}/available-at/{availableAt}")
+    @PostMapping("{medicalLicenseNumber}/{availableAt}")
     public MedicalSlotResponseResource register(@PathVariable String medicalLicenseNumber,
                                                 @PathVariable LocalDateTime availableAt
     ) {
         return registrationService.register(medicalLicenseNumber, availableAt);
     }
 
-    @PatchMapping("medical-license-number/{medicalLicenseNumber}/slot-id/{slotId}/cancellation")
+    @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
     public MedicalSlotResponseResource cancel(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
         return cancellationService.cancel(medicalLicenseNumber, slotId);
     }
 
-    @GetMapping("medical-license-number/{medicalLicenseNumber}/slot-id/{slotId}")
+    @GetMapping("{medicalLicenseNumber}/{slotId}")
     public MedicalSlotResponseResource findById(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
         return retrievalService.findById(medicalLicenseNumber, slotId);
     }
