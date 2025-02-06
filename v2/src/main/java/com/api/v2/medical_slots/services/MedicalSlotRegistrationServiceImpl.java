@@ -46,10 +46,10 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                 .mapToResource(savedMedicalSlot)
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(savedMedicalSlot.getId().toString())
+                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, savedMedicalSlot.getId().toString())
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findByDoctor(medicalLicenseNumber)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
                         ).withRel("find_medical_slot_by_doctor"),
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, savedMedicalSlot.getId().toString())

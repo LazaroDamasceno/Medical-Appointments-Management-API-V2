@@ -38,14 +38,14 @@ public class MedicalSlotController {
         return cancellationService.cancel(medicalLicenseNumber, slotId);
     }
 
-    @GetMapping("{id}")
-    public MedicalSlotResponseResource findById(@PathVariable String id) {
-        return retrievalService.findById(id);
+    @GetMapping("medical-license-number/{medicalLicenseNumber}/slot-id/{slotId}")
+    public MedicalSlotResponseResource findById(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
+        return retrievalService.findById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}")
-    public List<MedicalSlotResponseResource> findByDoctor(@PathVariable String medicalLicenseNumber) {
-        return retrievalService.findByDoctor(medicalLicenseNumber);
+    public List<MedicalSlotResponseResource> findAllByDoctor(@PathVariable String medicalLicenseNumber) {
+        return retrievalService.findAllByDoctor(medicalLicenseNumber);
     }
 
     @GetMapping

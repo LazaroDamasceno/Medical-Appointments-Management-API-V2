@@ -54,9 +54,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
 
     private void onNonAssociatedMedicalAppointmentWithCustomer(MedicalAppointment medicalAppointment, Customer customer) {
         if (medicalAppointment.getCustomer().getId().equals(customer.getId())) {
-            String message =  "Customer whose id is %s is not associated with the medical appointment whose id is  %s"
-                    .formatted(customer.getId().toString(), medicalAppointment.getId().toString());
-            throw new InaccessibleMedicalAppointmentException(message);
+            throw new InaccessibleMedicalAppointmentException(customer.getId().toString(), medicalAppointment.getId().toString());
         }
     }
 
