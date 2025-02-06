@@ -1,4 +1,4 @@
-package com.api.v2.medical_appointments;
+package com.api.v2.medical_appointments.controllers;
 
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
