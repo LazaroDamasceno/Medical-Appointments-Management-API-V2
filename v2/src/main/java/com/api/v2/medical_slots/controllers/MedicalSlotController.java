@@ -2,6 +2,7 @@ package com.api.v2.medical_slots.controllers;
 
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
+import com.api.v2.medical_slots.services.MedicalSlotCompletionService;
 import com.api.v2.medical_slots.services.MedicalSlotRegistrationService;
 import com.api.v2.medical_slots.services.MedicalSlotRetrievalService;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,16 @@ public class MedicalSlotController {
     private final MedicalSlotRegistrationService registrationService;
     private final MedicalSlotCancellationService cancellationService;
     private final MedicalSlotRetrievalService retrievalService;
+    private final MedicalSlotCompletionService completionService;
 
     public MedicalSlotController(MedicalSlotRegistrationService registrationService,
                                  MedicalSlotCancellationService cancellationService,
-                                 MedicalSlotRetrievalService retrievalService
+                                 MedicalSlotRetrievalService retrievalService, MedicalSlotCompletionService completionService
     ) {
         this.registrationService = registrationService;
         this.cancellationService = cancellationService;
         this.retrievalService = retrievalService;
+        this.completionService = completionService;
     }
 
     @PostMapping("{medicalLicenseNumber}/{availableAt}")
@@ -36,6 +39,11 @@ public class MedicalSlotController {
     @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
     public MedicalSlotResponseResource cancel(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
         return cancellationService.cancel(medicalLicenseNumber, slotId);
+    }
+
+    @PatchMapping("{medicalLicenseNumber}/{slotId}/completion")
+    public MedicalSlotResponseResource complete(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
+        return completionService.complete(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}/{slotId}")
