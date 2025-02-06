@@ -2,6 +2,7 @@ package com.api.v2.medical_appointments.services;
 
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
+import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
@@ -11,6 +12,9 @@ import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmentRetrievalService {
@@ -33,7 +37,22 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
         Customer customer = customerFinderUtil.findById(customerId);
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);
-        return MedicalAppointmentResponseMapper.mapToResource(medicalAppointment);
+        return MedicalAppointmentResponseMapper
+                .mapToResource(medicalAppointment)
+                .add(
+                        linkTo(
+                                methodOn(MedicalAppointmentController.class).findById(
+                                        customer.getId().toString(),
+                                        medicalAppointment.getId().toString()
+                                )
+                        ).withSelfRel(),
+                        linkTo(
+                                methodOn(MedicalAppointmentController.class).cancel(
+                                        customer.getId().toString(),
+                                        medicalAppointment.getId().toString()
+                                )
+                        ).withRel("cancel_medical_appointment_by_id")
+                );
     }
 
     private void onNonAssociatedMedicalAppointmentWithCustomer(Customer customer, MedicalAppointment medicalAppointment) {

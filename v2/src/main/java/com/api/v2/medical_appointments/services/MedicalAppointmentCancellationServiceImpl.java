@@ -2,6 +2,7 @@ package com.api.v2.medical_appointments.services;
 
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
+import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
@@ -13,6 +14,9 @@ import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import org.springframework.stereotype.Service;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class MedicalAppointmentCancellationServiceImpl implements MedicalAppointmentCancellationService {
@@ -49,7 +53,25 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
         medicalSlot.setMedicalAppointment(canceledMedicalAppointment);
         medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        return MedicalAppointmentResponseMapper.mapToResource(canceledMedicalAppointment);
+        return MedicalAppointmentResponseMapper
+                .mapToResource(canceledMedicalAppointment)
+                .add(
+                        linkTo(
+                                methodOn(MedicalAppointmentController.class).cancel(
+                                        customer.getId().toString(),
+                                        canceledMedicalSlot.getId().toString()
+                                )
+                        ).withSelfRel(),
+                        linkTo(
+                                methodOn(MedicalAppointmentController.class).findById(
+                                        customer.getId().toString(),
+                                        canceledMedicalSlot.getId().toString()
+                                )
+                        ).withRel("find_medical_appointment_by_id"),
+                        linkTo(
+                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                        ).withRel("find_medical_appointments_by_customer")
+                );
     }
 
     private void onNonAssociatedMedicalAppointmentWithCustomer(MedicalAppointment medicalAppointment, Customer customer) {
