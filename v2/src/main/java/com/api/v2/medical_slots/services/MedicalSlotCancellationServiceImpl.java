@@ -45,33 +45,31 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         onCompletedMedicalSlot(medicalSlot);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         if (medicalAppointment == null) {
-            MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-            MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper.mapToResource(canceledMedicalSlot);
-            return response(responseResource);
+            return response(medicalSlot);
         }
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.setMedicalAppointment(canceledMedicalAppointment);
         medicalSlot.markAsCanceled();
-        MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper.mapToResource(canceledMedicalSlot);
-        return response(responseResource);
+        return response(medicalSlot);
     }
 
-    private MedicalSlotResponseResource response(MedicalSlotResponseResource resource) {
-        var medicalLicenseNumber = resource.getDoctor().getMedicalLicenseNumber();
-        return resource
+    private MedicalSlotResponseResource response(MedicalSlot medicalSlot) {
+        String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
+        MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
+        return MedicalSlotResponseMapper
+                .mapToResource(canceledMedicalSlot)
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
                                         medicalLicenseNumber,
-                                        resource.getId()
+                                        medicalSlot.getId().toString()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
                                         medicalLicenseNumber,
-                                        resource.getId()
+                                        medicalSlot.getId().toString()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
