@@ -46,26 +46,32 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         if (medicalAppointment == null) {
             MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-            return MedicalSlotResponseMapper.mapToResource(canceledMedicalSlot);
+            MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper.mapToResource(canceledMedicalSlot);
+            return response(responseResource);
         }
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.setMedicalAppointment(canceledMedicalAppointment);
         medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        return MedicalSlotResponseMapper
-                .mapToResource(canceledMedicalSlot)
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper.mapToResource(canceledMedicalSlot);
+        return response(responseResource);
+    }
+
+    private MedicalSlotResponseResource response(MedicalSlotResponseResource resource) {
+        var medicalLicenseNumber = resource.getDoctor().getMedicalLicenseNumber();
+        return resource
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
                                         medicalLicenseNumber,
-                                        canceledMedicalAppointment.getId().toString()
+                                        resource.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
                                         medicalLicenseNumber,
-                                        canceledMedicalAppointment.getId().toString()
+                                        resource.getId()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
