@@ -10,6 +10,7 @@ import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentB
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
+    private final MedicalSlotRepository medicalSlotRepository;
     private final MedicalAppointmentRepository medicalAppointmentRepository;
     private final MedicalSlotFinderUtil medicalSlotFinderUtil;
     private final CustomerFinderUtil customerFinderUtil;
 
-    public MedicalAppointmentBookingServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository,
+
+    public MedicalAppointmentBookingServiceImpl(MedicalSlotRepository medicalSlotRepository,
+                                                MedicalAppointmentRepository medicalAppointmentRepository,
                                                 MedicalSlotFinderUtil medicalSlotFinderUtil,
                                                 CustomerFinderUtil customerFinderUtil
     ) {
+        this.medicalSlotRepository = medicalSlotRepository;
         this.medicalAppointmentRepository = medicalAppointmentRepository;
         this.medicalSlotFinderUtil = medicalSlotFinderUtil;
         this.customerFinderUtil = customerFinderUtil;
@@ -58,6 +63,8 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                 zoneOffset
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
+        medicalSlot.setMedicalAppointment(medicalAppointment);
+        MedicalSlot updtedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalAppointmentResponseMapper
                 .mapToResource(savedMedicalAppointment)
                 .add(
