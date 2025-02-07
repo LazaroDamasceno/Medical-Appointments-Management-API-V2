@@ -1,9 +1,11 @@
 package com.api.v2.medical_appointments.controllers;
 
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentCancellationService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentRetrievalService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,11 +28,9 @@ public class MedicalAppointmentController {
         this.retrievalService = retrievalService;
     }
 
-    @PostMapping("{customerId}/{availableAt}/{medicalSlotId}")
-    public MedicalAppointmentResponseResource book(@PathVariable String customerId,
-                                                   @RequestBody LocalDateTime availableAt,
-                                                   @PathVariable String medicalSlotId) {
-        return bookingService.book(customerId, availableAt, medicalSlotId);
+    @PostMapping
+    public MedicalAppointmentResponseResource book(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
+        return bookingService.book(bookingDto);
     }
 
     @PatchMapping("{customerId}/{medicalAppointmentId}")

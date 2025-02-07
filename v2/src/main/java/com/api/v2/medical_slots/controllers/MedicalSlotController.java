@@ -6,6 +6,7 @@ import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
 import com.api.v2.medical_slots.services.MedicalSlotCompletionService;
 import com.api.v2.medical_slots.services.MedicalSlotRegistrationService;
 import com.api.v2.medical_slots.services.MedicalSlotRetrievalService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class MedicalSlotController {
     }
 
     @PostMapping
-    public MedicalSlotResponseResource register(@RequestBody MedicalSlotRegistrationDto registrationDto) {
+    public MedicalSlotResponseResource register(@RequestBody @Valid MedicalSlotRegistrationDto registrationDto) {
         return registrationService.register(registrationDto);
     }
 

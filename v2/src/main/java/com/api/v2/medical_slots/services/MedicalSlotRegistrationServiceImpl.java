@@ -9,6 +9,7 @@ import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
 
 
     @Override
-    public MedicalSlotResponseResource register(MedicalSlotRegistrationDto registrationDto) {
+    public MedicalSlotResponseResource register(@Valid MedicalSlotRegistrationDto registrationDto) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime

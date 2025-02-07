@@ -6,12 +6,14 @@ import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,7 +33,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     private final CustomerFinderUtil customerFinderUtil;
 
 
-    public MedicalAppointmentBookingServiceImpl(MedicalSlotRepository medicalSlotRepository,
+    public MedicalAppointmentBookingServiceImpl(@Valid MedicalSlotRepository medicalSlotRepository,
                                                 MedicalAppointmentRepository medicalAppointmentRepository,
                                                 MedicalSlotFinderUtil medicalSlotFinderUtil,
                                                 CustomerFinderUtil customerFinderUtil
@@ -43,22 +45,19 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     }
 
     @Override
-    public MedicalAppointmentResponseResource book(String customerId,
-                                                   LocalDateTime availableAt,
-                                                   String medicalSlotId
-    ) {
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(medicalSlotId);
-        Customer customer = customerFinderUtil.findById(customerId);
+    public MedicalAppointmentResponseResource book(MedicalAppointmentBookingDto bookingDto) {
+        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(bookingDto.medicalSlotId());
+        Customer customer = customerFinderUtil.findById(bookingDto.medicalSlotId());
         Doctor doctor = medicalSlot.getDoctor();
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetTime
-                .ofInstant(availableAt.toInstant(ZoneOffset.UTC), zoneId)
+                .ofInstant(bookingDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        onDuplicatedBookingDateTime(customer, doctor, availableAt, zoneOffset, zoneId);
+        onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
         MedicalAppointment medicalAppointment = MedicalAppointment.create(
                 customer,
                 doctor,
-                availableAt,
+                bookingDto.availableAt(),
                 zoneId,
                 zoneOffset
         );
