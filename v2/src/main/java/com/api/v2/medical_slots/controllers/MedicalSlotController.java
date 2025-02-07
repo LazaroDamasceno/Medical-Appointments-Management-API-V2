@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.controllers;
 
+import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
 import com.api.v2.medical_slots.services.MedicalSlotCompletionService;
@@ -29,11 +30,9 @@ public class MedicalSlotController {
         this.completionService = completionService;
     }
 
-    @PostMapping("{medicalLicenseNumber}/{availableAt}")
-    public MedicalSlotResponseResource register(@PathVariable String medicalLicenseNumber,
-                                                @PathVariable LocalDateTime availableAt
-    ) {
-        return registrationService.register(medicalLicenseNumber, availableAt);
+    @PostMapping
+    public MedicalSlotResponseResource register(@RequestBody MedicalSlotRegistrationDto registrationDto) {
+        return registrationService.register(registrationDto);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")

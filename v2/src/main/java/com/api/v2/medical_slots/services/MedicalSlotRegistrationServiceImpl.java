@@ -5,6 +5,7 @@ import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
+import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
@@ -33,26 +34,26 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
 
 
     @Override
-    public MedicalSlotResponseResource register(String medicalLicenseNumber, LocalDateTime availableAt) {
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+    public MedicalSlotResponseResource register(MedicalSlotRegistrationDto registrationDto) {
+        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime
-                .ofInstant(availableAt.toInstant(ZoneOffset.UTC), zoneId)
+                .ofInstant(registrationDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        onDuplicatedBookingDateTime(doctor, availableAt, zoneId, zoneOffset);
-        MedicalSlot medicalSlot = MedicalSlot.create(doctor, availableAt, zoneId, zoneOffset);
+        onDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
+        MedicalSlot medicalSlot = MedicalSlot.create(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalSlotResponseMapper
                 .mapToResource(savedMedicalSlot)
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, savedMedicalSlot.getId().toString())
+                                methodOn(MedicalSlotController.class).findById(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId().toString())
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(registrationDto.medicalLicenseNumber())
                         ).withRel("find_medical_slot_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, savedMedicalSlot.getId().toString())
+                                methodOn(MedicalSlotController.class).cancel(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId().toString())
                         ).withRel("cancel_medical_slot_by_id")
                 );
     }
