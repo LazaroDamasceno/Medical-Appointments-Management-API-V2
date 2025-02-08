@@ -10,6 +10,7 @@ import java.time.*;
 public record Card(
         @BsonId
         ObjectId id,
+        String type,
         String bank,
         String cvc_cvv,
         LocalDate dueDate,
@@ -18,9 +19,10 @@ public record Card(
         ZoneOffset createdAtZoneOffset
 ) {
 
-    public static Card create(String bank, String cvc_cvv, LocalDate dueDate) {
+    public static Card create(String type, String bank, String cvc_cvv, LocalDate dueDate) {
         return new Card(
                 new ObjectId(),
+                type,
                 bank, cvc_cvv,
                 dueDate,
                 LocalDateTime.now(),
