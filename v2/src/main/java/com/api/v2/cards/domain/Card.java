@@ -1,5 +1,6 @@
 package com.api.v2.cards.domain;
 
+import com.api.v2.cards.dtos.CardRegistrationDto;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,12 +20,13 @@ public record Card(
         ZoneOffset createdAtZoneOffset
 ) {
 
-    public static Card create(String type, String bank, String cvc_cvv, LocalDate dueDate) {
+    public static Card create(String type, CardRegistrationDto registrationDto) {
         return new Card(
                 new ObjectId(),
                 type,
-                bank, cvc_cvv,
-                dueDate,
+                registrationDto.bank(),
+                registrationDto.cvc_cvv(),
+                registrationDto.dueDate(),
                 LocalDateTime.now(),
                 ZoneId.systemDefault(),
                 OffsetTime.now().getOffset()
