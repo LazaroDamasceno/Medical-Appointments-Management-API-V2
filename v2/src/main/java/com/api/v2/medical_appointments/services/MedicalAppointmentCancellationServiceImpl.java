@@ -41,7 +41,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     }
 
     @Override
-    public MedicalAppointmentResponseResource cancel(String customerId, String medicalAppointmentId) {
+    public MedicalAppointmentResponseResource cancelById(String customerId, String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         Customer customer = customerFinderUtil.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);

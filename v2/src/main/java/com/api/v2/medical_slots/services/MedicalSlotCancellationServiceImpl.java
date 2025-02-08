@@ -37,7 +37,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public MedicalSlotResponseResource cancel(String medicalLicenseNumber, String id) {
+    public MedicalSlotResponseResource cancelById(String medicalLicenseNumber, String id) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

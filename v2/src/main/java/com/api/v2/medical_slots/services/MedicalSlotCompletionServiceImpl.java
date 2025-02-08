@@ -36,7 +36,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public MedicalSlotResponseResource complete(String medicalLicenseNumber, String slotId) {
+    public MedicalSlotResponseResource completeById(String medicalLicenseNumber, String slotId) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

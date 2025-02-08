@@ -8,7 +8,6 @@ import com.api.v2.medical_appointments.services.MedicalAppointmentRetrievalServi
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,7 +35,7 @@ public class MedicalAppointmentController {
     @PatchMapping("{customerId}/{medicalAppointmentId}")
     public MedicalAppointmentResponseResource cancel(@PathVariable String customerId,
                                                      @PathVariable String medicalAppointmentId) {
-        return cancellationService.cancel(customerId, medicalAppointmentId);
+        return cancellationService.cancelById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}/{medicalAppointmentId}")

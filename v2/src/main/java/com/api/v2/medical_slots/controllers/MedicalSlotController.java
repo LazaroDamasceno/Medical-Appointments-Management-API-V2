@@ -9,7 +9,6 @@ import com.api.v2.medical_slots.services.MedicalSlotRetrievalService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -38,12 +37,12 @@ public class MedicalSlotController {
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
     public MedicalSlotResponseResource cancel(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
-        return cancellationService.cancel(medicalLicenseNumber, slotId);
+        return cancellationService.cancelById(medicalLicenseNumber, slotId);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/completion")
     public MedicalSlotResponseResource complete(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
-        return completionService.complete(medicalLicenseNumber, slotId);
+        return completionService.completeById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}/{slotId}")
