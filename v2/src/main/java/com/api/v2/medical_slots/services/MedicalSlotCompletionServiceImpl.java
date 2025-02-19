@@ -41,7 +41,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
-        medicalAppointment.markAsCanceled();
+        medicalAppointment.markAsCompleted();
         MedicalAppointment completedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.markAsCompleted();
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);

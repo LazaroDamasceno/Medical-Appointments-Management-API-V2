@@ -1,4 +1,4 @@
-package com.api.v2.payments;
+package com.api.v2.payments.domain;
 
 import com.api.v2.cards.domain.Card;
 import com.api.v2.common.DstCheckerUtil;
