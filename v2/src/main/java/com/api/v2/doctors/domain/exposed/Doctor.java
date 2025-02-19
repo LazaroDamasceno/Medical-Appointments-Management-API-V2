@@ -17,11 +17,11 @@ public class Doctor {
     @BsonId
     private ObjectId id;
     private Person person;
-    private String medicalLicenseNumber;
-    private LocalDateTime hiredAt;
-    private ZoneId hiredAtZoneId;
-    private ZoneOffset hiredAtZoneOffset;
-    private boolean isHiredDuringDST;
+    private final String medicalLicenseNumber;
+    private final LocalDateTime hiredAt;
+    private final ZoneId hiredAtZoneId;
+    private final ZoneOffset hiredAtZoneOffset;
+    private final boolean isHiredDuringDST;
     private LocalDateTime terminatedAt;
     private ZoneId terminatedAtZoneId;
     private ZoneOffset terminatedAtZoneOffset;

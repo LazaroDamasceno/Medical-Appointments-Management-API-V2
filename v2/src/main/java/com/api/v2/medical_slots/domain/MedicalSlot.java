@@ -17,15 +17,15 @@ public class MedicalSlot {
 
     @BsonId
     private ObjectId id;
-    private Doctor doctor;
+    private final Doctor doctor;
     private MedicalAppointment medicalAppointment;
-    private LocalDateTime availableAt;
-    private ZoneId availableAtZoneId;
-    private ZoneOffset availableAtZoneOffset;
-    private LocalDateTime createdAt;
-    private ZoneId createdAtZoneId;
-    private ZoneOffset createdAtZoneOffset;
-    private boolean isCreatedDuringDST;
+    private final LocalDateTime availableAt;
+    private final ZoneId availableAtZoneId;
+    private final ZoneOffset availableAtZoneOffset;
+    private final LocalDateTime createdAt;
+    private final ZoneId createdAtZoneId;
+    private final ZoneOffset createdAtZoneOffset;
+    private final boolean isCreatedDuringDST;
     private LocalDateTime canceledAt;
     private ZoneId canceledAtZoneId;
     private ZoneOffset canceledAtZoneOffset;
