@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.domain;
 
+import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -24,12 +25,15 @@ public class MedicalSlot {
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
+    private boolean isCreatedDuringDST;
     private LocalDateTime canceledAt;
     private ZoneId canceledAtZoneId;
     private ZoneOffset canceledAtZoneOffset;
+    private boolean isCanceledDuringDST;
     private LocalDateTime completedAt;
     private ZoneId completedAtZoneId;
     private ZoneOffset completedAtZoneOffset;
+    private boolean isCompletedDuringDST;
 
     private MedicalSlot(Doctor doctor, LocalDateTime availableAt, ZoneId availableAtZoneId, ZoneOffset availableAtZoneOffset) {
         this.id = new ObjectId();
@@ -40,6 +44,7 @@ public class MedicalSlot {
         this.createdAt = LocalDateTime.now();
         this.createdAtZoneId = ZoneId.systemDefault();
         this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
+        this.isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(availableAt, availableAtZoneId);
     }
 
     public static MedicalSlot create(Doctor doctor,
@@ -48,6 +53,20 @@ public class MedicalSlot {
                                      ZoneOffset availableAtZoneOffset
     ) {
         return new MedicalSlot(doctor, availableAt, availableAtZoneId, availableAtZoneOffset);
+    }
+
+    public void markAsCanceled() {
+        canceledAt = LocalDateTime.now();
+        canceledAtZoneId = ZoneId.systemDefault();
+        canceledAtZoneOffset = OffsetDateTime.now().getOffset();
+        isCanceledDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
+    }
+
+    public void markAsCompleted() {
+        completedAt = LocalDateTime.now();
+        completedAtZoneId = ZoneId.systemDefault();
+        completedAtZoneOffset = OffsetDateTime.now().getOffset();
+        isCompletedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(completedAt, canceledAtZoneId);
     }
 
     public ObjectId getId() {
@@ -114,16 +133,15 @@ public class MedicalSlot {
         this.medicalAppointment = medicalAppointment;
     }
 
-    public void markAsCanceled() {
-        canceledAt = LocalDateTime.now();
-        canceledAtZoneId = ZoneId.systemDefault();
-        canceledAtZoneOffset = OffsetDateTime.now().getOffset();
-
+    public boolean isCreatedDuringDST() {
+        return isCreatedDuringDST;
     }
 
-    public void markAsCompleted() {
-        completedAt = LocalDateTime.now();
-        completedAtZoneId = ZoneId.systemDefault();
-        completedAtZoneOffset = OffsetDateTime.now().getOffset();
+    public boolean isCanceledDuringDST() {
+        return isCanceledDuringDST;
+    }
+
+    public boolean isCompletedDuringDST() {
+        return isCompletedDuringDST;
     }
 }

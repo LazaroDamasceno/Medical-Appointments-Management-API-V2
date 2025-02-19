@@ -1,5 +1,6 @@
 package com.api.v2.doctors.domain.exposed;
 
+import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.domain.exposed.Person;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -20,9 +21,11 @@ public class Doctor {
     private LocalDateTime hiredAt;
     private ZoneId hiredAtZoneId;
     private ZoneOffset hiredAtZoneOffset;
+    private boolean isHiredDuringDST;
     private LocalDateTime terminatedAt;
     private ZoneId terminatedAtZoneId;
     private ZoneOffset terminatedAtZoneOffset;
+    private Boolean isTerminatedDuringDST;
 
     private Doctor(Person person, String medicalLicenseNumber) {
         this.id = new ObjectId();
@@ -31,6 +34,7 @@ public class Doctor {
         this.hiredAt = LocalDateTime.now();
         this.hiredAtZoneId = ZoneId.systemDefault();
         this.hiredAtZoneOffset = OffsetDateTime.now().getOffset();
+        this.isHiredDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
     public static Doctor create(Person person, String medicalLicenseNumber) {
@@ -41,12 +45,14 @@ public class Doctor {
         terminatedAt = LocalDateTime.now();
         terminatedAtZoneId = ZoneId.systemDefault();
         terminatedAtZoneOffset = OffsetDateTime.now().getOffset();
+        isTerminatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(terminatedAt, terminatedAtZoneId);
     }
 
     public void markAsRehired() {
         terminatedAt = null;
         terminatedAtZoneId = null;
         terminatedAtZoneOffset = null;
+        isTerminatedDuringDST = null;
     }
 
     public ObjectId getId() {
@@ -87,5 +93,13 @@ public class Doctor {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public boolean isHiredDuringDST() {
+        return isHiredDuringDST;
+    }
+
+    public boolean isTerminatedDuringDST() {
+        return isTerminatedDuringDST;
     }
 }

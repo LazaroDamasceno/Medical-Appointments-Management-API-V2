@@ -1,5 +1,6 @@
 package com.api.v2.people.domain.exposed;
 
+import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.dtos.PersonModificationDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -24,9 +25,11 @@ public class Person {
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
+    private boolean isCreatedDuringDST;
     private LocalDateTime modifiedAt;
     private ZoneId modifiedAtZoneId;
     private ZoneOffset modifiedAtZoneOffset;
+    private boolean isModifiedDuringDST;
 
     private Person(PersonRegistrationDto registrationDto) {
         this.id = new ObjectId();
@@ -41,6 +44,7 @@ public class Person {
         this.createdAt = LocalDateTime.now(ZoneId.systemDefault());
         this.createdAtZoneId = ZoneId.systemDefault();
         this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
+        this.isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
     public static Person create(PersonRegistrationDto registrationDto) {
@@ -58,6 +62,7 @@ public class Person {
         this.modifiedAt = LocalDateTime.now(ZoneId.systemDefault());
         this.modifiedAtZoneId = ZoneId.systemDefault();
         this.modifiedAtZoneOffset = OffsetDateTime.now().getOffset();
+        this.isModifiedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
     public String getFullName() {
@@ -115,4 +120,11 @@ public class Person {
         return modifiedAtZoneOffset;
     }
 
+    public boolean isCreatedDuringDST() {
+        return isCreatedDuringDST;
+    }
+
+    public boolean isModifiedDuringDST() {
+        return isModifiedDuringDST;
+    }
 }
