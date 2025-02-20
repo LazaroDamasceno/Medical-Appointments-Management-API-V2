@@ -1,5 +1,6 @@
 package com.api.v2.doctors.domain;
 
+import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -15,7 +16,8 @@ public record DoctorAuditTrail(
         Doctor doctor,
         LocalDateTime createdAt,
         ZoneId createdAtZoneId,
-        ZoneOffset createdAtZoneOffset
+        ZoneOffset createdAtZoneOffset,
+        boolean isCreatedDuringDST
 ) {
 
     public static DoctorAuditTrail create(Doctor doctor) {
@@ -24,7 +26,8 @@ public record DoctorAuditTrail(
                 doctor,
                 LocalDateTime.now(),
                 ZoneId.systemDefault(),
-                OffsetDateTime.now().getOffset()
+                OffsetDateTime.now().getOffset(),
+                DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault())
         );
     }
 }

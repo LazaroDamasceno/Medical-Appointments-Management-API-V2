@@ -1,14 +1,12 @@
 package com.api.v2.people.domain;
 
+import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.domain.exposed.Person;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 
 @Document
 public record PersonAuditTrail(
@@ -17,7 +15,8 @@ public record PersonAuditTrail(
         Person person,
         LocalDate createdAt,
         ZoneId createdAtZoneId,
-        ZoneOffset createdAtZoneOffset
+        ZoneOffset createdAtZoneOffset,
+        boolean isCreatedDuringDST
 ) {
 
     public static PersonAuditTrail create(Person person) {
@@ -26,7 +25,8 @@ public record PersonAuditTrail(
                 person,
                 LocalDate.now(),
                 ZoneId.systemDefault(),
-                OffsetDateTime.now().getOffset()
+                OffsetDateTime.now().getOffset(),
+                DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault())
         );
     }
 }
