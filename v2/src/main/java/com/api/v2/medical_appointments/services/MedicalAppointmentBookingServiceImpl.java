@@ -63,7 +63,6 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.setMedicalAppointment(medicalAppointment);
-        MedicalSlot updatedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalAppointmentResponseMapper
                 .mapToResource(savedMedicalAppointment)
                 .add(
