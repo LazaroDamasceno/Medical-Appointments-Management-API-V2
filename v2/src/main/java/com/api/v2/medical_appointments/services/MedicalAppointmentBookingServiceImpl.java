@@ -27,7 +27,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
-    private final MedicalSlotRepository medicalSlotRepository;
     private final MedicalAppointmentRepository medicalAppointmentRepository;
     private final MedicalSlotFinderUtil medicalSlotFinderUtil;
     private final CustomerFinderUtil customerFinderUtil;
@@ -38,7 +37,6 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                                                 MedicalSlotFinderUtil medicalSlotFinderUtil,
                                                 CustomerFinderUtil customerFinderUtil
     ) {
-        this.medicalSlotRepository = medicalSlotRepository;
         this.medicalAppointmentRepository = medicalAppointmentRepository;
         this.medicalSlotFinderUtil = medicalSlotFinderUtil;
         this.customerFinderUtil = customerFinderUtil;
