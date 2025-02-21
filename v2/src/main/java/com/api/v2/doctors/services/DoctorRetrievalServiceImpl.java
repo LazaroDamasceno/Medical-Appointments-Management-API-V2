@@ -1,5 +1,6 @@
 package com.api.v2.doctors.services;
 
+import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.resources.DoctorResponseResource;
@@ -26,7 +27,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     }
 
     @Override
-    public DoctorResponseResource findByMedicalLicenseNumber(String medicalLicenseNumber) {
+    public DoctorResponseResource findByMedicalLicenseNumber(@MLN String medicalLicenseNumber) {
         return DoctorResponseMapper
                 .mapToResource(doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber))
                 .add(

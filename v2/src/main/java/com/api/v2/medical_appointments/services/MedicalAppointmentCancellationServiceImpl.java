@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
+import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
@@ -41,7 +42,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     }
 
     @Override
-    public MedicalAppointmentResponseResource cancelById(String customerId, String medicalAppointmentId) {
+    public MedicalAppointmentResponseResource cancelById(@Id String customerId, @Id String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         Customer customer = customerFinderUtil.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);

@@ -1,5 +1,7 @@
 package com.api.v2.medical_slots.services;
 
+import com.api.v2.common.Id;
+import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
@@ -37,7 +39,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public MedicalSlotResponseResource cancelById(String medicalLicenseNumber, String id) {
+    public MedicalSlotResponseResource cancelById(@MLN String medicalLicenseNumber, @Id String id) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

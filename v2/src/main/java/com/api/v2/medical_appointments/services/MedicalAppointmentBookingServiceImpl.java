@@ -43,7 +43,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     }
 
     @Override
-    public MedicalAppointmentResponseResource book(MedicalAppointmentBookingDto bookingDto) {
+    public MedicalAppointmentResponseResource book(@Valid MedicalAppointmentBookingDto bookingDto) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(bookingDto.medicalSlotId());
         Customer customer = customerFinderUtil.findById(bookingDto.medicalSlotId());
         Doctor doctor = medicalSlot.getDoctor();

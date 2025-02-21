@@ -1,5 +1,6 @@
 package com.api.v2.doctors.services;
 
+import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
@@ -32,7 +33,7 @@ public class DoctorModificationServiceImpl implements DoctorModificationService 
     }
 
     @Override
-    public DoctorResponseResource modify(String medicalLicenseNumber, PersonModificationDto modificationDto) {
+    public DoctorResponseResource modify(@MLN String medicalLicenseNumber, PersonModificationDto modificationDto) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onTerminatedDoctor(doctor);
         Person modifiedPerson = personModificationService.modify(doctor.getPerson(), modificationDto);

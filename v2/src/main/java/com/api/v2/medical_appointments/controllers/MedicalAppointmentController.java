@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.controllers;
 
+import com.api.v2.common.Id;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
@@ -33,20 +34,20 @@ public class MedicalAppointmentController {
     }
 
     @PatchMapping("{customerId}/{medicalAppointmentId}")
-    public MedicalAppointmentResponseResource cancel(@PathVariable String customerId,
-                                                     @PathVariable String medicalAppointmentId) {
+    public MedicalAppointmentResponseResource cancel(@PathVariable @Id String customerId,
+                                                     @PathVariable @Id String medicalAppointmentId) {
         return cancellationService.cancelById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}/{medicalAppointmentId}")
-    public MedicalAppointmentResponseResource findById(@PathVariable String customerId,
-                                                       @PathVariable String medicalAppointmentId
+    public MedicalAppointmentResponseResource findById(@PathVariable @Id String customerId,
+                                                       @PathVariable @Id String medicalAppointmentId
     ) {
         return retrievalService.findById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}")
-    public List<MedicalAppointmentResponseResource> findAllByCustomer(@PathVariable String customerId) {
+    public List<MedicalAppointmentResponseResource> findAllByCustomer(@PathVariable @Id String customerId) {
         return retrievalService.findAllByCustomer(customerId);
     }
 

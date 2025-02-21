@@ -1,5 +1,7 @@
 package com.api.v2.medical_slots.services;
 
+import com.api.v2.common.Id;
+import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
@@ -33,7 +35,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public MedicalSlotResponseResource findById(String medicalLicenseNumber, String slotId) {
+    public MedicalSlotResponseResource findById(@MLN String medicalLicenseNumber, @Id String slotId) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

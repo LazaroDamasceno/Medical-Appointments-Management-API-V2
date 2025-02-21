@@ -1,5 +1,6 @@
 package com.api.v2.doctors.services;
 
+import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
@@ -31,7 +32,7 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public DoctorResponseResource rehire(String medicalLicenseNumber) {
+    public DoctorResponseResource rehire(@MLN String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);

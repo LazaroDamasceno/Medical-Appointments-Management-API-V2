@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.controllers;
 
+import com.api.v2.common.MLN;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
@@ -36,22 +37,22 @@ public class MedicalSlotController {
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
-    public MedicalSlotResponseResource cancel(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
+    public MedicalSlotResponseResource cancel(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return cancellationService.cancelById(medicalLicenseNumber, slotId);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/completion")
-    public MedicalSlotResponseResource complete(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
+    public MedicalSlotResponseResource complete(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return completionService.completeById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}/{slotId}")
-    public MedicalSlotResponseResource findById(@PathVariable String medicalLicenseNumber, @PathVariable String slotId) {
+    public MedicalSlotResponseResource findById(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return retrievalService.findById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}")
-    public List<MedicalSlotResponseResource> findAllByDoctor(@PathVariable String medicalLicenseNumber) {
+    public List<MedicalSlotResponseResource> findAllByDoctor(@PathVariable @MLN String medicalLicenseNumber) {
         return retrievalService.findAllByDoctor(medicalLicenseNumber);
     }
 

@@ -1,5 +1,6 @@
 package com.api.v2.customers.services;
 
+import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.dtos.CustomerModificationDto;
@@ -28,7 +29,7 @@ public class CustomerModificationServiceImpl implements CustomerModificationServ
     }
 
     @Override
-    public CustomerResponseDto modify(String id, @Valid CustomerModificationDto modificationDto) {
+    public CustomerResponseDto modify(@Id String id, @Valid CustomerModificationDto modificationDto) {
         Customer customer = customerFinderUtil.findById(id);
         Person modifiedPerson = personModificationService.modify(customer.getPerson(), modificationDto.personModificationDto());
         customer.setPerson(modifiedPerson);
