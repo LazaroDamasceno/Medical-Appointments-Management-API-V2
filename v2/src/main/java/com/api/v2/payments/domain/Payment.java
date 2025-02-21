@@ -24,7 +24,7 @@ public record Payment(
         boolean isPaymentDuringDST
 ) {
 
-    public static Payment create(Card card, MedicalAppointment medicalAppointment) {
+    public static Payment of(Card card, MedicalAppointment medicalAppointment) {
         LocalDateTime localDateTime = LocalDateTime.now();
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();

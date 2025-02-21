@@ -20,7 +20,7 @@ public record Card(
         ZoneOffset createdAtZoneOffset
 ) {
 
-    public static Card create(String type, CardRegistrationDto registrationDto) {
+    public static Card of(String type, CardRegistrationDto registrationDto) {
         return new Card(
                 new ObjectId(),
                 type,

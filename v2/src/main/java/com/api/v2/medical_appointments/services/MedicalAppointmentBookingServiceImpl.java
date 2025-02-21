@@ -52,7 +52,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                 .ofInstant(bookingDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
         onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
-        MedicalAppointment medicalAppointment = MedicalAppointment.create(
+        MedicalAppointment medicalAppointment = MedicalAppointment.of(
                 customer,
                 doctor,
                 bookingDto.availableAt(),

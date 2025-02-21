@@ -42,7 +42,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                 .ofInstant(registrationDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
         onDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
-        MedicalSlot medicalSlot = MedicalSlot.create(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
+        MedicalSlot medicalSlot = MedicalSlot.of(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalSlotResponseMapper
                 .mapToResource(savedMedicalSlot)

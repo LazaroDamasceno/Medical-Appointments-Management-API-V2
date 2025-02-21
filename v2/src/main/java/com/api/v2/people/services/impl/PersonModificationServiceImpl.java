@@ -24,7 +24,7 @@ public class PersonModificationServiceImpl implements PersonModificationService 
 
     @Override
     public Person modify(Person person, @Valid PersonModificationDto modificationDto) {
-        PersonAuditTrail personAuditTrail = PersonAuditTrail.create(person);
+        PersonAuditTrail personAuditTrail = PersonAuditTrail.of(person);
         personAuditTrailRepository.save(personAuditTrail);
         person.modify(modificationDto);
         return personRepository.save(person);

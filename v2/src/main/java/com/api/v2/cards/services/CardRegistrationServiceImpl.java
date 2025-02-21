@@ -19,14 +19,14 @@ public class CardRegistrationServiceImpl implements CardRegistrationService {
 
     @Override
     public CardResponseDto registerCreditCard(@Valid CardRegistrationDto registrationDto) {
-        Card card = Card.create("credit card", registrationDto);
+        Card card = Card.of("credit card", registrationDto);
         Card savedCard = cardRepository.save(card);
         return CardResponseMapper.map(savedCard);
     }
 
     @Override
     public CardResponseDto registerDebitCard(@Valid CardRegistrationDto registrationDto) {
-        Card card = Card.create("debit card", registrationDto);
+        Card card = Card.of("debit card", registrationDto);
         Card savedCard = cardRepository.save(card);
         return CardResponseMapper.map(savedCard);
     }

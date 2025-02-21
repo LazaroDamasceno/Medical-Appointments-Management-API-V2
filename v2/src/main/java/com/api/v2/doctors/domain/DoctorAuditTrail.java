@@ -20,7 +20,7 @@ public record DoctorAuditTrail(
         boolean isCreatedDuringDST
 ) {
 
-    public static DoctorAuditTrail create(Doctor doctor) {
+    public static DoctorAuditTrail of(Doctor doctor) {
         return new DoctorAuditTrail(
                 new ObjectId(),
                 doctor,

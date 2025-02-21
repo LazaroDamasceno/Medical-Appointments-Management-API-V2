@@ -34,7 +34,7 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     public DoctorResponseResource rehire(String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onActiveDoctor(doctor);
-        DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.create(doctor);
+        DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsRehired();
         Doctor rehiredDoctor = doctorRepository.save(doctor);

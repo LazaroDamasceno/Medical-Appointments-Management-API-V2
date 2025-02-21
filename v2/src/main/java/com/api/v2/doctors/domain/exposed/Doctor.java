@@ -37,7 +37,7 @@ public class Doctor {
         this.isHiredDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
-    public static Doctor create(Person person, String medicalLicenseNumber) {
+    public static Doctor of(Person person, String medicalLicenseNumber) {
         return new Doctor(person, medicalLicenseNumber);
     }
 

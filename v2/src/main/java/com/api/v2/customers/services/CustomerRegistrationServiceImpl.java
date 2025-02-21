@@ -30,7 +30,7 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
         onDuplicatedSsn(registrationDto.personRegistrationDto().ssn());
         onDuplicatedEmail(registrationDto.personRegistrationDto().email());
         Person savedPerson = personRegistrationService.register(registrationDto.personRegistrationDto());
-        Customer customer = Customer.create(registrationDto.address(), savedPerson);
+        Customer customer = Customer.of(registrationDto.address(), savedPerson);
         Customer savedCustomer = customerRepository.save(customer);
         return CustomerResponseMapper.mapToDto(savedCustomer);
     }

@@ -34,7 +34,7 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
     public DoctorResponseResource terminate(String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onTerminatedDoctor(doctor);
-        DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.create(doctor);
+        DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsTerminated();
         Doctor terminaredDoctor = doctorRepository.save(doctor);

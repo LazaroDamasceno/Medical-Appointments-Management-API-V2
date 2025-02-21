@@ -19,7 +19,7 @@ public record PersonAuditTrail(
         boolean isCreatedDuringDST
 ) {
 
-    public static PersonAuditTrail create(Person person) {
+    public static PersonAuditTrail of(Person person) {
         return new PersonAuditTrail(
                 new ObjectId(),
                 person,

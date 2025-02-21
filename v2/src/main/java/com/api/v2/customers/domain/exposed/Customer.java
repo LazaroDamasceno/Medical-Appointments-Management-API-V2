@@ -34,7 +34,7 @@ public class Customer {
         this.isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
-    public static Customer create(Address address, Person person) {
+    public static Customer of(Address address, Person person) {
         return new Customer(address, person);
     }
 

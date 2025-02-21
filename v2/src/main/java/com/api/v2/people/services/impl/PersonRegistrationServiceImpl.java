@@ -18,7 +18,7 @@ public class PersonRegistrationServiceImpl implements PersonRegistrationService 
 
     @Override
     public Person register(@Valid PersonRegistrationDto registrationDto) {
-        Person person = Person.create(registrationDto);
+        Person person = Person.of(registrationDto);
         return personRepository.save(person);
     }
 }

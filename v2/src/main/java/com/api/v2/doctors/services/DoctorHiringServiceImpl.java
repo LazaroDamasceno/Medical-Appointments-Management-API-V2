@@ -36,7 +36,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         onDuplicatedEmail(hiringDto.personRegistrationDto().email());
         onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
-        Doctor doctor = Doctor.create(savedPerson, hiringDto.medicalLicenseNumber());
+        Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
         return DoctorResponseMapper
                 .mapToResource(savedDoctor)
