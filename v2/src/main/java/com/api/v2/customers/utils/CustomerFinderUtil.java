@@ -19,7 +19,7 @@ public class CustomerFinderUtil {
         return customerRepository
                 .findAll()
                 .stream()
-                .filter(c -> c.getPerson().getId().equals(new ObjectId(id)))
+                .filter(c -> c.getId().equals(new ObjectId(id)))
                 .findFirst()
                 .orElseThrow(() -> new NonExistentCustomerException(id));
     }
