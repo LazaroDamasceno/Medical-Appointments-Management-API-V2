@@ -21,9 +21,7 @@ public class PersonRegistrationServiceImpl implements PersonRegistrationService 
         var query = personRepository
                 .findAll()
                 .stream()
-                .filter(p -> p.getEmail().equals(registrationDto.email())
-                        || p.getSsn().equals(registrationDto.ssn())
-                )
+                .filter(p -> p.getEmail().equals(registrationDto.email()))
                 .findAny();
         if (query.isPresent()) {
             return query.get();
