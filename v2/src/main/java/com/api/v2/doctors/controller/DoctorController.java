@@ -16,19 +16,16 @@ import java.util.List;
 public class DoctorController {
 
     private final DoctorHiringService hiringService;
-    private final DoctorModificationService modificationService;
     private final DoctorRehireService rehireService;
     private final DoctorRetrievalService retrievalService;
     private final DoctorTerminationService terminationService;
 
     public DoctorController(DoctorHiringService hiringService,
-                            DoctorModificationService modificationService,
                             DoctorRehireService rehireService,
                             DoctorRetrievalService retrievalService,
                             DoctorTerminationService terminationService
     ) {
         this.hiringService = hiringService;
-        this.modificationService = modificationService;
         this.rehireService = rehireService;
         this.retrievalService = retrievalService;
         this.terminationService = terminationService;
@@ -38,14 +35,6 @@ public class DoctorController {
     @ResponseStatus(HttpStatus.CREATED)
     public DoctorResponseResource hire(@RequestBody DoctorHiringDto hiringDto) {
         return hiringService.hire(hiringDto);
-    }
-
-    @PutMapping("{medicalLicenseNumber}")
-    public DoctorResponseResource modify(
-            @PathVariable @MLN String medicalLicenseNumber,
-            @Valid @RequestBody PersonModificationDto modificationDto
-    ) {
-        return modificationService.modify(medicalLicenseNumber, modificationDto);
     }
 
     @PatchMapping("{medicalLicenseNumber}/rehiring")

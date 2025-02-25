@@ -18,15 +18,14 @@ public class PersonRegistrationServiceImpl implements PersonRegistrationService 
 
     @Override
     public Person register(@Valid PersonRegistrationDto registrationDto) {
-        var query = personRepository
+        return personRepository
                 .findAll()
                 .stream()
                 .filter(p -> p.getEmail().equals(registrationDto.email()))
-                .findAny();
-        if (query.isPresent()) {
-            return query.get();
-        }
-        Person person = Person.of(registrationDto);
-        return personRepository.save(person);
+                .findAny()
+                .orElseGet(() -> {
+                    Person person = Person.of(registrationDto);
+                    return personRepository.save(person);
+                });
     }
 }
