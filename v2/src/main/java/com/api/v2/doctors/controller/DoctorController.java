@@ -3,9 +3,6 @@ package com.api.v2.doctors.controller;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.resources.DoctorResponseResource;
-import com.api.v2.doctors.services.*;
-import com.api.v2.people.dtos.PersonModificationDto;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
