@@ -7,7 +7,7 @@ import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentResponseDto;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinderUtil;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
     }
 
     @Override
-    public MedicalAppointmentResponseResource findById(@Id String customerId, @Id String medicalAppointmentId) {
+    public MedicalAppointmentResponseDto findById(@Id String customerId, @Id String medicalAppointmentId) {
         Customer customer = customerFinderUtil.findById(customerId);
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);
@@ -65,7 +65,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
         }
     }
     @Override
-    public List<MedicalAppointmentResponseResource> findAllByCustomer(String customerId) {
+    public List<MedicalAppointmentResponseDto> findAllByCustomer(String customerId) {
         Customer customer = customerFinderUtil.findById(customerId);
         return medicalAppointmentRepository
                 .findAll()
@@ -95,7 +95,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
     }
 
     @Override
-    public List<MedicalAppointmentResponseResource> findAll() {
+    public List<MedicalAppointmentResponseDto> findAll() {
         return medicalAppointmentRepository
                 .findAll()
                 .stream()

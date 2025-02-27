@@ -1,7 +1,7 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
 
 public interface DoctorTerminationService {
-    DoctorResponseResource terminate(String medicalLicenseNumber);
+    DoctorResponseDto terminate(String medicalLicenseNumber);
 }

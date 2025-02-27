@@ -8,7 +8,7 @@ import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentResponseDto;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinderUtil;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
@@ -42,7 +42,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     }
 
     @Override
-    public MedicalAppointmentResponseResource cancelById(@Id String customerId, @Id String medicalAppointmentId) {
+    public MedicalAppointmentResponseDto cancelById(@Id String customerId, @Id String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         Customer customer = customerFinderUtil.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);

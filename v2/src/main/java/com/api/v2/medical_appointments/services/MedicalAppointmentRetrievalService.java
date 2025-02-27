@@ -1,11 +1,11 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentResponseDto;
 
 import java.util.List;
 
 public interface MedicalAppointmentRetrievalService {
-    MedicalAppointmentResponseResource findById(String customerId, String medicalAppointmentId);
-    List<MedicalAppointmentResponseResource> findAllByCustomer(String customerId);
-    List<MedicalAppointmentResponseResource> findAll();
+    MedicalAppointmentResponseDto findById(String customerId, String medicalAppointmentId);
+    List<MedicalAppointmentResponseDto> findAllByCustomer(String customerId);
+    List<MedicalAppointmentResponseDto> findAll();
 }

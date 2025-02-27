@@ -1,6 +1,7 @@
 package com.api.v2.medical_slots.domain;
 
 import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.ErrorResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -13,7 +14,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 @Document
-public class MedicalSlot {
+public class MedicalSlot extends ErrorResponse {
 
     @BsonId
     private ObjectId id;

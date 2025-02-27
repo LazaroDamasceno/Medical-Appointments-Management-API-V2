@@ -1,24 +1,24 @@
-package com.api.v2.medical_slots.resources;
+package com.api.v2.medical_slots.dtos;
 
-import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.common.ErrorResponse;
+import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
 import com.api.v2.medical_appointments.dtos.SimplifiedMedicalAppointmentResponseDto;
-import org.springframework.hateoas.RepresentationModel;
 
-public class MedicalSlotResponseResource extends RepresentationModel<MedicalSlotResponseResource> {
+public class MedicalSlotResponseDto extends ErrorResponse {
 
     private final String id;
-    private final DoctorResponseResource doctor;
+    private final DoctorResponseDto doctor;
     private final SimplifiedMedicalAppointmentResponseDto medicalAppointment;
     private final String availableAt;
     private final String canceledAt;
     private final String completedAt;
 
-    public MedicalSlotResponseResource(String id,
-                                       DoctorResponseResource doctor,
-                                       SimplifiedMedicalAppointmentResponseDto medicalAppointment,
-                                       String availableAt,
-                                       String canceledAt,
-                                       String completedAt
+    public MedicalSlotResponseDto(String id,
+                                  DoctorResponseDto doctor,
+                                  SimplifiedMedicalAppointmentResponseDto medicalAppointment,
+                                  String availableAt,
+                                  String canceledAt,
+                                  String completedAt
     ) {
         this.id = id;
         this.doctor = doctor;
@@ -32,7 +32,7 @@ public class MedicalSlotResponseResource extends RepresentationModel<MedicalSlot
         return id;
     }
 
-    public DoctorResponseResource getDoctor() {
+    public DoctorResponseDto getDoctor() {
         return doctor;
     }
 

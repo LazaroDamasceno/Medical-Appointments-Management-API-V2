@@ -2,6 +2,7 @@ package com.api.v2.customers.domain.exposed;
 
 import com.api.v2.common.Address;
 import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.ErrorResponse;
 import com.api.v2.people.domain.exposed.Person;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -13,7 +14,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 @Document
-public class Customer {
+public class Customer extends ErrorResponse {
 
     @BsonId
     private ObjectId id;

@@ -4,7 +4,7 @@ import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.dto.DoctorHiringDto;
-import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
@@ -31,7 +31,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
     }
 
     @Override
-    public DoctorResponseResource hire(@Valid DoctorHiringDto hiringDto) {
+    public DoctorResponseDto hire(@Valid DoctorHiringDto hiringDto) {
         onDuplicatedSsn(hiringDto.personRegistrationDto().ssn());
         onDuplicatedEmail(hiringDto.personRegistrationDto().email());
         onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());

@@ -1,6 +1,7 @@
 package com.api.v2.medical_appointments.domain;
 
 import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.ErrorResponse;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -10,20 +11,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.*;
 
 @Document
-public class MedicalAppointment {
+public class MedicalAppointment extends ErrorResponse {
 
     @BsonId
     private ObjectId id;
-    private final Customer customer;
-    private final Doctor doctor;
-    private final LocalDateTime bookedAt;
-    private final ZoneId bookedAtZoneId;
-    private final ZoneOffset bookedAtZoneOffset;
-    private final boolean isBookedDuringDST;
-    private final LocalDateTime createdAt;
-    private final ZoneId createdAtZoneId;
-    private final ZoneOffset createdAtZoneOffset;
-    private final boolean isCreatedDuringDST;
+    private Customer customer;
+    private Doctor doctor;
+    private LocalDateTime bookedAt;
+    private ZoneId bookedAtZoneId;
+    private ZoneOffset bookedAtZoneOffset;
+    private boolean isBookedDuringDST;
+    private LocalDateTime createdAt;
+    private ZoneId createdAtZoneId;
+    private ZoneOffset createdAtZoneOffset;
+    private boolean isCreatedDuringDST;
     private LocalDateTime canceledAt;
     private ZoneId canceledAtZoneId;
     private ZoneOffset canceledAtZoneOffset;

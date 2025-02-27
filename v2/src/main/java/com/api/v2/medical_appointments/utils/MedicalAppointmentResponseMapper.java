@@ -5,13 +5,13 @@ import com.api.v2.customers.utils.CustomerResponseMapper;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.dtos.SimplifiedMedicalAppointmentResponseDto;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentResponseDto;
 
 public class MedicalAppointmentResponseMapper {
 
-    public static MedicalAppointmentResponseResource mapToResource(MedicalAppointment medicalAppointment) {
+    public static MedicalAppointmentResponseDto mapToResource(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCompletedAt() != null && medicalAppointment.getCanceledAt() == null) {
-            return new MedicalAppointmentResponseResource(
+            return new MedicalAppointmentResponseDto(
                     medicalAppointment.getId().toString(),
                     CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
@@ -29,7 +29,7 @@ public class MedicalAppointmentResponseMapper {
             );
         }
         if (medicalAppointment.getCompletedAt() == null && medicalAppointment.getCanceledAt() != null) {
-            return new MedicalAppointmentResponseResource(
+            return new MedicalAppointmentResponseDto(
                     medicalAppointment.getId().toString(),
                     CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                     DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
@@ -46,7 +46,7 @@ public class MedicalAppointmentResponseMapper {
                     null
             );
         }
-        return new MedicalAppointmentResponseResource(
+        return new MedicalAppointmentResponseDto(
                 medicalAppointment.getId().toString(),
                 CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
                 DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),

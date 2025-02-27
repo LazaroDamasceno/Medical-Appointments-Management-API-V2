@@ -10,7 +10,7 @@ import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
+import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public MedicalSlotResponseResource completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
+    public MedicalSlotResponseDto completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

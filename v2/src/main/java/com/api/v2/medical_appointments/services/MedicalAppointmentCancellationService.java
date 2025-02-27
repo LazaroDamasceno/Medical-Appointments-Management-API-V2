@@ -1,7 +1,7 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentResponseDto;
 
 public interface MedicalAppointmentCancellationService {
-    MedicalAppointmentResponseResource cancelById(String customerId, String medicalAppointmentId);
+    MedicalAppointmentResponseDto cancelById(String customerId, String medicalAppointmentId);
 }

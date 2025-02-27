@@ -1,4 +1,4 @@
-package com.api.v2.medical_slots.dto;
+package com.api.v2.medical_slots.dtos;
 
 
 import java.time.LocalDateTime;
