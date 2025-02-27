@@ -14,16 +14,16 @@ public class MedicalAppointment {
 
     @BsonId
     private ObjectId id;
-    private final Customer customer;
-    private final Doctor doctor;
-    private final LocalDateTime bookedAt;
-    private final ZoneId bookedAtZoneId;
-    private final ZoneOffset bookedAtZoneOffset;
-    private final boolean isBookedDuringDST;
-    private final LocalDateTime createdAt;
-    private final ZoneId createdAtZoneId;
-    private final ZoneOffset createdAtZoneOffset;
-    private final boolean isCreatedDuringDST;
+    private Customer customer;
+    private Doctor doctor;
+    private LocalDateTime bookedAt;
+    private ZoneId bookedAtZoneId;
+    private ZoneOffset bookedAtZoneOffset;
+    private boolean isBookedDuringDST;
+    private LocalDateTime createdAt;
+    private ZoneId createdAtZoneId;
+    private ZoneOffset createdAtZoneOffset;
+    private boolean isCreatedDuringDST;
     private LocalDateTime canceledAt;
     private ZoneId canceledAtZoneId;
     private ZoneOffset canceledAtZoneOffset;

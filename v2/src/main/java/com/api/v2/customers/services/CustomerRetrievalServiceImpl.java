@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
 
-    private final CustomerRepository customerRepository;
-    private final CustomerFinderUtil customerFinderUtil;
+    private CustomerRepository customerRepository;
+    private CustomerFinderUtil customerFinderUtil;
 
     public CustomerRetrievalServiceImpl(CustomerRepository customerRepository,
                                         CustomerFinderUtil customerFinderUtil

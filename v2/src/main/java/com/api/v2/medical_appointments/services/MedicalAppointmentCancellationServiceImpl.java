@@ -22,11 +22,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentCancellationServiceImpl implements MedicalAppointmentCancellationService {
 
-    private final MedicalAppointmentRepository medicalAppointmentRepository;
-    private final CustomerFinderUtil customerFinderUtil;
-    private final MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private final MedicalSlotRepository medicalSlotRepository;
+    private MedicalAppointmentRepository medicalAppointmentRepository;
+    private CustomerFinderUtil customerFinderUtil;
+    private MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
+    private MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private MedicalSlotRepository medicalSlotRepository;
 
     public MedicalAppointmentCancellationServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository,
                                                      CustomerFinderUtil customerFinderUtil,

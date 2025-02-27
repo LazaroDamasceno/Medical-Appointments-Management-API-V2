@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardDeletionServiceImpl implements CardDeletionService {
 
-    private final CardFinderUtil cardFinderUtil;
-    private final CardRepository cardRepository;
+    private CardFinderUtil cardFinderUtil;
+    private CardRepository cardRepository;
 
     public CardDeletionServiceImpl(CardFinderUtil cardFinderUtil,
                                    CardRepository cardRepository

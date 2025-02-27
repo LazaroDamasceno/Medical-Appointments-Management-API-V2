@@ -21,9 +21,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalService {
 
-    private final MedicalSlotRepository medicalSlotRepository;
-    private final DoctorFinderUtil doctorFinderUtil;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private MedicalSlotRepository medicalSlotRepository;
+    private DoctorFinderUtil doctorFinderUtil;
+    private MedicalSlotFinderUtil medicalSlotFinderUtil;
 
     public MedicalSlotRetrievalServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                            DoctorFinderUtil doctorFinderUtil,

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerRegistrationServiceImpl implements CustomerRegistrationService {
 
-    private final CustomerRepository customerRepository;
-    private final PersonRegistrationService personRegistrationService;
+    private CustomerRepository customerRepository;
+    private PersonRegistrationService personRegistrationService;
 
     public CustomerRegistrationServiceImpl(CustomerRepository customerRepository,
                                            PersonRegistrationService personRegistrationService

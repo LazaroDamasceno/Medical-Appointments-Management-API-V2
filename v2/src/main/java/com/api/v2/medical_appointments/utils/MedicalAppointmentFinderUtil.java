@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MedicalAppointmentFinderUtil {
 
-    private final MedicalAppointmentRepository medicalAppointmentRepository;
+    private MedicalAppointmentRepository medicalAppointmentRepository;
 
     public MedicalAppointmentFinderUtil(MedicalAppointmentRepository medicalAppointmentRepository) {
         this.medicalAppointmentRepository = medicalAppointmentRepository;

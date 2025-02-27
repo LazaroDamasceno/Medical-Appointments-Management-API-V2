@@ -16,10 +16,10 @@ import java.util.List;
 @RequestMapping("api/v2/medical-slots")
 public class MedicalSlotController {
 
-    private final MedicalSlotRegistrationService registrationService;
-    private final MedicalSlotCancellationService cancellationService;
-    private final MedicalSlotRetrievalService retrievalService;
-    private final MedicalSlotCompletionService completionService;
+    private MedicalSlotRegistrationService registrationService;
+    private MedicalSlotCancellationService cancellationService;
+    private MedicalSlotRetrievalService retrievalService;
+    private MedicalSlotCompletionService completionService;
 
     public MedicalSlotController(MedicalSlotRegistrationService registrationService,
                                  MedicalSlotCancellationService cancellationService,

@@ -20,8 +20,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class DoctorHiringServiceImpl implements DoctorHiringService {
 
-    private final DoctorRepository doctorRepository;
-    private final PersonRegistrationService personRegistrationService;
+    private DoctorRepository doctorRepository;
+    private PersonRegistrationService personRegistrationService;
 
     public DoctorHiringServiceImpl(DoctorRepository doctorRepository,
                                    PersonRegistrationService personRegistrationService

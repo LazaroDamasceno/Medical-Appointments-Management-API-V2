@@ -14,8 +14,8 @@ import java.util.List;
 @RequestMapping("api/v2/customers")
 public class CustomerController {
 
-    private final CustomerRegistrationService registrationService;
-    private final CustomerRetrievalService retrievalService;
+    private CustomerRegistrationService registrationService;
+    private CustomerRetrievalService retrievalService;
 
     public CustomerController(CustomerRegistrationService registrationService,
                               CustomerRetrievalService retrievalService

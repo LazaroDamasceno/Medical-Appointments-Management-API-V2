@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 public class CardRetrievalServiceImpl implements CardRetrievalService {
 
-    private final CardRepository cardRepository;
-    private final CardFinderUtil cardFinderUtil;
+    private CardRepository cardRepository;
+    private CardFinderUtil cardFinderUtil;
 
     public CardRetrievalServiceImpl(CardRepository cardRepository,
                                     CardFinderUtil cardFinderUtil

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MedicalSlotFinderUtil {
 
-    private final MedicalSlotRepository medicalSlotRepository;
+    private MedicalSlotRepository medicalSlotRepository;
 
     public MedicalSlotFinderUtil(MedicalSlotRepository medicalSlotRepository) {
         this.medicalSlotRepository = medicalSlotRepository;

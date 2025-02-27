@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("api/v2/medical-appointments")
 public class MedicalAppointmentController {
 
-    private final MedicalAppointmentBookingService bookingService;
-    private final MedicalAppointmentCancellationService cancellationService;
-    private final MedicalAppointmentRetrievalService retrievalService;
+    private MedicalAppointmentBookingService bookingService;
+    private MedicalAppointmentCancellationService cancellationService;
+    private MedicalAppointmentRetrievalService retrievalService;
 
     public MedicalAppointmentController(MedicalAppointmentBookingService bookingService,
                                         MedicalAppointmentCancellationService cancellationService,

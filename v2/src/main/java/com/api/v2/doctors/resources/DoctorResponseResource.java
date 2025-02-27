@@ -5,8 +5,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 public class DoctorResponseResource extends RepresentationModel<DoctorResponseResource> {
 
-    private final PersonResponseDto person;
-    private final String medicalLicenseNumber;
+    private PersonResponseDto person;
+    private String medicalLicenseNumber;
 
     public DoctorResponseResource(PersonResponseDto person, String medicalLicenseNumber) {
         this.person = person;

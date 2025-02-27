@@ -3,6 +3,11 @@ package com.api.v2.doctors.controller;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.doctors.services.DoctorHiringService;
+import com.api.v2.doctors.services.DoctorRehireService;
+import com.api.v2.doctors.services.DoctorRetrievalService;
+import com.api.v2.doctors.services.DoctorTerminationService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +17,10 @@ import java.util.List;
 @RequestMapping("api/v2/doctors")
 public class DoctorController {
 
-    private final DoctorHiringService hiringService;
-    private final DoctorRehireService rehireService;
-    private final DoctorRetrievalService retrievalService;
-    private final DoctorTerminationService terminationService;
+    private DoctorHiringService hiringService;
+    private DoctorRehireService rehireService;
+    private DoctorRetrievalService retrievalService;
+    private DoctorTerminationService terminationService;
 
     public DoctorController(DoctorHiringService hiringService,
                             DoctorRehireService rehireService,

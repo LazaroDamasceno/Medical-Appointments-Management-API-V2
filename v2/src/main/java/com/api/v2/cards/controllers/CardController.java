@@ -14,9 +14,9 @@ import java.util.List;
 @RequestMapping("api/v2/cards")
 public class CardController {
 
-    private final CardRegistrationService registrationService;
-    private final CardRetrievalService retrievalService;
-    private final CardDeletionService deletionService;
+    private CardRegistrationService registrationService;
+    private CardRetrievalService retrievalService;
+    private CardDeletionService deletionService;
 
     public CardController(CardRegistrationService registrationService,
                           CardRetrievalService retrievalService,

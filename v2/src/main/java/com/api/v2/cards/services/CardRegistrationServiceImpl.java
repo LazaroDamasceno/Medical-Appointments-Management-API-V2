@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardRegistrationServiceImpl implements CardRegistrationService {
 
-    private final CardRepository cardRepository;
+    private CardRepository cardRepository;
 
     public CardRegistrationServiceImpl(CardRepository cardRepository) {
         this.cardRepository = cardRepository;

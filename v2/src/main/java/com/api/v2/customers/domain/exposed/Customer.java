@@ -19,10 +19,10 @@ public class Customer {
     private ObjectId id;
     private Address address;
     private Person person;
-    private final LocalDateTime createdAt;
-    private final ZoneId createdAtZoneId;
-    private final ZoneOffset createdAtZoneOffset;
-    private final boolean isCreatedDuringDST;
+    private LocalDateTime createdAt;
+    private ZoneId createdAtZoneId;
+    private ZoneOffset createdAtZoneOffset;
+    private boolean isCreatedDuringDST;
 
     private Customer(Address address, Person person) {
         this.id = new ObjectId();

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CardFinderUtil {
 
-    private final CardRepository cardRepository;
+    private CardRepository cardRepository;
 
     public CardFinderUtil(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
