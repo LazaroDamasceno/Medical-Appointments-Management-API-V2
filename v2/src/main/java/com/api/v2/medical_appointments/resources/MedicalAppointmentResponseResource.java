@@ -1,24 +1,24 @@
-package com.api.v2.medical_appointments.dtos;
+package com.api.v2.medical_appointments.resources;
 
-import com.api.v2.common.ErrorResponse;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
-import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
+import com.api.v2.doctors.resources.DoctorResponseResource;
+import org.springframework.hateoas.RepresentationModel;
 
-public class MedicalAppointmentResponseDto extends ErrorResponse {
+public class MedicalAppointmentResponseResource extends RepresentationModel<MedicalAppointmentResponseResource> {
 
     private final String id;
     private final CustomerResponseDto customer;
-    private final DoctorResponseDto doctor;
+    private final DoctorResponseResource doctor;
     private final String bookedAt;
     private final String canceledAt;
     private final String completedAt;
 
-    public MedicalAppointmentResponseDto(String id,
-                                         CustomerResponseDto customer,
-                                         DoctorResponseDto doctor,
-                                         String bookedAt,
-                                         String canceledAt,
-                                         String completedAt) {
+    public MedicalAppointmentResponseResource(String id,
+                                              CustomerResponseDto customer,
+                                              DoctorResponseResource doctor,
+                                              String bookedAt,
+                                              String canceledAt,
+                                              String completedAt) {
         this.id = id;
         this.customer = customer;
         this.doctor = doctor;
@@ -35,7 +35,7 @@ public class MedicalAppointmentResponseDto extends ErrorResponse {
         return customer;
     }
 
-    public DoctorResponseDto getDoctor() {
+    public DoctorResponseResource getDoctor() {
         return doctor;
     }
 

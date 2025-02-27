@@ -1,14 +1,14 @@
-package com.api.v2.doctors.dto.exposed;
+package com.api.v2.doctors.resources;
 
-import com.api.v2.common.ErrorResponse;
 import com.api.v2.people.dtos.PersonResponseDto;
+import org.springframework.hateoas.RepresentationModel;
 
-public class DoctorResponseDto extends ErrorResponse {
+public class DoctorResponseResource extends RepresentationModel<DoctorResponseResource> {
 
     private final PersonResponseDto person;
     private final String medicalLicenseNumber;
 
-    public DoctorResponseDto(PersonResponseDto person, String medicalLicenseNumber) {
+    public DoctorResponseResource(PersonResponseDto person, String medicalLicenseNumber) {
         this.person = person;
         this.medicalLicenseNumber = medicalLicenseNumber;
     }

@@ -1,8 +1,8 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.medical_slots.dtos.MedicalSlotRegistrationDto;
-import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
+import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
 public interface MedicalSlotRegistrationService {
-    MedicalSlotResponseDto register(MedicalSlotRegistrationDto registrationDto);
+    MedicalSlotResponseResource register(MedicalSlotRegistrationDto registrationDto);
 }

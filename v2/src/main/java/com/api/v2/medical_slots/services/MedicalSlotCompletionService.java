@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
 public interface MedicalSlotCompletionService {
-    MedicalSlotResponseDto completeById(String medicalLicenseNumber, String slotId);
+    MedicalSlotResponseResource completeById(String medicalLicenseNumber, String slotId);
 }

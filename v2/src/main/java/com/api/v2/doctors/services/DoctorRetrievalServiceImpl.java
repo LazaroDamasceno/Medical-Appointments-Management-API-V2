@@ -3,7 +3,7 @@ package com.api.v2.doctors.services;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
-import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
+import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     }
 
     @Override
-    public DoctorResponseDto findByMedicalLicenseNumber(@MLN String medicalLicenseNumber) {
+    public DoctorResponseResource findByMedicalLicenseNumber(@MLN String medicalLicenseNumber) {
         return DoctorResponseMapper
                 .mapToResource(doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber))
                 .add(
@@ -41,7 +41,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     }
 
     @Override
-    public List<DoctorResponseDto> findAll() {
+    public List<DoctorResponseResource> findAll() {
         return doctorRepository
                 .findAll()
                 .stream()

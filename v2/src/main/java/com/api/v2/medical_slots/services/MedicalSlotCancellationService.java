@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
 public interface MedicalSlotCancellationService {
-    MedicalSlotResponseDto cancelById(String medicalLicenseNumber, String slotId);
+    MedicalSlotResponseResource cancelById(String medicalLicenseNumber, String slotId);
 }

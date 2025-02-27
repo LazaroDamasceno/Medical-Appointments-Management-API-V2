@@ -1,11 +1,11 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
 import java.util.List;
 
 public interface MedicalSlotRetrievalService {
-    MedicalSlotResponseDto findById(String medicalLicenseNumber, String slotId);
-    List<MedicalSlotResponseDto> findAllByDoctor(String medicalLicenseNumber);
-    List<MedicalSlotResponseDto> findAll();
+    MedicalSlotResponseResource findById(String medicalLicenseNumber, String slotId);
+    List<MedicalSlotResponseResource> findAllByDoctor(String medicalLicenseNumber);
+    List<MedicalSlotResponseResource> findAll();
 }

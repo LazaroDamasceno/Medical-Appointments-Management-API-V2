@@ -1,8 +1,8 @@
 package com.api.v2.doctors.services;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
-import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
+import com.api.v2.doctors.resources.DoctorResponseResource;
 
 public interface DoctorHiringService {
-    DoctorResponseDto hire(DoctorHiringDto hiringDto);
+    DoctorResponseResource hire(DoctorHiringDto hiringDto);
 }

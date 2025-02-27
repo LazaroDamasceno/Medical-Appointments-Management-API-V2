@@ -2,7 +2,7 @@ package com.api.v2.medical_appointments.controllers;
 
 import com.api.v2.common.Id;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
-import com.api.v2.medical_appointments.dtos.MedicalAppointmentResponseDto;
+import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentCancellationService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentRetrievalService;
@@ -29,30 +29,30 @@ public class MedicalAppointmentController {
     }
 
     @PostMapping
-    public MedicalAppointmentResponseDto book(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
+    public MedicalAppointmentResponseResource book(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
         return bookingService.book(bookingDto);
     }
 
     @PatchMapping("{customerId}/{medicalAppointmentId}")
-    public MedicalAppointmentResponseDto cancel(@PathVariable @Id String customerId,
-                                                @PathVariable @Id String medicalAppointmentId) {
+    public MedicalAppointmentResponseResource cancel(@PathVariable @Id String customerId,
+                                                     @PathVariable @Id String medicalAppointmentId) {
         return cancellationService.cancelById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}/{medicalAppointmentId}")
-    public MedicalAppointmentResponseDto findById(@PathVariable @Id String customerId,
-                                                  @PathVariable @Id String medicalAppointmentId
+    public MedicalAppointmentResponseResource findById(@PathVariable @Id String customerId,
+                                                       @PathVariable @Id String medicalAppointmentId
     ) {
         return retrievalService.findById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}")
-    public List<MedicalAppointmentResponseDto> findAllByCustomer(@PathVariable @Id String customerId) {
+    public List<MedicalAppointmentResponseResource> findAllByCustomer(@PathVariable @Id String customerId) {
         return retrievalService.findAllByCustomer(customerId);
     }
 
     @GetMapping
-    public List<MedicalAppointmentResponseDto> findAll() {
+    public List<MedicalAppointmentResponseResource> findAll() {
         return retrievalService.findAll();
     }
 }

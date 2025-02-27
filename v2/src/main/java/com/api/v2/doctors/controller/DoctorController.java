@@ -2,7 +2,7 @@ package com.api.v2.doctors.controller;
 
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.dto.DoctorHiringDto;
-import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
+import com.api.v2.doctors.resources.DoctorResponseResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,27 +30,27 @@ public class DoctorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DoctorResponseDto hire(@RequestBody DoctorHiringDto hiringDto) {
+    public DoctorResponseResource hire(@RequestBody DoctorHiringDto hiringDto) {
         return hiringService.hire(hiringDto);
     }
 
     @PatchMapping("{medicalLicenseNumber}/rehiring")
-    public DoctorResponseDto rehire(@PathVariable @MLN String medicalLicenseNumber) {
+    public DoctorResponseResource rehire(@PathVariable @MLN String medicalLicenseNumber) {
         return rehireService.rehire(medicalLicenseNumber);
     }
 
     @PatchMapping("{medicalLicenseNumber}/termination")
-    public DoctorResponseDto terminate(@PathVariable @MLN String medicalLicenseNumber) {
+    public DoctorResponseResource terminate(@PathVariable @MLN String medicalLicenseNumber) {
         return terminationService.terminate(medicalLicenseNumber);
     }
 
     @GetMapping("{medicalLicenseNumber}")
-    public DoctorResponseDto findByMedicalLicenseNumber(@PathVariable @MLN String medicalLicenseNumber) {
+    public DoctorResponseResource findByMedicalLicenseNumber(@PathVariable @MLN String medicalLicenseNumber) {
         return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber);
     }
 
     @GetMapping
-    public List<DoctorResponseDto> findAll() {
+    public List<DoctorResponseResource> findAll() {
         return retrievalService.findAll();
     }
 }

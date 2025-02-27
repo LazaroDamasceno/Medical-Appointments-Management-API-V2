@@ -1,7 +1,7 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.doctors.dto.exposed.DoctorResponseDto;
+import com.api.v2.doctors.resources.DoctorResponseResource;
 
 public interface DoctorRehireService {
-    DoctorResponseDto rehire(String medicalLicenseNumber);
+    DoctorResponseResource rehire(String medicalLicenseNumber);
 }

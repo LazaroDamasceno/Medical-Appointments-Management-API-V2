@@ -8,7 +8,7 @@ import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public MedicalSlotResponseDto findById(@MLN String medicalLicenseNumber, @Id String slotId) {
+    public MedicalSlotResponseResource findById(@MLN String medicalLicenseNumber, @Id String slotId) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -61,7 +61,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public List<MedicalSlotResponseDto> findAllByDoctor(String medicalLicenseNumber) {
+    public List<MedicalSlotResponseResource> findAllByDoctor(String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         return medicalSlotRepository
                 .findAll()
@@ -84,7 +84,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public List<MedicalSlotResponseDto> findAll() {
+    public List<MedicalSlotResponseResource> findAll() {
         return medicalSlotRepository
                 .findAll()
                 .stream()

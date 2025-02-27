@@ -11,7 +11,7 @@ import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.dtos.MedicalSlotResponseDto;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public MedicalSlotResponseDto cancelById(@MLN String medicalLicenseNumber, @Id String id) {
+    public MedicalSlotResponseResource cancelById(@MLN String medicalLicenseNumber, @Id String id) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -56,7 +56,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         return response(medicalSlot);
     }
 
-    private MedicalSlotResponseDto response(MedicalSlot medicalSlot) {
+    private MedicalSlotResponseResource response(MedicalSlot medicalSlot) {
         String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         return MedicalSlotResponseMapper
