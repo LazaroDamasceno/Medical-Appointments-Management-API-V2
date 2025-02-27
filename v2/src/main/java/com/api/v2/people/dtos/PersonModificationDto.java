@@ -8,12 +8,21 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record PersonModificationDto(
-        @NotBlank String firstName,
+        @NotBlank
+        String firstName,
         String middleName,
-        @NotBlank String lastName,
-        @NotNull LocalDate birthDate,
-        @Email @NotBlank String email,
-        @NotBlank @Size(min = 10, max = 10) String phoneNumber,
-        @NotBlank @Size(min = 1) String gender
+        @NotBlank
+        String lastName,
+        @NotNull
+        LocalDate birthDate,
+        @Email(message = "Type a proper type of email")
+        @NotBlank
+        String email,
+        @NotBlank
+        @Size(min = 10, max = 10, message = "Phone number has 10 digits.")
+        String phoneNumber,
+        @NotBlank
+        @Size(min = 1)
+        String gender
 ) {
 }
