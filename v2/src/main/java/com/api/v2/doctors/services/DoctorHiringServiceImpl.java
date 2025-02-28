@@ -12,6 +12,9 @@ import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -20,8 +23,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class DoctorHiringServiceImpl implements DoctorHiringService {
 
-    private DoctorRepository doctorRepository;
-    private PersonRegistrationService personRegistrationService;
+    private final DoctorRepository doctorRepository;
+    private final PersonRegistrationService personRegistrationService;
 
     public DoctorHiringServiceImpl(DoctorRepository doctorRepository,
                                    PersonRegistrationService personRegistrationService
@@ -31,14 +34,14 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
     }
 
     @Override
-    public DoctorResponseResource hire(@Valid DoctorHiringDto hiringDto) {
+    public ResponseEntity<DoctorResponseResource> hire(@Valid DoctorHiringDto hiringDto) {
         onDuplicatedSsn(hiringDto.personRegistrationDto().ssn());
         onDuplicatedEmail(hiringDto.personRegistrationDto().email());
         onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
         Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
-        return DoctorResponseMapper
+        DoctorResponseResource responseResource = DoctorResponseMapper
                 .mapToResource(savedDoctor)
                 .add(
                         linkTo(
@@ -48,6 +51,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                                 methodOn(DoctorController.class).terminate(hiringDto.medicalLicenseNumber())
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
     }
 
     private void onDuplicatedSsn(String ssn) {

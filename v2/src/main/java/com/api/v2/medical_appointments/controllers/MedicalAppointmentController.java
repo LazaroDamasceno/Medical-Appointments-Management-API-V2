@@ -7,6 +7,7 @@ import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService
 import com.api.v2.medical_appointments.services.MedicalAppointmentCancellationService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentRetrievalService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +16,9 @@ import java.util.List;
 @RequestMapping("api/v2/medical-appointments")
 public class MedicalAppointmentController {
 
-    private MedicalAppointmentBookingService bookingService;
-    private MedicalAppointmentCancellationService cancellationService;
-    private MedicalAppointmentRetrievalService retrievalService;
+    private final MedicalAppointmentBookingService bookingService;
+    private final MedicalAppointmentCancellationService cancellationService;
+    private final MedicalAppointmentRetrievalService retrievalService;
 
     public MedicalAppointmentController(MedicalAppointmentBookingService bookingService,
                                         MedicalAppointmentCancellationService cancellationService,
@@ -29,30 +30,30 @@ public class MedicalAppointmentController {
     }
 
     @PostMapping
-    public MedicalAppointmentResponseResource book(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
+    public ResponseEntity<MedicalAppointmentResponseResource> book(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
         return bookingService.book(bookingDto);
     }
 
-    @PatchMapping("{customerId}/{medicalAppointmentId}")
-    public MedicalAppointmentResponseResource cancel(@PathVariable @Id String customerId,
+    @PatchMapping("{customerId}/{medicalAppointmentId}/cancellation")
+    public ResponseEntity<MedicalAppointmentResponseResource> cancel(@PathVariable @Id String customerId,
                                                      @PathVariable @Id String medicalAppointmentId) {
         return cancellationService.cancelById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}/{medicalAppointmentId}")
-    public MedicalAppointmentResponseResource findById(@PathVariable @Id String customerId,
+    public ResponseEntity<MedicalAppointmentResponseResource> findById(@PathVariable @Id String customerId,
                                                        @PathVariable @Id String medicalAppointmentId
     ) {
         return retrievalService.findById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}")
-    public List<MedicalAppointmentResponseResource> findAllByCustomer(@PathVariable @Id String customerId) {
+    public ResponseEntity<List<MedicalAppointmentResponseResource>> findAllByCustomer(@PathVariable @Id String customerId) {
         return retrievalService.findAllByCustomer(customerId);
     }
 
     @GetMapping
-    public List<MedicalAppointmentResponseResource> findAll() {
+    public ResponseEntity<List<MedicalAppointmentResponseResource>> findAll() {
         return retrievalService.findAll();
     }
 }

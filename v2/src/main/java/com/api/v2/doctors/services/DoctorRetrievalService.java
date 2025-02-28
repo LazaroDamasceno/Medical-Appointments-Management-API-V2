@@ -1,10 +1,11 @@
 package com.api.v2.doctors.services;
 
 import com.api.v2.doctors.resources.DoctorResponseResource;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface DoctorRetrievalService {
-    DoctorResponseResource findByMedicalLicenseNumber(String medicalLicenseNumber);
-    List<DoctorResponseResource> findAll();
+    ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber);
+    ResponseEntity<List<DoctorResponseResource>> findAll();
 }

@@ -10,6 +10,8 @@ import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeExce
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,8 +25,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrationService {
 
-    private MedicalSlotRepository medicalSlotRepository;
-    private DoctorFinderUtil doctorFinderUtil;
+    private final MedicalSlotRepository medicalSlotRepository;
+    private final DoctorFinderUtil doctorFinderUtil;
 
     public MedicalSlotRegistrationServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                               DoctorFinderUtil doctorFinderUtil
@@ -35,7 +37,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
 
 
     @Override
-    public MedicalSlotResponseResource register(@Valid MedicalSlotRegistrationDto registrationDto) {
+    public ResponseEntity<MedicalSlotResponseResource> register(@Valid MedicalSlotRegistrationDto registrationDto) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime
@@ -44,7 +46,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
         onDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot medicalSlot = MedicalSlot.of(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        return MedicalSlotResponseMapper
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(savedMedicalSlot)
                 .add(
                         linkTo(
@@ -57,6 +59,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                                 methodOn(MedicalSlotController.class).cancel(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId().toString())
                         ).withRel("cancel_medical_slot_by_id")
                 );
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
     }
 
     private void onDuplicatedBookingDateTime(Doctor doctor,

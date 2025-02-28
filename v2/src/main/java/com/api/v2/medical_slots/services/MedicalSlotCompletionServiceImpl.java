@@ -13,6 +13,7 @@ import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -21,10 +22,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionService {
 
-    private MedicalSlotRepository medicalSlotRepository;
-    private MedicalAppointmentRepository medicalAppointmentRepository;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private DoctorFinderUtil doctorFinderUtil;
+    private final MedicalSlotRepository medicalSlotRepository;
+    private final MedicalAppointmentRepository medicalAppointmentRepository;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final DoctorFinderUtil doctorFinderUtil;
 
     public MedicalSlotCompletionServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                             MedicalAppointmentRepository medicalAppointmentRepository,
@@ -38,7 +39,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public MedicalSlotResponseResource completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
+    public ResponseEntity<MedicalSlotResponseResource> completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -48,7 +49,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
         medicalSlot.markAsCompleted();
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         medicalSlot.setMedicalAppointment(completedMedicalAppointment);
-        return MedicalSlotResponseMapper
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(completedMedicalSlot)
                 .add(
                         linkTo(
@@ -61,6 +62,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
                                 methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
                         ).withRel("find_medical_slots_by_doctor")
                 );
+        return ResponseEntity.ok(responseResource);
     }
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {

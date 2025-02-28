@@ -14,6 +14,7 @@ import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -22,11 +23,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentCancellationServiceImpl implements MedicalAppointmentCancellationService {
 
-    private MedicalAppointmentRepository medicalAppointmentRepository;
-    private CustomerFinderUtil customerFinderUtil;
-    private MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private MedicalSlotRepository medicalSlotRepository;
+    private final MedicalAppointmentRepository medicalAppointmentRepository;
+    private final CustomerFinderUtil customerFinderUtil;
+    private final MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final MedicalSlotRepository medicalSlotRepository;
 
     public MedicalAppointmentCancellationServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository,
                                                      CustomerFinderUtil customerFinderUtil,
@@ -42,7 +43,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     }
 
     @Override
-    public MedicalAppointmentResponseResource cancelById(@Id String customerId, @Id String medicalAppointmentId) {
+    public ResponseEntity<MedicalAppointmentResponseResource> cancelById(@Id String customerId, @Id String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         Customer customer = customerFinderUtil.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);
@@ -54,7 +55,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
         medicalSlot.setMedicalAppointment(null);
         medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        return MedicalAppointmentResponseMapper
+        MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
                 .mapToResource(canceledMedicalAppointment)
                 .add(
                         linkTo(
@@ -73,6 +74,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
                                 methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
                         ).withRel("find_medical_appointments_by_customer")
                 );
+        return ResponseEntity.ok(responseResource);
     }
 
     private void onNonAssociatedMedicalAppointmentWithCustomer(MedicalAppointment medicalAppointment, Customer customer) {

@@ -11,6 +11,7 @@ import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +22,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalService {
 
-    private MedicalSlotRepository medicalSlotRepository;
-    private DoctorFinderUtil doctorFinderUtil;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final MedicalSlotRepository medicalSlotRepository;
+    private final DoctorFinderUtil doctorFinderUtil;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
 
     public MedicalSlotRetrievalServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                            DoctorFinderUtil doctorFinderUtil,
@@ -35,11 +36,11 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public MedicalSlotResponseResource findById(@MLN String medicalLicenseNumber, @Id String slotId) {
+    public ResponseEntity<MedicalSlotResponseResource> findById(@MLN String medicalLicenseNumber, @Id String slotId) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
-        return MedicalSlotResponseMapper
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(medicalSlot)
                 .add(
                         linkTo(
@@ -52,6 +53,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                                 methodOn(MedicalSlotController.class).cancel(medicalSlot.getDoctor().getId().toString(), slotId)
                         ).withRel("cancel_medical_slot_by_id")
                 );
+        return ResponseEntity.ok(responseResource);
     }
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
@@ -61,9 +63,9 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public List<MedicalSlotResponseResource> findAllByDoctor(String medicalLicenseNumber) {
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
-        return medicalSlotRepository
+        List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
                 .stream()
                 .filter(slot -> slot.getDoctor().getId().equals(doctor.getId()))
@@ -81,14 +83,22 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                     )
                 )
                 .toList();
+        if (list.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(list);
     }
 
     @Override
-    public List<MedicalSlotResponseResource> findAll() {
-        return medicalSlotRepository
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAll() {
+        List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
                 .stream()
                 .map(MedicalSlotResponseMapper::mapToResource)
                 .toList();
+        if (list.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(list);
     }
 }

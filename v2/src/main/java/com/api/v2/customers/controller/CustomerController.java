@@ -15,8 +15,8 @@ import java.util.List;
 @RequestMapping("api/v2/customers")
 public class CustomerController {
 
-    private CustomerRegistrationService registrationService;
-    private CustomerRetrievalService retrievalService;
+    private final CustomerRegistrationService registrationService;
+    private final CustomerRetrievalService retrievalService;
 
     public CustomerController(CustomerRegistrationService registrationService,
                               CustomerRetrievalService retrievalService
@@ -31,12 +31,12 @@ public class CustomerController {
     }
 
     @GetMapping("{id}")
-    public CustomerResponseDto findById(@PathVariable @Id String id) {
+    public ResponseEntity<CustomerResponseDto> findById(@PathVariable @Id String id) {
         return retrievalService.findById(id);
     }
 
     @GetMapping
-    public List<CustomerResponseDto> findAll() {
+    public ResponseEntity<List<CustomerResponseDto> >findAll() {
         return retrievalService.findAll();
     }
 }

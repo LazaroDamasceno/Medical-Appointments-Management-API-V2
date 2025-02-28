@@ -10,6 +10,7 @@ import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -18,9 +19,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class DoctorTerminationServiceImpl implements DoctorTerminationService {
 
-    private DoctorFinderUtil doctorFinderUtil;
-    private DoctorRepository doctorRepository;
-    private DoctorAuditTrailRepository doctorAuditTrailRepository;
+    private final DoctorFinderUtil doctorFinderUtil;
+    private final DoctorRepository doctorRepository;
+    private final DoctorAuditTrailRepository doctorAuditTrailRepository;
 
     public DoctorTerminationServiceImpl(DoctorFinderUtil doctorFinderUtil,
                                         DoctorRepository doctorRepository,
@@ -32,14 +33,14 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
     }
 
     @Override
-    public DoctorResponseResource terminate(@MLN String medicalLicenseNumber) {
+    public ResponseEntity<DoctorResponseResource> terminate(@MLN String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onTerminatedDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsTerminated();
         Doctor terminaredDoctor = doctorRepository.save(doctor);
-        return DoctorResponseMapper.mapToResource(terminaredDoctor)
+        DoctorResponseResource responseResource = DoctorResponseMapper.mapToResource(terminaredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).terminate(medicalLicenseNumber)
@@ -51,6 +52,7 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
                                 methodOn(DoctorController.class).rehire(medicalLicenseNumber)
                         ).withRel("rehire_doctor_by_medical_license_number")
                 );
+        return ResponseEntity.ok(responseResource);
     }
 
     private void onTerminatedDoctor(Doctor doctor) {

@@ -14,6 +14,7 @@ import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -22,10 +23,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellationService {
 
-    private MedicalSlotRepository medicalSlotRepository;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private DoctorFinderUtil doctorFinderUtil;
-    private MedicalAppointmentRepository medicalAppointmentRepository;
+    private final MedicalSlotRepository medicalSlotRepository;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final DoctorFinderUtil doctorFinderUtil;
+    private final MedicalAppointmentRepository medicalAppointmentRepository;
 
     public MedicalSlotCancellationServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                               MedicalSlotFinderUtil medicalSlotFinderUtil,
@@ -39,7 +40,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public MedicalSlotResponseResource cancelById(@MLN String medicalLicenseNumber, @Id String id) {
+    public ResponseEntity<MedicalSlotResponseResource> cancelById(@MLN String medicalLicenseNumber, @Id String id) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -56,10 +57,10 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         return response(medicalSlot);
     }
 
-    private MedicalSlotResponseResource response(MedicalSlot medicalSlot) {
+    private ResponseEntity<MedicalSlotResponseResource> response(MedicalSlot medicalSlot) {
         String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        return MedicalSlotResponseMapper
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(canceledMedicalSlot)
                 .add(
                         linkTo(
@@ -78,6 +79,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
                                 methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
                         ).withRel("find_medical_slots_by_doctor")
                 );
+        return ResponseEntity.ok(responseResource);
     }
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {

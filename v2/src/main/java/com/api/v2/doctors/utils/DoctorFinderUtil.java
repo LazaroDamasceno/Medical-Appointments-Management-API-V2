@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DoctorFinderUtil {
 
-    private DoctorRepository doctorRepository;
+    private final DoctorRepository doctorRepository;
 
     public DoctorFinderUtil(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;

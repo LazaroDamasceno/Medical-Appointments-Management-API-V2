@@ -10,6 +10,7 @@ import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -18,9 +19,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class DoctorRehireServiceImpl implements DoctorRehireService {
 
-    private DoctorFinderUtil doctorFinderUtil;
-    private DoctorRepository doctorRepository;
-    private DoctorAuditTrailRepository doctorAuditTrailRepository;
+    private final DoctorFinderUtil doctorFinderUtil;
+    private final DoctorRepository doctorRepository;
+    private final DoctorAuditTrailRepository doctorAuditTrailRepository;
 
     public DoctorRehireServiceImpl(DoctorFinderUtil doctorFinderUtil,
                                         DoctorRepository doctorRepository,
@@ -32,14 +33,14 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public DoctorResponseResource rehire(@MLN String medicalLicenseNumber) {
+    public ResponseEntity<DoctorResponseResource> rehire(@MLN String medicalLicenseNumber) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsRehired();
         Doctor rehiredDoctor = doctorRepository.save(doctor);
-        return DoctorResponseMapper.mapToResource(rehiredDoctor)
+        DoctorResponseResource responseResource = DoctorResponseMapper.mapToResource(rehiredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).rehire(medicalLicenseNumber)
@@ -51,6 +52,7 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
                                 methodOn(DoctorController.class).terminate(medicalLicenseNumber)
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
+        return ResponseEntity.ok(responseResource);
     }
 
     private void onActiveDoctor(Doctor doctor) {

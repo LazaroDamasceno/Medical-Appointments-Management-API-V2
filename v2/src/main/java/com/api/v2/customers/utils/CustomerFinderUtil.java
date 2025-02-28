@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerFinderUtil {
 
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     public CustomerFinderUtil(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;

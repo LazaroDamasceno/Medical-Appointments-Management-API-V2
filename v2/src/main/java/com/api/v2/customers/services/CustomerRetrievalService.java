@@ -1,10 +1,11 @@
 package com.api.v2.customers.services;
 
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface CustomerRetrievalService {
-    CustomerResponseDto findById(String id);
-    List<CustomerResponseDto> findAll();
+    ResponseEntity<CustomerResponseDto> findById(String id);
+    ResponseEntity<List<CustomerResponseDto>> findAll();
 }

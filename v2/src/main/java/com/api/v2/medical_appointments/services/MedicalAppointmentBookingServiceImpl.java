@@ -14,6 +14,8 @@ import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,9 +29,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
-    private MedicalAppointmentRepository medicalAppointmentRepository;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private CustomerFinderUtil customerFinderUtil;
+    private final MedicalAppointmentRepository medicalAppointmentRepository;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final CustomerFinderUtil customerFinderUtil;
 
 
     public MedicalAppointmentBookingServiceImpl(@Valid MedicalSlotRepository medicalSlotRepository,
@@ -43,7 +45,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     }
 
     @Override
-    public MedicalAppointmentResponseResource book(@Valid MedicalAppointmentBookingDto bookingDto) {
+    public ResponseEntity<MedicalAppointmentResponseResource> book(@Valid MedicalAppointmentBookingDto bookingDto) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(bookingDto.medicalSlotId());
         Customer customer = customerFinderUtil.findById(bookingDto.medicalSlotId());
         Doctor doctor = medicalSlot.getDoctor();
@@ -61,7 +63,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.setMedicalAppointment(medicalAppointment);
-        return MedicalAppointmentResponseMapper
+        MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
                 .mapToResource(savedMedicalAppointment)
                 .add(
                         linkTo(
@@ -80,6 +82,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                                 methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
                         ).withRel("find_medical_appointments_by_customer")
                 );
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
     }
 
     private void onDuplicatedBookingDateTime(Customer customer,
