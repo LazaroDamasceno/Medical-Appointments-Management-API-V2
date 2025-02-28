@@ -37,6 +37,9 @@ public class MedicalAppointment {
     private ZoneOffset paidAtZoneOffset;
     private boolean isPaymentDuringDST;
 
+    public MedicalAppointment() {
+    }
+
     private MedicalAppointment(Customer customer,
                                Doctor doctor,
                                LocalDateTime bookedAt,

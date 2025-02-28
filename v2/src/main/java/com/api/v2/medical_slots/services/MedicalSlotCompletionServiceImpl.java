@@ -1,7 +1,6 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.common.Id;
-import com.api.v2.common.MLN;
+import com.api.v2.common.*;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
@@ -9,7 +8,6 @@ import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
-import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
@@ -21,10 +19,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionService {
 
-    private MedicalSlotRepository medicalSlotRepository;
-    private MedicalAppointmentRepository medicalAppointmentRepository;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private DoctorFinderUtil doctorFinderUtil;
+    private final MedicalSlotRepository medicalSlotRepository;
+    private final MedicalAppointmentRepository medicalAppointmentRepository;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final DoctorFinderUtil doctorFinderUtil;
 
     public MedicalSlotCompletionServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                             MedicalAppointmentRepository medicalAppointmentRepository,
@@ -38,17 +36,21 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public MedicalSlotResponseResource completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
-        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
+    public Response<MedicalSlotResponseResource> completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
+        Response<MedicalSlot> medicalSlotResponse = medicalSlotFinderUtil.findById(slotId);
+        MedicalSlot medicalSlot = medicalSlotResponse.getData();
+        Response<Doctor> doctorResponse = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+        Doctor doctor = doctorResponse.getData();
+        if (isNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor)) {
+            return onNonAssociatedMedicalSlotWithDoctor();
+        }
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();
         MedicalAppointment completedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.markAsCompleted();
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         medicalSlot.setMedicalAppointment(completedMedicalAppointment);
-        return MedicalSlotResponseMapper
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(completedMedicalSlot)
                 .add(
                         linkTo(
@@ -61,11 +63,16 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
                                 methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
                         ).withRel("find_medical_slots_by_doctor")
                 );
+        return SuccessfulResponse.success(responseResource);
     }
 
-    private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
-        if (medicalSlot.getDoctor().getId().equals(doctor.getId())) {
-            throw new InaccessibleMedicalSlotException(doctor.getId().toString(), medicalSlot.getId().toString());
-        }
+    private boolean isNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
+        return !medicalSlot.getDoctor().getId().equals(doctor.getId());
+    }
+
+    private Response<MedicalSlotResponseResource> onNonAssociatedMedicalSlotWithDoctor() {
+        String errorType = "Inaccessible medical slot.";
+        String errorMessage = "Doctor not associated with medical slot.";
+        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
     }
 }

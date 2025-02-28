@@ -1,6 +1,7 @@
 package com.api.v2.customers.controller;
 
 import com.api.v2.common.Id;
+import com.api.v2.common.Response;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.services.CustomerRegistrationService;
@@ -14,8 +15,8 @@ import java.util.List;
 @RequestMapping("api/v2/customers")
 public class CustomerController {
 
-    private CustomerRegistrationService registrationService;
-    private CustomerRetrievalService retrievalService;
+    private final CustomerRegistrationService registrationService;
+    private final CustomerRetrievalService retrievalService;
 
     public CustomerController(CustomerRegistrationService registrationService,
                               CustomerRetrievalService retrievalService
@@ -25,17 +26,17 @@ public class CustomerController {
     }
 
     @PostMapping
-    public CustomerResponseDto register(@Valid @RequestBody CustomerRegistrationDto registrationDto) {
+    public Response<CustomerResponseDto> register(@Valid @RequestBody CustomerRegistrationDto registrationDto) {
         return registrationService.register(registrationDto);
     }
 
     @GetMapping("{id}")
-    public CustomerResponseDto findById(@PathVariable @Id String id) {
+    public Response<CustomerResponseDto> findById(@PathVariable @Id String id) {
         return retrievalService.findById(id);
     }
 
     @GetMapping
-    public List<CustomerResponseDto> findAll() {
+    public Response<List<CustomerResponseDto>> findAll() {
         return retrievalService.findAll();
     }
 }

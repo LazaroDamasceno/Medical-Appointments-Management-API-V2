@@ -1,7 +1,6 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.common.Id;
-import com.api.v2.common.MLN;
+import com.api.v2.common.*;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
@@ -9,8 +8,6 @@ import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
-import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
-import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
@@ -22,10 +19,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellationService {
 
-    private MedicalSlotRepository medicalSlotRepository;
-    private MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private DoctorFinderUtil doctorFinderUtil;
-    private MedicalAppointmentRepository medicalAppointmentRepository;
+    private final MedicalSlotRepository medicalSlotRepository;
+    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final DoctorFinderUtil doctorFinderUtil;
+    private final MedicalAppointmentRepository medicalAppointmentRepository;
 
     public MedicalSlotCancellationServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                               MedicalSlotFinderUtil medicalSlotFinderUtil,
@@ -39,12 +36,20 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public MedicalSlotResponseResource cancelById(@MLN String medicalLicenseNumber, @Id String id) {
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
-        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
-        onCanceledMedicalSlot(medicalSlot);
-        onCompletedMedicalSlot(medicalSlot);
+    public Response<MedicalSlotResponseResource> cancelById(@MLN String medicalLicenseNumber, @Id String id) {
+        Response<Doctor> doctorResponse = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+        Doctor doctor = doctorResponse.getData();
+        Response<MedicalSlot> medicalSlotResponse = medicalSlotFinderUtil.findById(id);
+        MedicalSlot medicalSlot = medicalSlotResponse.getData();
+        if (isNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor)) {
+            return onNonAssociatedMedicalSlotWithDoctor();
+        }
+        if (isCanceledMedicalSlot(medicalSlot)) {
+            return onCanceledMedicalSlot();
+        }
+        if (isCompletedMedicalSlot(medicalSlot)) {
+            return onCompletedMedicalSlot();
+        }
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         if (medicalAppointment == null) {
             return response(medicalSlot);
@@ -56,10 +61,10 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         return response(medicalSlot);
     }
 
-    private MedicalSlotResponseResource response(MedicalSlot medicalSlot) {
+    private Response<MedicalSlotResponseResource> response(MedicalSlot medicalSlot) {
         String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        return MedicalSlotResponseMapper
+        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(canceledMedicalSlot)
                 .add(
                         linkTo(
@@ -78,25 +83,36 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
                                 methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
                         ).withRel("find_medical_slots_by_doctor")
                 );
+        return SuccessfulResponse.success(responseResource);
     }
 
-    private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
-        if (!medicalSlot.getDoctor().getId().equals(doctor.getId())) {
-            throw new InaccessibleMedicalSlotException(doctor.getId().toString(), medicalSlot.getId().toString());
-        }
+    private boolean isNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
+        return !medicalSlot.getDoctor().getId().equals(doctor.getId());
     }
 
-    private void onCanceledMedicalSlot(MedicalSlot medicalSlot) {
-        if (medicalSlot.getCanceledAt() != null && medicalSlot.getCompletedAt() == null) {
-            String message = "Medical slot whose id is %s is already canceled.".formatted(medicalSlot.getId().toString());
-            throw new ImmutableMedicalSlotStatusException(message);
-        }
+    private boolean isCanceledMedicalSlot(MedicalSlot medicalSlot) {
+        return medicalSlot.getCanceledAt() != null && medicalSlot.getCompletedAt() == null;
     }
 
-    private void onCompletedMedicalSlot(MedicalSlot medicalSlot) {
-        if (medicalSlot.getCanceledAt() == null && medicalSlot.getCompletedAt() != null) {
-            String message = "Medical slot whose id is %s is already completed.".formatted(medicalSlot.getId().toString());
-            throw new ImmutableMedicalSlotStatusException(message);
-        }
+    private boolean isCompletedMedicalSlot(MedicalSlot medicalSlot) {
+        return medicalSlot.getCanceledAt() == null && medicalSlot.getCompletedAt() != null;
+    }
+
+    private Response<MedicalSlotResponseResource> onNonAssociatedMedicalSlotWithDoctor() {
+        String errorType = "Inaccessible medical slot.";
+        String errorMessage = "Doctor not associated with medical slot.";
+        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
+    }
+
+    private Response<MedicalSlotResponseResource> onCanceledMedicalSlot() {
+        String errorType = "Immutable medical slot.";
+        String errorMessage = "Medical slot is already canceled.";
+        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
+    }
+
+    private Response<MedicalSlotResponseResource> onCompletedMedicalSlot() {
+        String errorType = "Immutable medical slot.";
+        String errorMessage = "Medical slot is already completed.";
+        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
     }
 }
