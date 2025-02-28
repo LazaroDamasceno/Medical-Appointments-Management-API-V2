@@ -1,5 +1,6 @@
 package com.api.v2.common;
 
+import com.api.v2.cards.exceptions.NonExistentCardException;
 import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
@@ -89,6 +90,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NonExistentMedicalSlotException.class)
     public ResponseEntity<String> handleException(NonExistentMedicalSlotException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NonExistentCardException.class)
+    public ResponseEntity<String> handleException(NonExistentCardException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
