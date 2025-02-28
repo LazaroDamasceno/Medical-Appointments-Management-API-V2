@@ -10,13 +10,15 @@ import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerRegistrationServiceImpl implements CustomerRegistrationService {
 
-    private CustomerRepository customerRepository;
-    private PersonRegistrationService personRegistrationService;
+    private final CustomerRepository customerRepository;
+    private final PersonRegistrationService personRegistrationService;
 
     public CustomerRegistrationServiceImpl(CustomerRepository customerRepository,
                                            PersonRegistrationService personRegistrationService
@@ -26,13 +28,14 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
     }
 
     @Override
-    public CustomerResponseDto register(@Valid CustomerRegistrationDto registrationDto) {
+    public ResponseEntity<CustomerResponseDto> register(@Valid CustomerRegistrationDto registrationDto) {
         onDuplicatedSsn(registrationDto.personRegistrationDto().ssn());
         onDuplicatedEmail(registrationDto.personRegistrationDto().email());
         Person savedPerson = personRegistrationService.register(registrationDto.personRegistrationDto());
         Customer customer = Customer.of(registrationDto.address(), savedPerson);
         Customer savedCustomer = customerRepository.save(customer);
-        return CustomerResponseMapper.mapToDto(savedCustomer);
+        CustomerResponseDto responseDto = CustomerResponseMapper.mapToDto(savedCustomer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     private void onDuplicatedSsn(String ssn) {
