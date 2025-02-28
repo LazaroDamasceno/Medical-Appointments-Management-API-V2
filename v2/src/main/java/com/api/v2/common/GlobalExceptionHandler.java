@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InaccessibleMedicalAppointmentException.class)
     public ResponseEntity<String> handleException(InaccessibleMedicalAppointmentException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(ImmutableMedicalAppointmentStatusException.class)
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InaccessibleMedicalSlotException.class)
     public ResponseEntity<String> handleException(InaccessibleMedicalSlotException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(ImmutableMedicalSlotStatusException.class)
