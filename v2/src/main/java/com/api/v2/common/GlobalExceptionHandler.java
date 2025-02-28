@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ImmutableDoctorStatusException.class)
     public ResponseEntity<String> handleException(ImmutableDoctorStatusException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(UnavailableMedicalAppointmentBookingDateTimeException.class)
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ImmutableMedicalAppointmentStatusException.class)
     public ResponseEntity<String> handleException(ImmutableMedicalAppointmentStatusException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(InaccessibleMedicalSlotException.class)
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ImmutableMedicalSlotStatusException.class)
     public ResponseEntity<String> handleException(ImmutableMedicalSlotStatusException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(ex.getMessage());
     }
 
     @ExceptionHandler(UnavailableMedicalBookingDateTimeException.class)
