@@ -1,6 +1,6 @@
 package com.api.v2.cards.services;
 
-import com.api.v2.cards.domain.Card;
+import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;
 import com.api.v2.cards.dtos.CardResponseDto;
 import com.api.v2.cards.util.CardFinderUtil;

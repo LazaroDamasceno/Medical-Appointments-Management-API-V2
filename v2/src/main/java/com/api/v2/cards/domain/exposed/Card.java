@@ -1,4 +1,4 @@
-package com.api.v2.cards.domain;
+package com.api.v2.cards.domain.exposed;
 
 import com.api.v2.cards.dtos.CardRegistrationDto;
 import org.bson.codecs.pojo.annotations.BsonId;

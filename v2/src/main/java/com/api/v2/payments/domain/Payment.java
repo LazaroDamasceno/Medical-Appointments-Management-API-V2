@@ -1,6 +1,6 @@
 package com.api.v2.payments.domain;
 
-import com.api.v2.cards.domain.Card;
+import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import org.bson.codecs.pojo.annotations.BsonId;
