@@ -35,9 +35,6 @@ public class MedicalSlot {
     private ZoneOffset completedAtZoneOffset;
     private boolean isCompletedDuringDST;
 
-    public MedicalSlot() {
-    }
-
     private MedicalSlot(Doctor doctor, LocalDateTime availableAt, ZoneId availableAtZoneId, ZoneOffset availableAtZoneOffset) {
         this.id = new ObjectId();
         this.doctor = doctor;

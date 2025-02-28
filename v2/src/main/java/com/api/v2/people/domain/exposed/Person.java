@@ -31,9 +31,6 @@ public class Person {
     private ZoneOffset modifiedAtZoneOffset;
     private boolean isModifiedDuringDST;
 
-    public Person() {
-    }
-
     private Person(PersonRegistrationDto registrationDto) {
         this.id = new ObjectId();
         this.firstName = registrationDto.firstName();

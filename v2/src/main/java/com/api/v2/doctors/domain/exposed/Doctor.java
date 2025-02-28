@@ -27,9 +27,6 @@ public class Doctor {
     private ZoneOffset terminatedAtZoneOffset;
     private Boolean isTerminatedDuringDST;
 
-    public Doctor() {
-    }
-
     private Doctor(Person person, String medicalLicenseNumber) {
         this.id = new ObjectId();
         this.person = person;

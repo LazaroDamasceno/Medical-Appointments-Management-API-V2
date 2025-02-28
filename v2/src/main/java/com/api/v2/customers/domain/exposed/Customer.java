@@ -24,9 +24,6 @@ public class Customer {
     private ZoneOffset createdAtZoneOffset;
     private boolean isCreatedDuringDST;
 
-    public Customer() {
-    }
-
     private Customer(Address address, Person person) {
         this.id = new ObjectId();
         this.address = address;

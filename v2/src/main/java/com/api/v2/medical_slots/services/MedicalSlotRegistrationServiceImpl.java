@@ -1,15 +1,12 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.common.Constants;
-import com.api.v2.common.ErrorResponse;
-import com.api.v2.common.Response;
-import com.api.v2.common.SuccessfulResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
+import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import jakarta.validation.Valid;
@@ -26,8 +23,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrationService {
 
-    private final MedicalSlotRepository medicalSlotRepository;
-    private final DoctorFinderUtil doctorFinderUtil;
+    private MedicalSlotRepository medicalSlotRepository;
+    private DoctorFinderUtil doctorFinderUtil;
 
     public MedicalSlotRegistrationServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                               DoctorFinderUtil doctorFinderUtil
@@ -38,19 +35,16 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
 
 
     @Override
-    public Response<MedicalSlotResponseResource> register(@Valid MedicalSlotRegistrationDto registrationDto) {
-        Response<Doctor> doctorResponse = doctorFinderUtil.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
-        Doctor doctor = doctorResponse.getData();
+    public MedicalSlotResponseResource register(@Valid MedicalSlotRegistrationDto registrationDto) {
+        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime
                 .ofInstant(registrationDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        if (isDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset)) {
-            return onDuplicatedBookingDateTime();
-        }
+        onDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot medicalSlot = MedicalSlot.of(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
+        return MedicalSlotResponseMapper
                 .mapToResource(savedMedicalSlot)
                 .add(
                         linkTo(
@@ -63,15 +57,14 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                                 methodOn(MedicalSlotController.class).cancel(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId().toString())
                         ).withRel("cancel_medical_slot_by_id")
                 );
-        return SuccessfulResponse.success(Constants.CREATED_201, responseResource);
     }
 
-    private boolean isDuplicatedBookingDateTime(Doctor doctor,
+    private void onDuplicatedBookingDateTime(Doctor doctor,
                                              LocalDateTime availableAt,
                                              ZoneId zoneId,
                                              ZoneOffset zoneOffset
     ) {
-        return medicalSlotRepository
+        boolean isGivenBookingDateTimeDuplicated = medicalSlotRepository
                 .findAll()
                 .stream()
                 .anyMatch(slot -> slot.getDoctor().getId().equals(doctor.getId())
@@ -79,11 +72,8 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                         && slot.getAvailableAtZoneId().equals(zoneId)
                         && slot.getAvailableAtZoneOffset().equals(zoneOffset)
                 );
-    }
-
-    private Response<MedicalSlotResponseResource> onDuplicatedBookingDateTime() {
-        String errorType = "Unavailable booking datetime.";
-        String errorMessage = "Given booking datetime is associated with an active medical slot.";
-        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
+        if (isGivenBookingDateTimeDuplicated) {
+            throw new UnavailableMedicalBookingDateTimeException();
+        }
     }
 }

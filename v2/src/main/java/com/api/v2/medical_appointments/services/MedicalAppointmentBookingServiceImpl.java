@@ -1,9 +1,5 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.common.Constants;
-import com.api.v2.common.ErrorResponse;
-import com.api.v2.common.Response;
-import com.api.v2.common.SuccessfulResponse;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.doctors.domain.exposed.Doctor;
@@ -11,6 +7,7 @@ import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
+import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
@@ -30,9 +27,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
-    private final MedicalAppointmentRepository medicalAppointmentRepository;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private final CustomerFinderUtil customerFinderUtil;
+    private MedicalAppointmentRepository medicalAppointmentRepository;
+    private MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private CustomerFinderUtil customerFinderUtil;
 
 
     public MedicalAppointmentBookingServiceImpl(@Valid MedicalSlotRepository medicalSlotRepository,
@@ -46,19 +43,15 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     }
 
     @Override
-    public Response<MedicalAppointmentResponseResource> book(@Valid MedicalAppointmentBookingDto bookingDto) {
-        Response<MedicalSlot> medicalSlotResponse = medicalSlotFinderUtil.findById(bookingDto.medicalSlotId());
-        MedicalSlot medicalSlot = medicalSlotResponse.getData();
-        Response<Customer> customerResponse = customerFinderUtil.findById(bookingDto.medicalSlotId());
-        Customer customer = customerResponse.getData();
+    public MedicalAppointmentResponseResource book(@Valid MedicalAppointmentBookingDto bookingDto) {
+        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(bookingDto.medicalSlotId());
+        Customer customer = customerFinderUtil.findById(bookingDto.medicalSlotId());
         Doctor doctor = medicalSlot.getDoctor();
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetTime
                 .ofInstant(bookingDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        if (isBookingDateTimeDuplicated(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId)) {
-            return onDuplicatedBookingDateTime();
-        }
+        onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
         MedicalAppointment medicalAppointment = MedicalAppointment.of(
                 customer,
                 doctor,
@@ -68,7 +61,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.setMedicalAppointment(medicalAppointment);
-        MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
+        return MedicalAppointmentResponseMapper
                 .mapToResource(savedMedicalAppointment)
                 .add(
                         linkTo(
@@ -87,16 +80,15 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                                 methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
                         ).withRel("find_medical_appointments_by_customer")
                 );
-        return SuccessfulResponse.success(Constants.CREATED_201, responseResource);
     }
 
-    private boolean isBookingDateTimeDuplicated(Customer customer,
+    private void onDuplicatedBookingDateTime(Customer customer,
                                              Doctor doctor,
                                              LocalDateTime availableAt,
                                              ZoneOffset zoneOffset,
                                              ZoneId zoneId
     ) {
-        return medicalAppointmentRepository
+        boolean isGivenBookingDateTimeDuplicated = medicalAppointmentRepository
                 .findAll()
                 .stream()
                 .anyMatch(appointment ->
@@ -106,11 +98,8 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                         && appointment.getBookedAtZoneOffset().equals(zoneOffset)
                         && appointment.getBookedAtZoneId().equals(zoneId)
                 );
-    }
-
-    private Response<MedicalAppointmentResponseResource> onDuplicatedBookingDateTime() {
-        String errorType = "Unavailable booking datetime.";
-        String errorMessage = "Given booking datetime is already associated with an active medical appointment.";
-        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
+        if (isGivenBookingDateTimeDuplicated) {
+            throw new UnavailableMedicalAppointmentBookingDateTimeException();
+        }
     }
 }

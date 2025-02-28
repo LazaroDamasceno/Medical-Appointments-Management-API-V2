@@ -1,7 +1,6 @@
 package com.api.v2.medical_slots.controllers;
 
 import com.api.v2.common.MLN;
-import com.api.v2.common.Response;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
@@ -17,10 +16,10 @@ import java.util.List;
 @RequestMapping("api/v2/medical-slots")
 public class MedicalSlotController {
 
-    private final MedicalSlotRegistrationService registrationService;
-    private final MedicalSlotCancellationService cancellationService;
-    private final MedicalSlotRetrievalService retrievalService;
-    private final MedicalSlotCompletionService completionService;
+    private MedicalSlotRegistrationService registrationService;
+    private MedicalSlotCancellationService cancellationService;
+    private MedicalSlotRetrievalService retrievalService;
+    private MedicalSlotCompletionService completionService;
 
     public MedicalSlotController(MedicalSlotRegistrationService registrationService,
                                  MedicalSlotCancellationService cancellationService,
@@ -33,32 +32,32 @@ public class MedicalSlotController {
     }
 
     @PostMapping
-    public Response<MedicalSlotResponseResource> register(@RequestBody @Valid MedicalSlotRegistrationDto registrationDto) {
+    public MedicalSlotResponseResource register(@RequestBody @Valid MedicalSlotRegistrationDto registrationDto) {
         return registrationService.register(registrationDto);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
-    public Response<MedicalSlotResponseResource> cancel(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    public MedicalSlotResponseResource cancel(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return cancellationService.cancelById(medicalLicenseNumber, slotId);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/completion")
-    public Response<MedicalSlotResponseResource> complete(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    public MedicalSlotResponseResource complete(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return completionService.completeById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}/{slotId}")
-    public Response<MedicalSlotResponseResource> findById(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    public MedicalSlotResponseResource findById(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return retrievalService.findById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}")
-    public Response<List<MedicalSlotResponseResource>> findAllByDoctor(@PathVariable @MLN String medicalLicenseNumber) {
+    public List<MedicalSlotResponseResource> findAllByDoctor(@PathVariable @MLN String medicalLicenseNumber) {
         return retrievalService.findAllByDoctor(medicalLicenseNumber);
     }
 
     @GetMapping
-    public Response<List<MedicalSlotResponseResource>> findAll() {
+    public List<MedicalSlotResponseResource> findAll() {
         return retrievalService.findAll();
     }
 }

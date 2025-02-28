@@ -1,11 +1,12 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.common.*;
+import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
+import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinderUtil;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
@@ -19,9 +20,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmentRetrievalService {
 
-    private final CustomerFinderUtil customerFinderUtil;
-    private final MedicalAppointmentRepository medicalAppointmentRepository;
-    private final MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
+    private CustomerFinderUtil customerFinderUtil;
+    private MedicalAppointmentRepository medicalAppointmentRepository;
+    private MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
 
     public MedicalAppointmentRetrievalServiceImpl(CustomerFinderUtil customerFinderUtil,
                                                   MedicalAppointmentRepository medicalAppointmentRepository,
@@ -33,15 +34,11 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
     }
 
     @Override
-    public Response<MedicalAppointmentResponseResource> findById(@Id String customerId, @Id String medicalAppointmentId) {
-        Response<Customer> customerResponse = customerFinderUtil.findById(customerId);
-        Customer customer = customerResponse.getData();
-        Response<MedicalAppointment> medicalAppointmentResponse = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
-        MedicalAppointment medicalAppointment = medicalAppointmentResponse.getData();
-        if (isNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment)) {
-            return onNonAssociatedMedicalAppointmentWithCustomer();
-        }
-        MedicalAppointmentResponseResource responseResource =  MedicalAppointmentResponseMapper
+    public MedicalAppointmentResponseResource findById(@Id String customerId, @Id String medicalAppointmentId) {
+        Customer customer = customerFinderUtil.findById(customerId);
+        MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
+        onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);
+        return MedicalAppointmentResponseMapper
                 .mapToResource(medicalAppointment)
                 .add(
                         linkTo(
@@ -60,24 +57,17 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                                 methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
                         ).withRel("find_medical_appointments_by_customer")
                 );
-        return SuccessfulResponse.success(responseResource);
     }
 
-    private boolean isNonAssociatedMedicalAppointmentWithCustomer(Customer customer, MedicalAppointment medicalAppointment) {
-        return medicalAppointment.getCustomer().getId().equals(customer.getId());
+    private void onNonAssociatedMedicalAppointmentWithCustomer(Customer customer, MedicalAppointment medicalAppointment) {
+        if (medicalAppointment.getCustomer().getId().equals(customer.getId())) {
+            throw new InaccessibleMedicalAppointmentException(customer.getId().toString(), medicalAppointment.getId().toString());
+        }
     }
-
-    private Response<MedicalAppointmentResponseResource> onNonAssociatedMedicalAppointmentWithCustomer() {
-        String errorType = "Inaccessible medical appointment.";
-        String errorMessage = "Customer is not associated with medical appointment.";
-        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
-    }
-
     @Override
-    public Response<List<MedicalAppointmentResponseResource>> findAllByCustomer(String customerId) {
-        Response<Customer> customerResponse = customerFinderUtil.findById(customerId);
-        Customer customer = customerResponse.getData();
-        List<MedicalAppointmentResponseResource> list = medicalAppointmentRepository
+    public List<MedicalAppointmentResponseResource> findAllByCustomer(String customerId) {
+        Customer customer = customerFinderUtil.findById(customerId);
+        return medicalAppointmentRepository
                 .findAll()
                 .stream()
                 .filter(medicalAppointment -> medicalAppointment.getCustomer().getId().equals(customer.getId()))
@@ -102,16 +92,14 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                         )
                 )
                 .toList();
-        return SuccessfulResponse.success(list);
     }
 
     @Override
-    public Response<List<MedicalAppointmentResponseResource>> findAll() {
-        List<MedicalAppointmentResponseResource> list = medicalAppointmentRepository
+    public List<MedicalAppointmentResponseResource> findAll() {
+        return medicalAppointmentRepository
                 .findAll()
                 .stream()
                 .map(MedicalAppointmentResponseMapper::mapToResource)
                 .toList();
-        return SuccessfulResponse.success(list);
     }
 }

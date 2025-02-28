@@ -1,11 +1,12 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.common.*;
+import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
 import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;
+import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
@@ -17,9 +18,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class DoctorRehireServiceImpl implements DoctorRehireService {
 
-    private final DoctorFinderUtil doctorFinderUtil;
-    private final DoctorRepository doctorRepository;
-    private final DoctorAuditTrailRepository doctorAuditTrailRepository;
+    private DoctorFinderUtil doctorFinderUtil;
+    private DoctorRepository doctorRepository;
+    private DoctorAuditTrailRepository doctorAuditTrailRepository;
 
     public DoctorRehireServiceImpl(DoctorFinderUtil doctorFinderUtil,
                                         DoctorRepository doctorRepository,
@@ -31,17 +32,14 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public Response<DoctorResponseResource> rehire(@MLN String medicalLicenseNumber) {
-        Response<Doctor> doctorResponse = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
-        Doctor doctor = doctorResponse.getData();
-        if (isDoctorActive(doctor)) {
-            return onActiveDoctor();
-        }
+    public DoctorResponseResource rehire(@MLN String medicalLicenseNumber) {
+        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+        onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsRehired();
         Doctor rehiredDoctor = doctorRepository.save(doctor);
-        DoctorResponseResource responseResource = DoctorResponseMapper.mapToResource(rehiredDoctor)
+        return DoctorResponseMapper.mapToResource(rehiredDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).rehire(medicalLicenseNumber)
@@ -53,16 +51,12 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
                                 methodOn(DoctorController.class).terminate(medicalLicenseNumber)
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
-        return SuccessfulResponse.success(responseResource);
     }
 
-    private boolean isDoctorActive(Doctor doctor) {
-        return doctor.getTerminatedAt() == null;
-    }
-
-    private Response<DoctorResponseResource> onActiveDoctor() {
-        String errorType = "Immutable doctor";
-        String errorMessage = "Doctor cannot be rehire, because they're already active.";
-        return ErrorResponse.error(Constants.CONFLICT_409, errorType, errorMessage);
+    private void onActiveDoctor(Doctor doctor) {
+        if (doctor.getTerminatedAt() == null) {
+            String message = "Doctor whose medical license number is %s is active.";
+            throw new ImmutableDoctorStatusException(message);
+        }
     }
 }

@@ -1,10 +1,7 @@
 package com.api.v2.customers.services;
 
 import com.api.v2.common.Id;
-import com.api.v2.common.Response;
-import com.api.v2.common.SuccessfulResponse;
 import com.api.v2.customers.domain.CustomerRepository;
-import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.customers.utils.CustomerResponseMapper;
@@ -15,8 +12,8 @@ import java.util.List;
 @Service
 public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
 
-    private final CustomerRepository customerRepository;
-    private final CustomerFinderUtil customerFinderUtil;
+    private CustomerRepository customerRepository;
+    private CustomerFinderUtil customerFinderUtil;
 
     public CustomerRetrievalServiceImpl(CustomerRepository customerRepository,
                                         CustomerFinderUtil customerFinderUtil
@@ -26,20 +23,16 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
     }
 
     @Override
-    public Response<CustomerResponseDto> findById(@Id String id) {
-        Response<Customer> customerResponse = customerFinderUtil.findById(id);
-        Customer customer = customerResponse.getData();
-        CustomerResponseDto responseDto = CustomerResponseMapper.mapToDto(customer);
-        return SuccessfulResponse.sucess(responseDto);
+    public CustomerResponseDto findById(@Id String id) {
+        return CustomerResponseMapper.mapToDto(customerFinderUtil.findById(id));
     }
 
     @Override
-    public Response<List<CustomerResponseDto>> findAll() {
-        List<CustomerResponseDto> list = customerRepository
+    public List<CustomerResponseDto> findAll() {
+        return customerRepository
                 .findAll()
                 .stream()
                 .map(CustomerResponseMapper::mapToDto)
                 .toList();
-        return SuccessfulResponse.sucess(list);
     }
 }
