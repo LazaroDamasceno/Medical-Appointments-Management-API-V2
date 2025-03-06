@@ -1,8 +1,8 @@
 package com.api.v2.people.domain.exposed;
 
 import com.api.v2.common.DstCheckerUtil;
-import com.api.v2.people.dtos.PersonModificationDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
+import com.api.v2.people.utils.Gender;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +21,7 @@ public class Person {
     private String ssn;
     private String email;
     private String phoneNumber;
-    private String gender;
+    private Gender gender;
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
@@ -54,20 +54,6 @@ public class Person {
         return new Person(registrationDto);
     }
 
-    public void modify(PersonModificationDto modificationDto) {
-        this.firstName = modificationDto.firstName();
-        this.middleName = modificationDto.middleName();
-        this.lastName = modificationDto.lastName();
-        this.birthDate = modificationDto.birthDate();
-        this.email = modificationDto.email();
-        this.phoneNumber = modificationDto.phoneNumber();
-        this.gender = modificationDto.gender();
-        this.modifiedAt = LocalDateTime.now(ZoneId.systemDefault());
-        this.modifiedAtZoneId = ZoneId.systemDefault();
-        this.modifiedAtZoneOffset = OffsetDateTime.now().getOffset();
-        this.isModifiedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
-    }
-
     public String getFullName() {
         if (middleName.isEmpty()) {
             return "%s %s".formatted(firstName, lastName);
@@ -95,7 +81,7 @@ public class Person {
         return phoneNumber;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
