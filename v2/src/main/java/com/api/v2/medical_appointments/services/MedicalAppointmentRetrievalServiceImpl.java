@@ -63,7 +63,10 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
 
     private void onNonAssociatedMedicalAppointmentWithCustomer(Customer customer, MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCustomer().getId().equals(customer.getId())) {
-            throw new InaccessibleMedicalAppointmentException(customer.getId().toString(), medicalAppointment.getId().toString());
+            String message = """
+                   Customer whose id is %s is not associated with the medical appointment whose id is  %s
+            """.formatted(customer.getId(), medicalAppointment.getId());
+            throw new InaccessibleMedicalAppointmentException(message);
         }
     }
     @Override

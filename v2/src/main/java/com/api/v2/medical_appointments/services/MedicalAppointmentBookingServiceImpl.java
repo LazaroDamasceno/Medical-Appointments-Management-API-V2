@@ -7,6 +7,7 @@ import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
+import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
@@ -14,6 +15,7 @@ import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import jakarta.validation.Valid;
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         ZoneOffset zoneOffset = OffsetTime
                 .ofInstant(bookingDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
+        onBlockedBooking(medicalSlot, bookingDto.customerId());
         onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
         MedicalAppointment medicalAppointment = MedicalAppointment.of(
                 customer,
@@ -83,6 +86,13 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                         ).withRel("find_medical_appointments_by_customer")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
+    }
+
+    private void onBlockedBooking(MedicalSlot medicalSlot, String customerId) {
+        if (medicalSlot.getDoctor().getPerson().getId().equals(new ObjectId(customerId))) {
+            String message = "Customer cannot book a medical appointment which they're the related medical slot's doctor.";
+            throw new InaccessibleMedicalAppointmentException(message);
+        }
     }
 
     private void onDuplicatedBookingDateTime(Customer customer,
