@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.services;
 
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.common.Id;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
@@ -11,9 +12,7 @@ import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
-import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +39,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public ResponseEntity<MedicalSlotResponseResource> cancelById(@MLN String medicalLicenseNumber, @Id String id) {
+    public ResponseEntity<ResourceResponse> cancelById(@MLN String medicalLicenseNumber, @Id String id) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -57,11 +56,11 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         return response(medicalSlot);
     }
 
-    private ResponseEntity<MedicalSlotResponseResource> response(MedicalSlot medicalSlot) {
+    private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot) {
         String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
-                .mapToResource(canceledMedicalSlot)
+        ResourceResponse responseResource = ResourceResponse
+                .createEmpty()
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(

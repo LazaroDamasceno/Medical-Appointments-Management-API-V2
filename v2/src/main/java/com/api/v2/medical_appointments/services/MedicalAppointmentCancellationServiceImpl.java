@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
@@ -8,9 +9,7 @@ import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinderUtil;
-import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
@@ -43,7 +42,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     }
 
     @Override
-    public ResponseEntity<MedicalAppointmentResponseResource> cancelById(@Id String customerId, @Id String medicalAppointmentId) {
+    public ResponseEntity<ResourceResponse> cancelById(@Id String customerId, @Id String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         Customer customer = customerFinderUtil.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);
@@ -55,8 +54,8 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
         medicalSlot.setMedicalAppointment(null);
         medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
-                .mapToResource(canceledMedicalAppointment)
+        ResourceResponse responseResource = ResourceResponse
+                .createEmpty()
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).cancel(

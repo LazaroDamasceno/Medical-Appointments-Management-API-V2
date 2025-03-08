@@ -1,8 +1,8 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.common.ResourceResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface MedicalAppointmentCancellationService {
-    ResponseEntity<MedicalAppointmentResponseResource> cancelById(String customerId, String medicalAppointmentId);
+    ResponseEntity<ResourceResponse> cancelById(String customerId, String medicalAppointmentId);
 }

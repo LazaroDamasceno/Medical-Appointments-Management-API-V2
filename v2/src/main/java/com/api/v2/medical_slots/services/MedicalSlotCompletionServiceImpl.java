@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.services;
 
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.common.Id;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
@@ -10,9 +11,7 @@ import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
-import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public ResponseEntity<MedicalSlotResponseResource> completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
+    public ResponseEntity<ResourceResponse> completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -49,8 +48,8 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
         medicalSlot.markAsCompleted();
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         medicalSlot.setMedicalAppointment(completedMedicalAppointment);
-        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
-                .mapToResource(completedMedicalSlot)
+        ResourceResponse responseResource = ResourceResponse
+                .createEmpty()
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).complete(medicalLicenseNumber, slotId)
