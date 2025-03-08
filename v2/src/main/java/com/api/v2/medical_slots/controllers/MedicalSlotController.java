@@ -1,6 +1,7 @@
 package com.api.v2.medical_slots.controllers;
 
 import com.api.v2.common.MLN;
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
@@ -38,12 +39,12 @@ public class MedicalSlotController {
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
-    public ResponseEntity<MedicalSlotResponseResource> cancel(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    public ResponseEntity<ResourceResponse> cancel(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return cancellationService.cancelById(medicalLicenseNumber, slotId);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{slotId}/completion")
-    public ResponseEntity<MedicalSlotResponseResource> complete(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    public ResponseEntity<ResourceResponse> complete(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
         return completionService.completeById(medicalLicenseNumber, slotId);
     }
 

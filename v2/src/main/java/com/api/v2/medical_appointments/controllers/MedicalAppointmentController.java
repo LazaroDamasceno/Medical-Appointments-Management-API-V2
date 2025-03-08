@@ -1,6 +1,7 @@
 package com.api.v2.medical_appointments.controllers;
 
 import com.api.v2.common.Id;
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
@@ -35,8 +36,8 @@ public class MedicalAppointmentController {
     }
 
     @PatchMapping("{customerId}/{medicalAppointmentId}/cancellation")
-    public ResponseEntity<MedicalAppointmentResponseResource> cancel(@PathVariable @Id String customerId,
-                                                     @PathVariable @Id String medicalAppointmentId) {
+    public ResponseEntity<ResourceResponse> cancel(@PathVariable @Id String customerId,
+                                                   @PathVariable @Id String medicalAppointmentId) {
         return cancellationService.cancelById(customerId, medicalAppointmentId);
     }
 
