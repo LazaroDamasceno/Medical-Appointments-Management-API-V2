@@ -1,7 +1,6 @@
 package com.api.v2;
 
-import com.api.v2.common.Address;
-import com.api.v2.customers.dtos.CustomerRegistrationDto;
+import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CustomerRegistrationTest {
+public class DoctorHiringTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,7 +30,7 @@ class CustomerRegistrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    CustomerRegistrationDto registrationDto = new CustomerRegistrationDto(
+    DoctorHiringDto hiringDto = new DoctorHiringDto(
             new PersonRegistrationDto(
                     "Leo",
                     "",
@@ -42,60 +41,74 @@ class CustomerRegistrationTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new Address(
-                    "CA",
-                    "LA",
-                    "Downtown",
-                    "90012"
-            )
+            "12345678CA"
     );
 
     @Test
     @Order(1)
-    void testSuccessfulRegistration() throws Exception {
+    void testSuccessfulHiring() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/customers")
+                .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto))
+                .content(objectMapper.writeValueAsString(hiringDto))
         ).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @Order(2)
-    void testUnSuccessfulRegistration1() throws Exception {
+    void testUnSuccessfulHiring1() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/customers")
+                .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto))
+                .content(objectMapper.writeValueAsString(hiringDto))
         ).andExpect(status().is4xxClientError());
     }
 
-    CustomerRegistrationDto registrationDto2 = new CustomerRegistrationDto(
+    DoctorHiringDto hiringDto2 = new DoctorHiringDto(
             new PersonRegistrationDto(
                     "Leo",
                     "",
                     "Santos",
                     LocalDate.parse("2000-12-12"),
-                    "123456789",
+                    "123456788",
                     "leosantos@mail.com",
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new Address(
-                    "CA",
-                    "LA",
-                    "Downtown",
-                    "90012"
-            )
+            "12345678CA"
     );
 
     @Test
     @Order(3)
-    void testUnSuccessfulRegistration2() throws Exception {
+    void testUnSuccessfulHiring2() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/customers")
+                .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto2))
+                .content(objectMapper.writeValueAsString(hiringDto2))
+        ).andExpect(status().is4xxClientError());
+    }
+
+    DoctorHiringDto hiringDto3 = new DoctorHiringDto(
+            new PersonRegistrationDto(
+                    "Leo",
+                    "",
+                    "Santos",
+                    LocalDate.parse("2000-12-12"),
+                    "123456788",
+                    "leosanteos@mail.com",
+                    "1234567890",
+                    Gender.CIS_MALE
+            ),
+            "12345678CA"
+    );
+
+    @Test
+    @Order(4)
+    void testUnSuccessfulHiring3() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v2/doctors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(hiringDto3))
         ).andExpect(status().is4xxClientError());
     }
 
