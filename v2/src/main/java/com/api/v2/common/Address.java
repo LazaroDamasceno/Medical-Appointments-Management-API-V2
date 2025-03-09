@@ -1,9 +1,11 @@
 package com.api.v2.common;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record Address(
-        String state,
-        String city,
-        String street,
-        String zipcode
+        @NotBlank String state,
+        @NotBlank String city,
+        @NotBlank String street,
+        @NotBlank String zipcode
 ) {
 }
