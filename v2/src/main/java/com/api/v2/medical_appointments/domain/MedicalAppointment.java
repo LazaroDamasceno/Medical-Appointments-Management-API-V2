@@ -56,11 +56,14 @@ public class MedicalAppointment {
         isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(createdAt, createdAtZoneId);
     }
 
+    public MedicalAppointment() {
+    }
+
     public static MedicalAppointment of(Customer customer,
-                                            Doctor doctor,
-                                            LocalDateTime bookedAt,
-                                            ZoneId bookedAtZoneId,
-                                            ZoneOffset bookedAtZoneOffset
+                                        Doctor doctor,
+                                        LocalDateTime bookedAt,
+                                        ZoneId bookedAtZoneId,
+                                        ZoneOffset bookedAtZoneOffset
     ) {
         return new MedicalAppointment(customer, doctor, bookedAt, bookedAtZoneId, bookedAtZoneOffset);
     }

@@ -7,7 +7,7 @@ import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.dtos.SimplifiedMedicalAppointmentResponseDto;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 
-public class MedicalAppointmentResponseMapper {
+public final class MedicalAppointmentResponseMapper {
 
     public static MedicalAppointmentResponseResource mapToResource(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCompletedAt() != null && medicalAppointment.getCanceledAt() == null) {

@@ -6,7 +6,7 @@ import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
-public class MedicalSlotResponseMapper {
+public final class MedicalSlotResponseMapper {
 
     public static MedicalSlotResponseResource mapToResource(MedicalSlot slot) {
         if (slot.getCanceledAt() == null && slot.getCompletedAt() != null) {
