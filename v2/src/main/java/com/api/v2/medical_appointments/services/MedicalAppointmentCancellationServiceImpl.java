@@ -75,6 +75,12 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
         return ResponseEntity.ok(responseResource);
     }
 
+    @Override
+    public MedicalAppointment cancel(MedicalAppointment medicalAppointment) {
+        medicalAppointment.markAsCanceled();
+        return medicalAppointmentRepository.save(medicalAppointment);
+    }
+
     private void onNonAssociatedMedicalAppointmentWithCustomer(MedicalAppointment medicalAppointment, Customer customer) {
         if (medicalAppointment.getCustomer().getId().equals(customer.getId())) {
             String message = """

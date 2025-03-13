@@ -6,7 +6,7 @@ import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
-import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
+import com.api.v2.medical_appointments.services.MedicalAppointmentCancellationService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
@@ -22,20 +22,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellationService {
 
+    private final MedicalAppointmentCancellationService medicalAppointmentCancellationService;
     private final MedicalSlotRepository medicalSlotRepository;
     private final MedicalSlotFinderUtil medicalSlotFinderUtil;
     private final DoctorFinderUtil doctorFinderUtil;
-    private final MedicalAppointmentRepository medicalAppointmentRepository;
 
-    public MedicalSlotCancellationServiceImpl(MedicalSlotRepository medicalSlotRepository,
+    public MedicalSlotCancellationServiceImpl(MedicalAppointmentCancellationService medicalAppointmentCancellationService,
+                                              MedicalSlotRepository medicalSlotRepository,
                                               MedicalSlotFinderUtil medicalSlotFinderUtil,
-                                              DoctorFinderUtil doctorFinderUtil,
-                                              MedicalAppointmentRepository medicalAppointmentRepository
+                                              DoctorFinderUtil doctorFinderUtil
     ) {
+        this.medicalAppointmentCancellationService = medicalAppointmentCancellationService;
         this.medicalSlotRepository = medicalSlotRepository;
         this.medicalSlotFinderUtil = medicalSlotFinderUtil;
         this.doctorFinderUtil = doctorFinderUtil;
-        this.medicalAppointmentRepository = medicalAppointmentRepository;
     }
 
     @Override
@@ -49,14 +49,36 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         if (medicalAppointment == null) {
             return response(medicalSlot);
         }
-        medicalAppointment.markAsCanceled();
-        MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
-        medicalSlot.setMedicalAppointment(canceledMedicalAppointment);
-        medicalSlot.markAsCanceled();
-        return response(medicalSlot);
+        return response(medicalSlot, medicalAppointment);
     }
 
     private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot) {
+        MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
+        String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
+        ResourceResponse responseResource = ResourceResponse
+                .createEmpty()
+                .add(
+                        linkTo(
+                                methodOn(MedicalSlotController.class).cancel(
+                                        medicalLicenseNumber,
+                                        medicalSlot.getId().toString()
+                                )
+                        ).withSelfRel(),
+                        linkTo(
+                                methodOn(MedicalSlotController.class).findById(
+                                        medicalLicenseNumber,
+                                        medicalSlot.getId().toString()
+                                )
+                        ).withRel("find_medical_slot_by_id"),
+                        linkTo(
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
+                        ).withRel("find_medical_slots_by_doctor")
+                );
+        return ResponseEntity.ok(responseResource);
+    }
+
+    private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
+        MedicalAppointment canceledMedicalAppointment = medicalAppointmentCancellationService.cancel(medicalAppointment);
         String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         ResourceResponse responseResource = ResourceResponse
