@@ -7,6 +7,7 @@ import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_appointments.domain.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
+import com.api.v2.medical_appointments.services.MedicalAppointmentCompletionService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
@@ -22,17 +23,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionService {
 
     private final MedicalSlotRepository medicalSlotRepository;
-    private final MedicalAppointmentRepository medicalAppointmentRepository;
+    private final MedicalAppointmentCompletionService medicalAppointmentCompletionService;
     private final MedicalSlotFinderUtil medicalSlotFinderUtil;
     private final DoctorFinderUtil doctorFinderUtil;
 
     public MedicalSlotCompletionServiceImpl(MedicalSlotRepository medicalSlotRepository,
-                                            MedicalAppointmentRepository medicalAppointmentRepository,
+                                            MedicalAppointmentCompletionService medicalAppointmentCompletionService,
                                             MedicalSlotFinderUtil medicalSlotFinderUtil,
                                             DoctorFinderUtil doctorFinderUtil
     ) {
         this.medicalSlotRepository = medicalSlotRepository;
-        this.medicalAppointmentRepository = medicalAppointmentRepository;
+        this.medicalAppointmentCompletionService = medicalAppointmentCompletionService;
         this.medicalSlotFinderUtil = medicalSlotFinderUtil;
         this.doctorFinderUtil = doctorFinderUtil;
     }
@@ -44,7 +45,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();
-        MedicalAppointment completedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
+        MedicalAppointment completedMedicalAppointment = medicalAppointmentCompletionService.complete(medicalAppointment);
         medicalSlot.markAsCompleted();
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         medicalSlot.setMedicalAppointment(completedMedicalAppointment);

@@ -55,7 +55,7 @@ public class Person {
     }
 
     public String getFullName() {
-        if (middleName.isEmpty()) {
+        if (middleName.isBlank()) {
             return "%s %s".formatted(firstName, lastName);
         }
         return "%s %s %s".formatted(firstName, middleName, lastName);
