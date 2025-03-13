@@ -4,7 +4,7 @@ import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
-import com.api.v2.medical_appointments.domain.MedicalAppointment;
+import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;

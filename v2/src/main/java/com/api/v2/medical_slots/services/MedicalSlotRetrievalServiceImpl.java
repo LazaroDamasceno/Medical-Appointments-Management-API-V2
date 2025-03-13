@@ -5,7 +5,7 @@ import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;

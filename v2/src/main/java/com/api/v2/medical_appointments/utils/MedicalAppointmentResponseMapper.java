@@ -3,7 +3,7 @@ package com.api.v2.medical_appointments.utils;
 import com.api.v2.common.DateTimeFormatter;
 import com.api.v2.customers.utils.CustomerResponseMapper;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
-import com.api.v2.medical_appointments.domain.MedicalAppointment;
+import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.dtos.SimplifiedMedicalAppointmentResponseDto;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 

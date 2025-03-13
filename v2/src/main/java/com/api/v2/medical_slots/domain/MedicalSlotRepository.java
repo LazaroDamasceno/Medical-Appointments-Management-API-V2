@@ -1,5 +1,6 @@
 package com.api.v2.medical_slots.domain;
 
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

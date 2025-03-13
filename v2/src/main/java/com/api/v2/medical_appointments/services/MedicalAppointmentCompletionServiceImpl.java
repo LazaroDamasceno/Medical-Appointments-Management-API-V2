@@ -1,6 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.medical_appointments.domain.MedicalAppointment;
+import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 @ApplicationModule(
         type = ApplicationModule.Type.OPEN
 )
-package com.api.v2.medical_appointments.domain;
+package com.api.v2.medical_appointments.domain.exposed;
 
 import org.springframework.modulith.ApplicationModule;

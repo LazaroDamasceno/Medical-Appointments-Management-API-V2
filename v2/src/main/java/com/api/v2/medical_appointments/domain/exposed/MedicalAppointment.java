@@ -1,4 +1,4 @@
-package com.api.v2.medical_appointments.domain;
+package com.api.v2.medical_appointments.domain.exposed;
 
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.customers.domain.exposed.Customer;

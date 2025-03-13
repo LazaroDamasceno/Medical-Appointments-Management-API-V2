@@ -1,8 +1,8 @@
-package com.api.v2.medical_slots.domain;
+package com.api.v2.medical_slots.domain.exposed;
 
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.medical_appointments.domain.MedicalAppointment;
+import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;

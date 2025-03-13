@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.domain;
 
+import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

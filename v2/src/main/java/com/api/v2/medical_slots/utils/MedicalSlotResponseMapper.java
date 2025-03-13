@@ -3,7 +3,7 @@ package com.api.v2.medical_slots.utils;
 import com.api.v2.common.DateTimeFormatter;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
 public final class MedicalSlotResponseMapper {
