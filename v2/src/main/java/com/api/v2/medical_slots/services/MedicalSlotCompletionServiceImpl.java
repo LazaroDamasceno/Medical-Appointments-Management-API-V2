@@ -46,9 +46,8 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();
         MedicalAppointment completedMedicalAppointment = medicalAppointmentCompletionService.complete(medicalAppointment);
-        medicalSlot.markAsCompleted();
+        medicalSlot.markAsCompleted(completedMedicalAppointment);
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        medicalSlot.setMedicalAppointment(completedMedicalAppointment);
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()
                 .add(

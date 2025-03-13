@@ -63,13 +63,15 @@ public class MedicalSlot {
         canceledAtZoneId = ZoneId.systemDefault();
         canceledAtZoneOffset = OffsetDateTime.now().getOffset();
         isCanceledDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
+        this.medicalAppointment = null;
     }
 
-    public void markAsCompleted() {
+    public void markAsCompleted(MedicalAppointment completedMedicalAppointment) {
         completedAt = LocalDateTime.now();
         completedAtZoneId = ZoneId.systemDefault();
         completedAtZoneOffset = OffsetDateTime.now().getOffset();
         isCompletedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(completedAt, canceledAtZoneId);
+        medicalAppointment = completedMedicalAppointment;
     }
 
     public ObjectId getId() {
@@ -130,10 +132,6 @@ public class MedicalSlot {
 
     public MedicalAppointment getMedicalAppointment() {
         return medicalAppointment;
-    }
-
-    public void setMedicalAppointment(MedicalAppointment medicalAppointment) {
-        this.medicalAppointment = medicalAppointment;
     }
 
     public boolean isCreatedDuringDST() {
