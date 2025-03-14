@@ -1,6 +1,5 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
@@ -35,7 +34,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
     }
 
     @Override
-    public ResponseEntity<MedicalAppointmentResponseResource> findById(@Id String customerId, @Id String medicalAppointmentId) {
+    public ResponseEntity<MedicalAppointmentResponseResource> findById(String customerId, String medicalAppointmentId) {
         Customer customer = customerFinderUtil.findById(customerId);
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);

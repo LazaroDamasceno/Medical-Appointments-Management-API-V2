@@ -4,19 +4,20 @@ import com.api.v2.common.Address;
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.domain.exposed.Person;
 import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Document
 public class Customer {
 
-    @BsonId
-    private ObjectId id;
+    @Id
+    private String id;
     private Address address;
     private Person person;
     private LocalDateTime createdAt;
@@ -28,7 +29,7 @@ public class Customer {
     }
 
     private Customer(Address address, Person person) {
-        this.id = new ObjectId();
+        this.id = UUID.randomUUID().toString();
         this.address = address;
         this.person = person;
         this.createdAt = LocalDateTime.now();
@@ -41,7 +42,7 @@ public class Customer {
         return new Customer(address, person);
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 

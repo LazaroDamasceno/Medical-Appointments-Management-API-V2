@@ -3,7 +3,6 @@ package com.api.v2.cards.util;
 import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;
 import com.api.v2.cards.exceptions.NonExistentCardException;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,7 +16,7 @@ public class CardFinderUtil {
 
     public Card findById(String id) {
         return cardRepository
-                .findById(new ObjectId(id))
+                .findById(id)
                 .orElseThrow(() -> new NonExistentCardException(id));
     }
 }

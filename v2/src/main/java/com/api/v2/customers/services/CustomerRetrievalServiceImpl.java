@@ -1,6 +1,5 @@
 package com.api.v2.customers.services;
 
-import com.api.v2.common.Id;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
@@ -25,7 +24,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
     }
 
     @Override
-    public ResponseEntity<CustomerResponseDto> findById(@Id String id) {
+    public ResponseEntity<CustomerResponseDto> findById(String id) {
         Customer customer = customerFinderUtil.findById(id);
         CustomerResponseDto responseDto = CustomerResponseMapper.mapToDto(customer);
         return ResponseEntity.ok(responseDto);

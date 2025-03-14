@@ -15,7 +15,6 @@ import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
 import jakarta.validation.Valid;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -89,7 +88,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     }
 
     private void onBlockedBooking(MedicalSlot medicalSlot, String customerId) {
-        if (medicalSlot.getDoctor().getPerson().getId().equals(new ObjectId(customerId))) {
+        if (medicalSlot.getDoctor().getPerson().getId().equals(new String(customerId))) {
             String message = "Customer cannot book a medical appointment which they're the related medical slot's doctor.";
             throw new InaccessibleMedicalAppointmentException(message);
         }

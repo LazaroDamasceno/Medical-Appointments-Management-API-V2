@@ -1,7 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.common.Id;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinderUtil;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
@@ -42,7 +41,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> cancelById(@Id String customerId, @Id String medicalAppointmentId) {
+    public ResponseEntity<ResourceResponse> cancelById(String customerId, String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
         Customer customer = customerFinderUtil.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);
@@ -58,18 +57,18 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).cancel(
-                                        customer.getId().toString(),
-                                        canceledMedicalSlot.getId().toString()
+                                        customer.getId(),
+                                        canceledMedicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(
-                                        customer.getId().toString(),
-                                        canceledMedicalSlot.getId().toString()
+                                        customer.getId(),
+                                        canceledMedicalSlot.getId()
                                 )
                         ).withRel("find_medical_appointment_by_id"),
                         linkTo(
-                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId())
                         ).withRel("find_medical_appointments_by_customer")
                 );
         return ResponseEntity.ok(responseResource);
@@ -92,14 +91,14 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
 
     private void onCanceledMedicalAppointment(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCanceledAt() != null && medicalAppointment.getCompletedAt() == null) {
-            String message = "Medical appointment whose id is %s is already canceled.".formatted(medicalAppointment.getId().toString());
+            String message = "Medical appointment whose id is %s is already canceled.".formatted(medicalAppointment.getId());
             throw new ImmutableMedicalAppointmentStatusException(message);
         }
     }
 
     private void onCompletedMedicalAppointment(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCanceledAt() == null && medicalAppointment.getCompletedAt() != null) {
-            String message = "Medical appointment whose id is %s is already completed.".formatted(medicalAppointment.getId().toString());
+            String message = "Medical appointment whose id is %s is already completed.".formatted(medicalAppointment.getId());
             throw new ImmutableMedicalAppointmentStatusException(message);
         }
     }

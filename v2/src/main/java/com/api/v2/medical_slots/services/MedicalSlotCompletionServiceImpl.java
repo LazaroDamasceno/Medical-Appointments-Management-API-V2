@@ -1,7 +1,6 @@
 package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.common.Id;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
@@ -38,7 +37,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> completeById(@MLN String medicalLicenseNumber, @Id String slotId) {
+    public ResponseEntity<ResourceResponse> completeById(@MLN String medicalLicenseNumber, String slotId) {
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

@@ -2,16 +2,16 @@ package com.api.v2.people.domain;
 
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.domain.exposed.Person;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.*;
+import java.util.UUID;
 
 @Document
 public record PersonAuditTrail(
-        @BsonId
-        ObjectId id,
+        @Id
+        String id,
         Person person,
         LocalDate createdAt,
         ZoneId createdAtZoneId,
@@ -21,7 +21,7 @@ public record PersonAuditTrail(
 
     public static PersonAuditTrail of(Person person) {
         return new PersonAuditTrail(
-                new ObjectId(),
+                UUID.randomUUID().toString(),
                 person,
                 LocalDate.now(),
                 ZoneId.systemDefault(),

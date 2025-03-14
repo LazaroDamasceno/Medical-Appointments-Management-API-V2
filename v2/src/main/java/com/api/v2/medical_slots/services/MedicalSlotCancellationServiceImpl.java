@@ -1,7 +1,6 @@
 package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.common.Id;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinderUtil;
@@ -39,7 +38,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> cancelById(@MLN String medicalLicenseNumber, @Id String id) {
+    public ResponseEntity<ResourceResponse> cancelById(@MLN String medicalLicenseNumber, String id) {
         Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -61,13 +60,13 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
                                         medicalLicenseNumber,
-                                        medicalSlot.getId().toString()
+                                        medicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
                                         medicalLicenseNumber,
-                                        medicalSlot.getId().toString()
+                                        medicalSlot.getId()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(

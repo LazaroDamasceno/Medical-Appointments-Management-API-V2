@@ -3,17 +3,17 @@ package com.api.v2.people.domain.exposed;
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.*;
+import java.util.UUID;
 
 @Document
 public class Person {
 
-    @BsonId
-    private ObjectId id;
+    @Id
+    private String id;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -35,7 +35,7 @@ public class Person {
     }
 
     private Person(PersonRegistrationDto registrationDto) {
-        this.id = new ObjectId();
+        this.id = UUID.randomUUID().toString();
         this.firstName = registrationDto.firstName();
         this.middleName = registrationDto.middleName();
         this.lastName = registrationDto.lastName();
@@ -61,7 +61,7 @@ public class Person {
         return "%s %s %s".formatted(firstName, middleName, lastName);
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 

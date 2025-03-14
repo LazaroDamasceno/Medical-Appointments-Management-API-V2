@@ -2,20 +2,20 @@ package com.api.v2.doctors.domain.exposed;
 
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.people.domain.exposed.Person;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Document
 public class Doctor {
 
-    @BsonId
-    private ObjectId id;
+    @Id
+    private String id;
     private Person person;
     private String medicalLicenseNumber;
     private LocalDateTime hiredAt;
@@ -31,7 +31,7 @@ public class Doctor {
     }
 
     private Doctor(Person person, String medicalLicenseNumber) {
-        this.id = new ObjectId();
+        this.id = UUID.randomUUID().toString();
         this.person = person;
         this.medicalLicenseNumber = medicalLicenseNumber;
         this.hiredAt = LocalDateTime.now();
@@ -58,7 +58,7 @@ public class Doctor {
         isTerminatedDuringDST = null;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 

@@ -3,17 +3,17 @@ package com.api.v2.medical_appointments.domain.exposed;
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.*;
+import java.util.UUID;
 
 @Document
 public class MedicalAppointment {
 
-    @BsonId
-    private ObjectId id;
+    @Id
+    private String id;
     private Customer customer;
     private Doctor doctor;
     private LocalDateTime bookedAt;
@@ -43,7 +43,7 @@ public class MedicalAppointment {
                                ZoneId bookedAtZoneId,
                                ZoneOffset bookedAtZoneOffset
     ) {
-        this.id = new ObjectId();
+        this.id = UUID.randomUUID().toString();
         this.customer = customer;
         this.doctor = doctor;
         this.bookedAt = bookedAt;
@@ -89,7 +89,7 @@ public class MedicalAppointment {
         isPaymentDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(paidAt, paidAtZoneId);
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 

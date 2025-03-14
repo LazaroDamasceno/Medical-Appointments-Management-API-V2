@@ -3,20 +3,20 @@ package com.api.v2.medical_slots.domain.exposed;
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Document
 public class MedicalSlot {
 
-    @BsonId
-    private ObjectId id;
+    @Id
+    private String id;
     private Doctor doctor;
     private MedicalAppointment medicalAppointment;
     private LocalDateTime availableAt;
@@ -36,7 +36,7 @@ public class MedicalSlot {
     private boolean isCompletedDuringDST;
 
     private MedicalSlot(Doctor doctor, LocalDateTime availableAt, ZoneId availableAtZoneId, ZoneOffset availableAtZoneOffset) {
-        this.id = new ObjectId();
+        this.id = UUID.randomUUID().toString();
         this.doctor = doctor;
         this.availableAt = availableAt;
         this.availableAtZoneId = availableAtZoneId;
@@ -78,7 +78,7 @@ public class MedicalSlot {
         medicalAppointment = completedMedicalAppointment;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 

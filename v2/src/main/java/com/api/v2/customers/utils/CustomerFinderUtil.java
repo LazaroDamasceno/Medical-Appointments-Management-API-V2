@@ -3,7 +3,6 @@ package com.api.v2.customers.utils;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.exceptions.NonExistentCustomerException;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +18,7 @@ public class CustomerFinderUtil {
         return customerRepository
                 .findAll()
                 .stream()
-                .filter(c -> c.getId().equals(new ObjectId(id)))
+                .filter(c -> c.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new NonExistentCustomerException(id));
     }

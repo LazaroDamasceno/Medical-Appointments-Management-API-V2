@@ -3,7 +3,6 @@ package com.api.v2.medical_appointments.utils;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.NonExistentMedicalAppointmentException;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,7 +16,7 @@ public class MedicalAppointmentFinderUtil {
 
     public MedicalAppointment findById(String id) {
         return medicalAppointmentRepository
-                .findById(new ObjectId(id))
+                .findById(id)
                 .orElseThrow(() -> new NonExistentMedicalAppointmentException(id));
     }
 }

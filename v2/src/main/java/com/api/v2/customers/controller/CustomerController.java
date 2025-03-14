@@ -1,6 +1,5 @@
 package com.api.v2.customers.controller;
 
-import com.api.v2.common.Id;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.services.CustomerRegistrationService;
@@ -31,7 +30,7 @@ public class CustomerController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CustomerResponseDto> findById(@PathVariable @Id String id) {
+    public ResponseEntity<CustomerResponseDto> findById(@PathVariable String id) {
         return retrievalService.findById(id);
     }
 

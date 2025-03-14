@@ -1,16 +1,16 @@
 package com.api.v2.cards.domain.exposed;
 
 import com.api.v2.cards.dtos.CardRegistrationDto;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.*;
+import java.util.UUID;
 
 @Document
 public record Card(
-        @BsonId
-        ObjectId id,
+        @Id
+        String id,
         String type,
         String bank,
         String cvc_cvv,
@@ -22,7 +22,7 @@ public record Card(
 
     public static Card of(String type, CardRegistrationDto registrationDto) {
         return new Card(
-                new ObjectId(),
+                UUID.randomUUID().toString(),
                 type,
                 registrationDto.bank(),
                 registrationDto.cvc_cvv(),

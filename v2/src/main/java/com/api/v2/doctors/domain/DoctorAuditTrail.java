@@ -2,17 +2,17 @@ package com.api.v2.doctors.domain;
 
 import com.api.v2.common.DstCheckerUtil;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 public record DoctorAuditTrail(
-        @BsonId
-        ObjectId id,
+        @Id
+        String id,
         Doctor doctor,
         LocalDateTime createdAt,
         ZoneId createdAtZoneId,
@@ -22,7 +22,7 @@ public record DoctorAuditTrail(
 
     public static DoctorAuditTrail of(Doctor doctor) {
         return new DoctorAuditTrail(
-                new ObjectId(),
+                UUID.randomUUID().toString(),
                 doctor,
                 LocalDateTime.now(),
                 ZoneId.systemDefault(),
