@@ -21,7 +21,7 @@ public record Payment(
         LocalDateTime paidAt,
         ZoneId paidAtZoneId,
         ZoneOffset paidAtZoneOffset,
-        boolean isPaymentDuringDST
+        Boolean isPaymentDuringDST
 ) {
 
     public static Payment of(Card card, MedicalAppointment medicalAppointment) {

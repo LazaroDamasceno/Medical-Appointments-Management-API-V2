@@ -17,7 +17,7 @@ public record DoctorAuditTrail(
         LocalDateTime createdAt,
         ZoneId createdAtZoneId,
         ZoneOffset createdAtZoneOffset,
-        boolean isCreatedDuringDST
+        Boolean isCreatedDuringDST
 ) {
 
     public static DoctorAuditTrail of(Doctor doctor) {

@@ -21,7 +21,7 @@ public class Doctor {
     private LocalDateTime hiredAt;
     private ZoneId hiredAtZoneId;
     private ZoneOffset hiredAtZoneOffset;
-    private boolean isHiredDuringDST;
+    private Boolean isHiredDuringDST;
     private LocalDateTime terminatedAt;
     private ZoneId terminatedAtZoneId;
     private ZoneOffset terminatedAtZoneOffset;
@@ -98,11 +98,11 @@ public class Doctor {
         this.person = person;
     }
 
-    public boolean isHiredDuringDST() {
+    public Boolean isHiredDuringDST() {
         return isHiredDuringDST;
     }
 
-    public boolean isTerminatedDuringDST() {
+    public Boolean isTerminatedDuringDST() {
         return isTerminatedDuringDST;
     }
 }

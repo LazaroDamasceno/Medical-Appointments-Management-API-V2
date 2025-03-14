@@ -25,11 +25,11 @@ public class Person {
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
-    private boolean isCreatedDuringDST;
+    private Boolean isCreatedDuringDST;
     private LocalDateTime modifiedAt;
     private ZoneId modifiedAtZoneId;
     private ZoneOffset modifiedAtZoneOffset;
-    private boolean isModifiedDuringDST;
+    private Boolean isModifiedDuringDST;
 
     public Person() {
     }

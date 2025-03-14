@@ -16,7 +16,7 @@ public record PersonAuditTrail(
         LocalDate createdAt,
         ZoneId createdAtZoneId,
         ZoneOffset createdAtZoneOffset,
-        boolean isCreatedDuringDST
+        Boolean isCreatedDuringDST
 ) {
 
     public static PersonAuditTrail of(Person person) {

@@ -25,15 +25,15 @@ public class MedicalSlot {
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
-    private boolean isCreatedDuringDST;
+    private Boolean isCreatedDuringDST;
     private LocalDateTime canceledAt;
     private ZoneId canceledAtZoneId;
     private ZoneOffset canceledAtZoneOffset;
-    private boolean isCanceledDuringDST;
+    private Boolean isCanceledDuringDST;
     private LocalDateTime completedAt;
     private ZoneId completedAtZoneId;
     private ZoneOffset completedAtZoneOffset;
-    private boolean isCompletedDuringDST;
+    private Boolean isCompletedDuringDST;
 
     private MedicalSlot(Doctor doctor, LocalDateTime availableAt, ZoneId availableAtZoneId, ZoneOffset availableAtZoneOffset) {
         this.id = UUID.randomUUID().toString();
@@ -138,15 +138,15 @@ public class MedicalSlot {
         return medicalAppointment;
     }
 
-    public boolean isCreatedDuringDST() {
+    public Boolean isCreatedDuringDST() {
         return isCreatedDuringDST;
     }
 
-    public boolean isCanceledDuringDST() {
+    public Boolean isCanceledDuringDST() {
         return isCanceledDuringDST;
     }
 
-    public boolean isCompletedDuringDST() {
+    public Boolean isCompletedDuringDST() {
         return isCompletedDuringDST;
     }
 }
