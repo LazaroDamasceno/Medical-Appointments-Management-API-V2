@@ -13,7 +13,6 @@ import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

@@ -50,10 +50,14 @@ public class MedicalSlot {
     public MedicalSlot() {
     }
 
+    public void setMedicalAppointment(MedicalAppointment medicalAppointment) {
+        this.medicalAppointment = medicalAppointment;
+    }
+
     public static MedicalSlot of(Doctor doctor,
-                                     LocalDateTime availableAt,
-                                     ZoneId availableAtZoneId,
-                                     ZoneOffset availableAtZoneOffset
+                                 LocalDateTime availableAt,
+                                 ZoneId availableAtZoneId,
+                                 ZoneOffset availableAtZoneOffset
     ) {
         return new MedicalSlot(doctor, availableAt, availableAtZoneId, availableAtZoneOffset);
     }
@@ -63,7 +67,7 @@ public class MedicalSlot {
         canceledAtZoneId = ZoneId.systemDefault();
         canceledAtZoneOffset = OffsetDateTime.now().getOffset();
         isCanceledDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
-        this.medicalAppointment = null;
+        medicalAppointment = null;
     }
 
     public void markAsCompleted(MedicalAppointment completedMedicalAppointment) {
