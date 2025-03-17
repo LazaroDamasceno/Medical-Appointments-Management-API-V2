@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class BlockedDateTimeHandler {
 
     public static void handle(LocalDate date) {
-        if (DateTimeChecker.isDateTimeAtLeastNotBookedToday(date)) {
+        if (DateTimeChecker.isBeforeToday(date)) {
             throw new BlockedBookingDateTimeException();
         }
     }
