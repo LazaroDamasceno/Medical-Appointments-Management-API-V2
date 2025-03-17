@@ -4,6 +4,7 @@ import com.api.v2.cards.exceptions.NonExistentCardException;
 import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
+import com.api.v2.doctors.exceptions.NonExistentAmericanRegionException;
 import com.api.v2.doctors.exceptions.NonExistentDoctorException;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
@@ -65,12 +66,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ImmutableMedicalSlotStatusException.class)
     public ResponseEntity<String> handleException(ImmutableMedicalSlotStatusException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(BlockedBookingDateTimeException.class)
     public ResponseEntity<String> handleException(BlockedBookingDateTimeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NonExistentAmericanRegionException.class)
+    public ResponseEntity<String> handleException(NonExistentAmericanRegionException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     @ExceptionHandler(UnavailableMedicalBookingDateTimeException.class)
