@@ -49,7 +49,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                                 methodOn(MedicalSlotController.class).findAllByDoctor(medicalSlot.getDoctor().getMedicalLicenseNumber())
                         ).withRel("find_medical_slots_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(medicalSlot.getDoctor().getId().toString(), slotId)
+                                methodOn(MedicalSlotController.class).cancel(medicalSlot.getDoctor().getId(), slotId)
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.ok(responseResource);
@@ -57,7 +57,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
         if (medicalSlot.getDoctor().getId().equals(doctor.getId())) {
-            throw new InaccessibleMedicalSlotException(doctor.getId().toString(), medicalSlot.getId().toString());
+            throw new InaccessibleMedicalSlotException(doctor.getId(), medicalSlot.getId());
         }
     }
 

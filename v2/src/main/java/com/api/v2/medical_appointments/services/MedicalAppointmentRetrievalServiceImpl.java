@@ -43,18 +43,18 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(
-                                        customer.getId().toString(),
-                                        medicalAppointment.getId().toString()
+                                        customer.getId(),
+                                        medicalAppointment.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).cancel(
-                                        customer.getId().toString(),
-                                        medicalAppointment.getId().toString()
+                                        customer.getId(),
+                                        medicalAppointment.getId()
                                 )
                         ).withRel("cancel_medical_appointment_by_id"),
                         linkTo(
-                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId())
                         ).withRel("find_medical_appointments_by_customer")
                 );
         return ResponseEntity.ok(responseResource);
@@ -79,17 +79,17 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                 .peek(resource ->
                         resource.add(
                                 linkTo(
-                                        methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                                        methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId())
                                 ).withSelfRel(),
                                 linkTo(
                                         methodOn(MedicalAppointmentController.class).findById(
-                                                customer.getId().toString(),
+                                                customer.getId(),
                                                 resource.getId()
                                         )
                                 ).withRel("find_medical_appointment_by_id"),
                                 linkTo(
                                         methodOn(MedicalAppointmentController.class).cancel(
-                                                customer.getId().toString(),
+                                                customer.getId(),
                                                 resource.getId()
                                         )
                                 ).withRel("cancel_medical_appointment_by_id")

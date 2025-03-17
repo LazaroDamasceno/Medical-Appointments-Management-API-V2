@@ -86,13 +86,13 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
                                         medicalLicenseNumber,
-                                        medicalSlot.getId().toString()
+                                        medicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
                                         medicalLicenseNumber,
-                                        medicalSlot.getId().toString()
+                                        medicalSlot.getId()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
@@ -104,20 +104,20 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
         if (!medicalSlot.getDoctor().getId().equals(doctor.getId())) {
-            throw new InaccessibleMedicalSlotException(doctor.getId().toString(), medicalSlot.getId().toString());
+            throw new InaccessibleMedicalSlotException(doctor.getId(), medicalSlot.getId());
         }
     }
 
     private void onCanceledMedicalSlot(MedicalSlot medicalSlot) {
         if (medicalSlot.getCanceledAt() != null && medicalSlot.getCompletedAt() == null) {
-            String message = "Medical slot whose id is %s is already canceled.".formatted(medicalSlot.getId().toString());
+            String message = "Medical slot whose id is %s is already canceled.".formatted(medicalSlot.getId());
             throw new ImmutableMedicalSlotStatusException(message);
         }
     }
 
     private void onCompletedMedicalSlot(MedicalSlot medicalSlot) {
         if (medicalSlot.getCanceledAt() == null && medicalSlot.getCompletedAt() != null) {
-            String message = "Medical slot whose id is %s is already completed.".formatted(medicalSlot.getId().toString());
+            String message = "Medical slot whose id is %s is already completed.".formatted(medicalSlot.getId());
             throw new ImmutableMedicalSlotStatusException(message);
         }
     }

@@ -52,13 +52,13 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                 .mapToResource(savedMedicalSlot)
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId().toString())
+                                methodOn(MedicalSlotController.class).findById(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId())
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findAllByDoctor(registrationDto.medicalLicenseNumber())
                         ).withRel("find_medical_slot_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId().toString())
+                                methodOn(MedicalSlotController.class).cancel(registrationDto.medicalLicenseNumber(), savedMedicalSlot.getId())
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);

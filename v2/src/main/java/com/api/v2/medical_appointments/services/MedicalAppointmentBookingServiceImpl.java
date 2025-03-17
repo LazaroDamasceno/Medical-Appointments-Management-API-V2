@@ -72,18 +72,18 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(
-                                        customer.getId().toString(),
-                                        savedMedicalAppointment.getId().toString()
+                                        customer.getId(),
+                                        savedMedicalAppointment.getId()
                                 )
                         ).withRel("find_medical_appointment_by_id"),
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).cancel(
-                                        customer.getId().toString(),
-                                        savedMedicalAppointment.getId().toString()
+                                        customer.getId(),
+                                        savedMedicalAppointment.getId()
                                 )
                         ).withRel("cancel_medical_appointment_by_id"),
                         linkTo(
-                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId().toString())
+                                methodOn(MedicalAppointmentController.class).findAllByCustomer(customer.getId())
                         ).withRel("find_medical_appointments_by_customer")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);

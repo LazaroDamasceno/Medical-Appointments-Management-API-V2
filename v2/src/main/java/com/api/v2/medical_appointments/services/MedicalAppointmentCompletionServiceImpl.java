@@ -24,14 +24,14 @@ public class MedicalAppointmentCompletionServiceImpl implements MedicalAppointme
 
     private void onCanceledMedicalAppointment(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCanceledAt() != null && medicalAppointment.getCompletedAt() == null) {
-            String message = "Medical appointment whose id is %s is already canceled.".formatted(medicalAppointment.getId().toString());
+            String message = "Medical appointment whose id is %s is already canceled.".formatted(medicalAppointment.getId());
             throw new ImmutableMedicalAppointmentStatusException(message);
         }
     }
 
     private void onCompletedMedicalAppointment(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCanceledAt() == null && medicalAppointment.getCompletedAt() != null) {
-            String message = "Medical appointment whose id is %s is already completed.".formatted(medicalAppointment.getId().toString());
+            String message = "Medical appointment whose id is %s is already completed.".formatted(medicalAppointment.getId());
             throw new ImmutableMedicalAppointmentStatusException(message);
         }
     }

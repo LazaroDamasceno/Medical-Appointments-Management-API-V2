@@ -26,7 +26,7 @@ public final class MedicalSlotResponseMapper {
 
     private static MedicalSlotResponseResource mapToCompletedResource(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
-                medicalSlot.getId().toString(),
+                medicalSlot.getId(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
                 DateTimeFormatter.format(
@@ -45,7 +45,7 @@ public final class MedicalSlotResponseMapper {
 
     private static MedicalSlotResponseResource mapToCanceledResourceWithoutMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
-                medicalSlot.getId().toString(),
+                medicalSlot.getId(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 null,
                 DateTimeFormatter.format(
@@ -64,7 +64,7 @@ public final class MedicalSlotResponseMapper {
 
     private static MedicalSlotResponseResource mapToCanceledResourceWithMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
-                medicalSlot.getId().toString(),
+                medicalSlot.getId(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
                 DateTimeFormatter.format(
@@ -83,7 +83,7 @@ public final class MedicalSlotResponseMapper {
 
     private static MedicalSlotResponseResource mapToActiveResourceWithMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
-                medicalSlot.getId().toString(),
+                medicalSlot.getId(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
                 DateTimeFormatter.format(
@@ -98,7 +98,7 @@ public final class MedicalSlotResponseMapper {
 
     private static MedicalSlotResponseResource mapToActiveResourceWithoutMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
-                medicalSlot.getId().toString(),
+                medicalSlot.getId(),
                 DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
                 null,
                 DateTimeFormatter.format(

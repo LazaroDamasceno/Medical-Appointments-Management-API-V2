@@ -64,7 +64,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
         if (medicalSlot.getDoctor().getId().equals(doctor.getId())) {
-            throw new InaccessibleMedicalSlotException(doctor.getId().toString(), medicalSlot.getId().toString());
+            throw new InaccessibleMedicalSlotException(doctor.getId(), medicalSlot.getId());
         }
     }
 }
