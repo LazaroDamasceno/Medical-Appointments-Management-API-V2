@@ -1,8 +1,8 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
@@ -28,7 +28,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     }
 
     @Override
-    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@MLN String medicalLicenseNumber) {
+    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(MedicalLicenseNumber medicalLicenseNumber) {
         DoctorResponseResource responseResource = DoctorResponseMapper
                 .mapToResource(doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber))
                 .add(

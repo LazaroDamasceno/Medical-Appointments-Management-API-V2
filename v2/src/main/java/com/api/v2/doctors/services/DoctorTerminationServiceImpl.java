@@ -1,11 +1,11 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
 import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
@@ -33,7 +33,7 @@ public class DoctorTerminationServiceImpl implements DoctorTerminationService {
     }
 
     @Override
-    public ResponseEntity<DoctorResponseResource> terminate(@MLN String medicalLicenseNumber) {
+    public ResponseEntity<DoctorResponseResource> terminate(MedicalLicenseNumber medicalLicenseNumber) {
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         onTerminatedDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);

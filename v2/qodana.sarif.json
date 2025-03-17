@@ -53753,7 +53753,7 @@
                     "charOffset": 241,
                     "charLength": 176,
                     "snippet": {
-                      "text": "\r\n    private PersonResponseDto person;\r\n    private String medicalLicenseNumber;\r\n\r\n    public DoctorResponseResource(PersonResponseDto person, String medicalLicenseNumber) {\r"
+                      "text": "\r\n    private PersonResponseDto person;\r\n    private MedicalLicenseNumber medicalLicenseNumber;\r\n\r\n    public DoctorResponseResource(PersonResponseDto person, MedicalLicenseNumber medicalLicenseNumber) {\r"
                     },
                     "sourceLanguage": "JAVA"
                   }
@@ -53809,7 +53809,7 @@
                     "charOffset": 150,
                     "charLength": 175,
                     "snippet": {
-                      "text": "public class DoctorResponseResource extends RepresentationModel<DoctorResponseResource> {\r\n\r\n    private PersonResponseDto person;\r\n    private String medicalLicenseNumber;\r\n\r"
+                      "text": "public class DoctorResponseResource extends RepresentationModel<DoctorResponseResource> {\r\n\r\n    private PersonResponseDto person;\r\n    private MedicalLicenseNumber medicalLicenseNumber;\r\n\r"
                     },
                     "sourceLanguage": "JAVA"
                   }

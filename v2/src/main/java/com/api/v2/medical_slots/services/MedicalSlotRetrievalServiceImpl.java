@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
@@ -35,7 +35,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public ResponseEntity<MedicalSlotResponseResource> findById(@MLN String medicalLicenseNumber, String slotId) {
+    public ResponseEntity<MedicalSlotResponseResource> findById(MedicalLicenseNumber medicalLicenseNumber, String slotId) {
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -49,7 +49,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                                 methodOn(MedicalSlotController.class).findAllByDoctor(medicalSlot.getDoctor().getMedicalLicenseNumber())
                         ).withRel("find_medical_slots_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(medicalSlot.getDoctor().getId(), slotId)
+                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, slotId)
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.ok(responseResource);
@@ -62,7 +62,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber) {
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(MedicalLicenseNumber medicalLicenseNumber) {
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()

@@ -2,12 +2,14 @@ package com.api.v2.doctors.resources;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
+
 public class DoctorResponseResource extends RepresentationModel<DoctorResponseResource> {
 
     private String fullName;
-    private String medicalLicenseNumber;
+    private MedicalLicenseNumber medicalLicenseNumber;
 
-    public DoctorResponseResource(String fullName, String medicalLicenseNumber) {
+    public DoctorResponseResource(String fullName, MedicalLicenseNumber medicalLicenseNumber) {
         this.fullName = fullName;
         this.medicalLicenseNumber = medicalLicenseNumber;
     }
@@ -16,7 +18,7 @@ public class DoctorResponseResource extends RepresentationModel<DoctorResponseRe
         return fullName;
     }
 
-    public String getMedicalLicenseNumber() {
+    public MedicalLicenseNumber getMedicalLicenseNumber() {
         return medicalLicenseNumber;
     }
 }

@@ -1,13 +1,14 @@
 package com.api.v2.doctors.controller;
 
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.dto.DoctorHiringDto;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.services.DoctorHiringService;
 import com.api.v2.doctors.services.DoctorRehireService;
 import com.api.v2.doctors.services.DoctorRetrievalService;
 import com.api.v2.doctors.services.DoctorTerminationService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +41,18 @@ public class DoctorController {
         return hiringService.hire(hiringDto);
     }
 
-    @PatchMapping("{medicalLicenseNumber}/rehiring")
-    public ResponseEntity<DoctorResponseResource> rehire(@PathVariable @MLN String medicalLicenseNumber) {
+    @PatchMapping("rehiring")
+    public ResponseEntity<DoctorResponseResource> rehire(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
         return rehireService.rehire(medicalLicenseNumber);
     }
 
-    @PatchMapping("{medicalLicenseNumber}/termination")
-    public ResponseEntity<DoctorResponseResource> terminate(@PathVariable @MLN String medicalLicenseNumber) {
+    @PatchMapping("termination")
+    public ResponseEntity<DoctorResponseResource> terminate(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
         return terminationService.terminate(medicalLicenseNumber);
     }
 
-    @GetMapping("{medicalLicenseNumber}")
-    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@PathVariable @MLN String medicalLicenseNumber) {
+    @GetMapping
+    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
         return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber);
     }
 

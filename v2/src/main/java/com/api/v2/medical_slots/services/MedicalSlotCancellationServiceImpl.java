@@ -1,8 +1,8 @@
 package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.MedicalAppointmentCancellationService;
@@ -38,7 +38,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> cancelById(@MLN String medicalLicenseNumber, String id) {
+    public ResponseEntity<ResourceResponse> cancelById(MedicalLicenseNumber medicalLicenseNumber, String id) {
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -53,7 +53,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
 
     private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot) {
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
+        MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()
                 .add(
@@ -78,7 +78,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
 
     private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentCancellationService.cancel(medicalAppointment);
-        String medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
+        MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()

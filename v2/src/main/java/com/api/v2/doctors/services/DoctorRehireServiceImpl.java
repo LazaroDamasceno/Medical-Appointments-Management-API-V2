@@ -1,11 +1,11 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
 import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
@@ -33,7 +33,7 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public ResponseEntity<DoctorResponseResource> rehire(@MLN String medicalLicenseNumber) {
+    public ResponseEntity<DoctorResponseResource> rehire(MedicalLicenseNumber medicalLicenseNumber) {
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);

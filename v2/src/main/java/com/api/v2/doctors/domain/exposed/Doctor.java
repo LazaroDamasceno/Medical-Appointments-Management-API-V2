@@ -1,6 +1,7 @@
 package com.api.v2.doctors.domain.exposed;
 
 import com.api.v2.common.DstChecker;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.people.domain.exposed.Person;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +18,7 @@ public class Doctor {
     @Id
     private String id;
     private Person person;
-    private String medicalLicenseNumber;
+    private MedicalLicenseNumber medicalLicenseNumber;
     private LocalDateTime hiredAt;
     private ZoneId hiredAtZoneId;
     private ZoneOffset hiredAtZoneOffset;
@@ -30,7 +31,7 @@ public class Doctor {
     public Doctor() {
     }
 
-    private Doctor(Person person, String medicalLicenseNumber) {
+    private Doctor(Person person, MedicalLicenseNumber medicalLicenseNumber) {
         this.id = UUID.randomUUID().toString();
         this.person = person;
         this.medicalLicenseNumber = medicalLicenseNumber;
@@ -40,7 +41,7 @@ public class Doctor {
         this.isHiredDuringDST = DstChecker.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
-    public static Doctor of(Person person, String medicalLicenseNumber) {
+    public static Doctor of(Person person, MedicalLicenseNumber medicalLicenseNumber) {
         return new Doctor(person, medicalLicenseNumber);
     }
 
@@ -66,7 +67,7 @@ public class Doctor {
         return person;
     }
 
-    public String getMedicalLicenseNumber() {
+    public MedicalLicenseNumber getMedicalLicenseNumber() {
         return medicalLicenseNumber;
     }
 

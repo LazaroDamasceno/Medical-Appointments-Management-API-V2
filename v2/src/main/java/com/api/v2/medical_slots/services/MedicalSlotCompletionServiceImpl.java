@@ -1,8 +1,8 @@
 package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.MedicalAppointmentCompletionService;
@@ -37,7 +37,7 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> completeById(@MLN String medicalLicenseNumber, String slotId) {
+    public ResponseEntity<ResourceResponse> completeById(MedicalLicenseNumber medicalLicenseNumber, String slotId) {
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);

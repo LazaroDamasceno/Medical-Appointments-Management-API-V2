@@ -4,6 +4,7 @@ import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.dto.DoctorHiringDto;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
@@ -73,7 +74,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         }
     }
 
-    private void onDuplicatedMedicalLicenseNumber(String medicalLicenseNumber) {
+    private void onDuplicatedMedicalLicenseNumber(MedicalLicenseNumber medicalLicenseNumber) {
         boolean isMedicalLicenseNumberDuplicated = doctorRepository
                 .findAll()
                 .stream()

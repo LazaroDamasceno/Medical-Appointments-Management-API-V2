@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.controllers;
 
-import com.api.v2.common.MLN;
 import com.api.v2.common.ResourceResponse;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
@@ -38,23 +38,23 @@ public class MedicalSlotController {
         return registrationService.register(registrationDto);
     }
 
-    @PatchMapping("{medicalLicenseNumber}/{slotId}/cancellation")
-    public ResponseEntity<ResourceResponse> cancel(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    @PatchMapping("{slotId}/cancellation")
+    public ResponseEntity<ResourceResponse> cancel(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber, @PathVariable String slotId) {
         return cancellationService.cancelById(medicalLicenseNumber, slotId);
     }
 
-    @PatchMapping("{medicalLicenseNumber}/{slotId}/completion")
-    public ResponseEntity<ResourceResponse> complete(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    @PatchMapping("{slotId}/completion")
+    public ResponseEntity<ResourceResponse> complete(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber, @PathVariable String slotId) {
         return completionService.completeById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}/{slotId}")
-    public ResponseEntity<MedicalSlotResponseResource> findById(@PathVariable @MLN String medicalLicenseNumber, @PathVariable String slotId) {
+    public ResponseEntity<MedicalSlotResponseResource> findById(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber, @PathVariable String slotId) {
         return retrievalService.findById(medicalLicenseNumber, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}")
-    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(@PathVariable @MLN String medicalLicenseNumber) {
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
         return retrievalService.findAllByDoctor(medicalLicenseNumber);
     }
 

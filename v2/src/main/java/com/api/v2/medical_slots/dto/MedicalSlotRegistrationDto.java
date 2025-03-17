@@ -1,13 +1,13 @@
 package com.api.v2.medical_slots.dto;
 
 
-import com.api.v2.common.MLN;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public record MedicalSlotRegistrationDto(
-        @MLN String medicalLicenseNumber,
+        MedicalLicenseNumber medicalLicenseNumber,
         @NotNull LocalDateTime availableAt
 ) {
 }

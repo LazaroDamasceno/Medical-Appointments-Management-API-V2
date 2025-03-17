@@ -1,6 +1,7 @@
 package com.api.v2;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
+import com.api.v2.doctors.dto.MedicalLicenseNumber;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            "12345678CA"
+            new MedicalLicenseNumber("12345678", "CA", "US")
     );
 
     @Test
@@ -75,7 +76,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            "12345678CA"
+            new MedicalLicenseNumber("12345678CA", "CA", "US")
     );
 
     @Test
@@ -88,7 +89,7 @@ public class DoctorHiringTest {
         ).andExpect(status().is4xxClientError());
     }
 
-    DoctorHiringDto hiringDtoWithMedicalLicenseNumber = new DoctorHiringDto(
+    DoctorHiringDto hiringDtoWithDuplicatedMedicalLicenseNumber = new DoctorHiringDto(
             new PersonRegistrationDto(
                     "Leo",
                     "",
@@ -99,7 +100,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            "12345678CA"
+            new MedicalLicenseNumber("12345678CA", "CA", "US")
     );
 
     @Test
@@ -108,7 +109,7 @@ public class DoctorHiringTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(hiringDtoWithMedicalLicenseNumber))
+                .content(objectMapper.writeValueAsString(hiringDtoWithDuplicatedMedicalLicenseNumber))
         ).andExpect(status().is4xxClientError());
     }
 
