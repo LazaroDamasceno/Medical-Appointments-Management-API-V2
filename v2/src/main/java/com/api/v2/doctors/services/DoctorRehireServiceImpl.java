@@ -1,5 +1,6 @@
 package com.api.v2.doctors.services;
 
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
@@ -7,9 +8,8 @@ import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
-import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
-import com.api.v2.doctors.utils.DoctorResponseMapper;
+import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -33,23 +33,25 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public ResponseEntity<DoctorResponseResource> rehire(MedicalLicenseNumber medicalLicenseNumber) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
+    public ResponseEntity<ResourceResponse> rehire(String medicalLicenseNumber, String medicalRegion) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, medicalRegion);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);
         doctor.markAsRehired();
         Doctor rehiredDoctor = doctorRepository.save(doctor);
-        DoctorResponseResource responseResource = DoctorResponseMapper.mapToResource(rehiredDoctor)
+        ResourceResponse responseResource = ResourceResponse
+                .createEmpty()
                 .add(
                         linkTo(
-                                methodOn(DoctorController.class).rehire(medicalLicenseNumber)
+                                methodOn(DoctorController.class).rehire(medicalLicenseNumber, medicalRegion)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber)
+                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, medicalRegion)
                         ).withRel("find_doctor_by_medical_license_number"),
                         linkTo(
-                                methodOn(DoctorController.class).terminate(medicalLicenseNumber)
+                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, medicalRegion)
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
         return ResponseEntity.ok(responseResource);

@@ -5,5 +5,5 @@ import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import org.springframework.http.ResponseEntity;
 
 public interface MedicalSlotCompletionService {
-    ResponseEntity<ResourceResponse> completeById(MedicalLicenseNumber medicalLicenseNumber, String slotId);
+    ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String medicalRegion, String slotId);
 }

@@ -4,7 +4,7 @@ import com.api.v2.doctors.exceptions.NonExistentAmericanRegionException;
 
 import java.util.Arrays;
 
-public enum Regions {
+public enum MedicalRegions {
 
     AL, AK, AZ, AR, CA, CO, CT, DE, DC,
     FL, GA, HI, ID, IL, IN, IA, KS, KY,
@@ -14,11 +14,11 @@ public enum Regions {
     VT, VA, WA, WV, WI, WY, AS, GU, MP,
     PR, VI;
 
-    public static Regions from(String region) {
-        return Arrays.stream(Regions
+    public static MedicalRegions from(String medicalRegion) {
+        return Arrays.stream(MedicalRegions
                 .values())
-                .filter(r -> r.equals(Regions.valueOf(region)))
-                .findAny()
+                .filter(region -> region.equals(MedicalRegions.valueOf(medicalRegion)))
+                .findFirst()
                 .orElseThrow(NonExistentAmericanRegionException::new);
     }
 }

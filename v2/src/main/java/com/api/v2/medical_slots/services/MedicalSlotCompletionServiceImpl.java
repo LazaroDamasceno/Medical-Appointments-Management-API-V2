@@ -4,6 +4,7 @@ import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
+import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCompletionService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
@@ -37,9 +38,10 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> completeById(MedicalLicenseNumber medicalLicenseNumber, String slotId) {
+    public ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String medicalRegion, String slotId) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();
@@ -50,13 +52,13 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
                 .createEmpty()
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).complete(medicalLicenseNumber, slotId)
+                                methodOn(MedicalSlotController.class).complete(medicalLicenseNumber, medicalRegion, slotId)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, slotId)
+                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, slotId)
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
                         ).withRel("find_medical_slots_by_doctor")
                 );
         return ResponseEntity.ok(responseResource);

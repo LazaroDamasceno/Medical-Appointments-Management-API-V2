@@ -2,7 +2,7 @@ package com.api.v2;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
-import com.api.v2.doctors.enums.Regions;
+import com.api.v2.doctors.enums.MedicalRegions;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +43,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", Regions.UT)
+            new MedicalLicenseNumber("12345678", MedicalRegions.UT)
     );
 
     @Test
@@ -77,7 +77,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678CA", Regions.UT)
+            new MedicalLicenseNumber("12345678CA", MedicalRegions.UT)
     );
 
     @Test
@@ -101,7 +101,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678CA", Regions.UT)
+            new MedicalLicenseNumber("12345678CA", MedicalRegions.UT)
     );
 
     @Test

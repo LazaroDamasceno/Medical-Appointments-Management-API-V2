@@ -1,5 +1,6 @@
 package com.api.v2.doctors.controller;
 
+import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
@@ -42,18 +43,24 @@ public class DoctorController {
     }
 
     @PatchMapping("rehiring")
-    public ResponseEntity<DoctorResponseResource> rehire(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
-        return rehireService.rehire(medicalLicenseNumber);
+    public ResponseEntity<ResourceResponse> rehire(@PathVariable String medicalLicenseNumber,
+                                                   @PathVariable String medicalRegion
+    ) {
+        return rehireService.rehire(medicalLicenseNumber, medicalRegion);
     }
 
-    @PatchMapping("termination")
-    public ResponseEntity<DoctorResponseResource> terminate(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
-        return terminationService.terminate(medicalLicenseNumber);
+    @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/termination")
+    public ResponseEntity<ResourceResponse> terminate(@PathVariable String medicalLicenseNumber,
+                                                      @PathVariable String medicalRegion
+    ) {
+        return terminationService.terminate(medicalLicenseNumber, medicalRegion);
     }
 
-    @GetMapping("by-medical-license-number")
-    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
-        return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber);
+    @GetMapping("{medicalLicenseNumber}/{medicalRegion}")
+    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@PathVariable String medicalLicenseNumber,
+                                                                             @PathVariable String medicalRegion
+    ) {
+        return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber, medicalRegion);
     }
 
     @GetMapping

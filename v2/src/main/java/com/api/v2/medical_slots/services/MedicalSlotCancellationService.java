@@ -5,5 +5,5 @@ import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import org.springframework.http.ResponseEntity;
 
 public interface MedicalSlotCancellationService {
-    ResponseEntity<ResourceResponse> cancelById(MedicalLicenseNumber medicalLicenseNumber, String slotId);
+    ResponseEntity<ResourceResponse> cancelById(String medicalLicenseNumber, String medicalRegion, String slotId);
 }

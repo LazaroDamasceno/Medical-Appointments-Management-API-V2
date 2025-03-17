@@ -1,7 +1,6 @@
 package com.api.v2.medical_slots.controllers;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
@@ -38,24 +37,35 @@ public class MedicalSlotController {
         return registrationService.register(registrationDto);
     }
 
-    @PatchMapping("{slotId}/cancellation")
-    public ResponseEntity<ResourceResponse> cancel(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber, @PathVariable String slotId) {
-        return cancellationService.cancelById(medicalLicenseNumber, slotId);
+    @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/{slotId}/cancellation")
+    public ResponseEntity<ResourceResponse> cancel(@PathVariable String medicalLicenseNumber,
+                                                   @PathVariable String medicalRegion,
+                                                   @PathVariable String slotId
+    ) {
+        return cancellationService.cancelById(medicalLicenseNumber, medicalRegion, slotId);
     }
 
-    @PatchMapping("{slotId}/completion")
-    public ResponseEntity<ResourceResponse> complete(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber, @PathVariable String slotId) {
-        return completionService.completeById(medicalLicenseNumber, slotId);
+    @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/{slotId}/completion")
+    public ResponseEntity<ResourceResponse> complete(@PathVariable String medicalLicenseNumber,
+                                                     @PathVariable String medicalRegion,
+                                                     @PathVariable String slotId
+    ) {
+        return completionService.completeById(medicalLicenseNumber, medicalRegion, slotId);
     }
 
-    @GetMapping("{medicalLicenseNumber}/{slotId}")
-    public ResponseEntity<MedicalSlotResponseResource> findById(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber, @PathVariable String slotId) {
-        return retrievalService.findById(medicalLicenseNumber, slotId);
+    @GetMapping("{medicalLicenseNumber}/{medicalRegion}/{slotId}")
+    public ResponseEntity<MedicalSlotResponseResource> findById(@PathVariable String medicalLicenseNumber,
+                                                                @PathVariable String medicalRegion,
+                                                                @PathVariable String slotId
+    ) {
+        return retrievalService.findById(medicalLicenseNumber, medicalRegion, slotId);
     }
 
-    @GetMapping("{medicalLicenseNumber}")
-    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
-        return retrievalService.findAllByDoctor(medicalLicenseNumber);
+    @GetMapping("{medicalLicenseNumber}/{medicalRegion}")
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(@PathVariable String medicalLicenseNumber,
+                                                                             @PathVariable String medicalRegion
+    ) {
+        return retrievalService.findAllByDoctor(medicalLicenseNumber, medicalRegion);
     }
 
     @GetMapping

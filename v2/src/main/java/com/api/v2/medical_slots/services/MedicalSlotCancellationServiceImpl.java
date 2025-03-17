@@ -4,6 +4,7 @@ import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
+import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCancellationService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
@@ -38,8 +39,9 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> cancelById(MedicalLicenseNumber medicalLicenseNumber, String id) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
+    public ResponseEntity<ResourceResponse> cancelById(String medicalLicenseNumber, String medicalRegion, String id) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(id);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         onCanceledMedicalSlot(medicalSlot);
@@ -53,6 +55,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
 
     private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot) {
         medicalSlot.markAsCanceled();
+        medicalSlot.setMedicalAppointment(null);
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         ResourceResponse responseResource = ResourceResponse
@@ -60,18 +63,23 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
-                                        medicalLicenseNumber,
+                                        medicalLicenseNumber.licenseNumber(),
+                                        medicalLicenseNumber.medicalRegion().toString(),
                                         medicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
-                                        medicalLicenseNumber,
+                                        medicalLicenseNumber.licenseNumber(),
+                                        medicalLicenseNumber.medicalRegion().toString(),
                                         medicalSlot.getId()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(
+                                        medicalLicenseNumber.licenseNumber(),
+                                        medicalLicenseNumber.medicalRegion().toString()
+                                )
                         ).withRel("find_medical_slots_by_doctor")
                 );
         return ResponseEntity.ok(responseResource);
@@ -81,24 +89,30 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentCancellationService.cancel(medicalAppointment);
         MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         medicalSlot.markAsCanceled();
+        medicalSlot.setMedicalAppointment(null);
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
-                                        medicalLicenseNumber,
+                                        medicalLicenseNumber.licenseNumber(),
+                                        medicalLicenseNumber.medicalRegion().toString(),
                                         medicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
-                                        medicalLicenseNumber,
+                                        medicalLicenseNumber.licenseNumber(),
+                                        medicalLicenseNumber.medicalRegion().toString(),
                                         medicalSlot.getId()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(
+                                        medicalLicenseNumber.licenseNumber(),
+                                        medicalLicenseNumber.medicalRegion().toString()
+                                )
                         ).withRel("find_medical_slots_by_doctor")
                 );
         return ResponseEntity.ok(responseResource);

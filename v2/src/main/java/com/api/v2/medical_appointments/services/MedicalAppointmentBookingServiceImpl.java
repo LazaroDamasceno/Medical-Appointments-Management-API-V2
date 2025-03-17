@@ -14,7 +14,7 @@ import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentB
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
-import com.api.v2.medical_slots.services.exposed.MedicalSlotChangerService;
+import com.api.v2.medical_slots.services.exposed.MedicalSlotUpdatingService;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -32,17 +32,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
-    private final MedicalSlotChangerService medicalAppointmentSetterService;
+    private final MedicalSlotUpdatingService medicalAppointmentSetterService;
     private final MedicalAppointmentRepository medicalAppointmentRepository;
     private final MedicalSlotFinder medicalSlotFinder;
     private final CustomerFinder customerFinder;
 
-    public MedicalAppointmentBookingServiceImpl(MedicalSlotChangerService medicalSlotChangerService,
+    public MedicalAppointmentBookingServiceImpl(MedicalSlotUpdatingService medicalSlotUpdatingService,
                                                 MedicalAppointmentRepository medicalAppointmentRepository,
                                                 MedicalSlotFinder medicalSlotFinder,
                                                 CustomerFinder customerFinder
     ) {
-        this.medicalAppointmentSetterService = medicalSlotChangerService;
+        this.medicalAppointmentSetterService = medicalSlotUpdatingService;
         this.medicalAppointmentRepository = medicalAppointmentRepository;
         this.medicalSlotFinder = medicalSlotFinder;
         this.customerFinder = customerFinder;

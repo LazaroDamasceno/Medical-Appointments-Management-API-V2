@@ -3,6 +3,7 @@ package com.api.v2.medical_slots.services;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
+import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
@@ -35,21 +36,22 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public ResponseEntity<MedicalSlotResponseResource> findById(MedicalLicenseNumber medicalLicenseNumber, String slotId) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
+    public ResponseEntity<MedicalSlotResponseResource> findById(String medicalLicenseNumber, String medicalRegion, String slotId) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(medicalSlot)
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(medicalSlot.getDoctor().getMedicalLicenseNumber(), slotId)
+                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, slotId)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalSlot.getDoctor().getMedicalLicenseNumber())
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
                         ).withRel("find_medical_slots_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, slotId)
+                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, medicalRegion, slotId)
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.ok(responseResource);
@@ -62,8 +64,9 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(MedicalLicenseNumber medicalLicenseNumber) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber, String medicalRegion) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
                 .stream()
@@ -71,13 +74,13 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                 .map(MedicalSlotResponseMapper::mapToResource)
                 .peek(slot -> slot.add(
                             linkTo(
-                                    methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber)
+                                    methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
                             ).withSelfRel(),
                             linkTo(
-                                    methodOn(MedicalSlotController.class).findById(slot.getDoctor().getMedicalLicenseNumber(), slot.getId())
+                                    methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, slot.getId())
                             ).withRel("find_medical_slot_by_id"),
                             linkTo(
-                                    methodOn(MedicalSlotController.class).cancel(slot.getDoctor().getMedicalLicenseNumber(), slot.getId())
+                                    methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, medicalRegion, slot.getId())
                             ).withRel("cancel_medical_slot_by_id")
                     )
                 )
