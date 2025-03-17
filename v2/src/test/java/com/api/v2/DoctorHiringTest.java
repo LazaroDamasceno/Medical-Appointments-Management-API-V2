@@ -43,7 +43,7 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", MedicalRegions.UT)
+            new MedicalLicenseNumber("12345678", MedicalRegions.AK)
     );
 
     @Test
@@ -77,12 +77,12 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678CA", MedicalRegions.UT)
+            new MedicalLicenseNumber("12345678CA", MedicalRegions.AK)
     );
 
     @Test
     @Order(3)
-    void testUnSuccessfulHiring2() throws Exception {
+    void testUnSuccessfulHiringForDuplicatedEmail() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -101,12 +101,12 @@ public class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678CA", MedicalRegions.UT)
+            new MedicalLicenseNumber("12345678", MedicalRegions.AK)
     );
 
     @Test
     @Order(4)
-    void testUnSuccessfulHiring3() throws Exception {
+    void testUnSuccessfulHiringForDuplicatedMedicalLicenseNumber() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)

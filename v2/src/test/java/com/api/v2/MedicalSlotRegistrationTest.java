@@ -1,6 +1,7 @@
 package com.api.v2;
 
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
+import com.api.v2.doctors.enums.MedicalRegions;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MedicalSlotRegistrationTest {
+class MedicalSlotRegistrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -30,7 +31,7 @@ public class MedicalSlotRegistrationTest {
     private ObjectMapper objectMapper;
 
     MedicalSlotRegistrationDto registrationDto = new MedicalSlotRegistrationDto(
-            new MedicalLicenseNumber("12345678", "CA", "US"),
+            new MedicalLicenseNumber("12345678", MedicalRegions.AK),
             LocalDateTime.parse("2024-12-12T12:30:30")
     );
 
@@ -56,7 +57,7 @@ public class MedicalSlotRegistrationTest {
 
 
     MedicalSlotRegistrationDto registrationDtoForNonFoundMedicalAppointment = new MedicalSlotRegistrationDto(
-        new MedicalLicenseNumber("12345677", "CA", "US"),
+        new MedicalLicenseNumber("12345677", MedicalRegions.AK),
         LocalDateTime.parse("2024-12-12T12:30:30")
     );
 

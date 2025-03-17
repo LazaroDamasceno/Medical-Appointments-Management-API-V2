@@ -42,7 +42,7 @@ public class DoctorController {
         return hiringService.hire(hiringDto);
     }
 
-    @PatchMapping("rehiring")
+    @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/rehiring")
     public ResponseEntity<ResourceResponse> rehire(@PathVariable String medicalLicenseNumber,
                                                    @PathVariable String medicalRegion
     ) {
