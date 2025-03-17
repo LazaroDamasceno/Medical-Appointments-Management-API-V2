@@ -56,7 +56,7 @@ public class DoctorHiringTest {
 
     @Test
     @Order(2)
-    void testUnSuccessfulHiring1() throws Exception {
+    void testUnSuccessfulHiringForDuplicatedSsn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -64,7 +64,7 @@ public class DoctorHiringTest {
         ).andExpect(status().is4xxClientError());
     }
 
-    DoctorHiringDto hiringDto2 = new DoctorHiringDto(
+    DoctorHiringDto hiringDtoWithDuplicatedEmail = new DoctorHiringDto(
             new PersonRegistrationDto(
                     "Leo",
                     "",
@@ -84,17 +84,17 @@ public class DoctorHiringTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(hiringDto2))
+                .content(objectMapper.writeValueAsString(hiringDtoWithDuplicatedEmail))
         ).andExpect(status().is4xxClientError());
     }
 
-    DoctorHiringDto hiringDto3 = new DoctorHiringDto(
+    DoctorHiringDto hiringDtoWithMedicalLicenseNumber = new DoctorHiringDto(
             new PersonRegistrationDto(
                     "Leo",
                     "",
                     "Santos",
                     LocalDate.parse("2000-12-12"),
-                    "123456788",
+                    "123456787",
                     "leosanteos@mail.com",
                     "1234567890",
                     Gender.CIS_MALE
@@ -108,7 +108,7 @@ public class DoctorHiringTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(hiringDto3))
+                .content(objectMapper.writeValueAsString(hiringDtoWithMedicalLicenseNumber))
         ).andExpect(status().is4xxClientError());
     }
 

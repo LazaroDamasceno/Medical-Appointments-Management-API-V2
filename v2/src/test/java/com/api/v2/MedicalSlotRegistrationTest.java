@@ -45,7 +45,7 @@ public class MedicalSlotRegistrationTest {
 
     @Test
     @Order(2)
-    void testUnsuccessfulRegistration() throws Exception {
+    void testUnsuccessfulRegistrationForDuplicatedBookingDateTime() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/medical-slots")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -54,18 +54,18 @@ public class MedicalSlotRegistrationTest {
     }
 
 
-    MedicalSlotRegistrationDto registrationDto2 = new MedicalSlotRegistrationDto(
+    MedicalSlotRegistrationDto registrationDtoForNonFoundMedicalAppointment = new MedicalSlotRegistrationDto(
             "12345677CA",
             LocalDateTime.parse("2024-12-12T12:30:30")
     );
 
     @Test
     @Order(3)
-    void testUnsuccessfulRegistration2() throws Exception {
+    void testUnsuccessfulRegistrationForNonFoundMedicalAppointment() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/medical-slots")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto2))
+                .content(objectMapper.writeValueAsString(registrationDtoForNonFoundMedicalAppointment))
         ).andExpect(status().is4xxClientError());
     }
 }

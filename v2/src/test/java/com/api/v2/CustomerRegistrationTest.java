@@ -62,7 +62,7 @@ class CustomerRegistrationTest {
 
     @Test
     @Order(2)
-    void testUnSuccessfulRegistration1() throws Exception {
+    void testUnSuccessfulRegistrationForDuplicatedSsn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/customers")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ class CustomerRegistrationTest {
         ).andExpect(status().is4xxClientError());
     }
 
-    CustomerRegistrationDto registrationDto2 = new CustomerRegistrationDto(
+    CustomerRegistrationDto registrationDtoWithDuplicatedEmail = new CustomerRegistrationDto(
             new PersonRegistrationDto(
                     "Leo",
                     "",
@@ -91,11 +91,11 @@ class CustomerRegistrationTest {
 
     @Test
     @Order(3)
-    void testUnSuccessfulRegistration2() throws Exception {
+    void testUnSuccessfulRegistrationForDuplicatedEmail() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/customers")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto2))
+                .content(objectMapper.writeValueAsString(registrationDtoWithDuplicatedEmail))
         ).andExpect(status().is4xxClientError());
     }
 
