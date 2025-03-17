@@ -64,7 +64,9 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         return bookAppointment(bookingDto, MedicalAppointmentType.PAID_BY_PATIENT);
     }
 
-    private ResponseEntity<MedicalAppointmentResponseResource> bookAppointment(MedicalAppointmentBookingDto bookingDto, MedicalAppointmentType appointmentType) {
+    private ResponseEntity<MedicalAppointmentResponseResource> bookAppointment(MedicalAppointmentBookingDto bookingDto,
+                                                                               MedicalAppointmentType appointmentType
+    ) {
         MedicalSlot medicalSlot = medicalSlotFinder.findById(bookingDto.medicalSlotId());
         Customer customer = customerFinder.findById(bookingDto.customerId());
         Doctor doctor = medicalSlot.getDoctor();
