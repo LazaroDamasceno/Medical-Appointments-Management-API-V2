@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
+import com.api.v2.common.BlockedDateTimeHandler;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.doctors.domain.exposed.Doctor;
@@ -54,6 +55,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         ZoneOffset zoneOffset = OffsetTime
                 .ofInstant(bookingDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
+        BlockedDateTimeHandler.handle(bookingDto.availableAt().toLocalDate());
         onBlockedBooking(medicalSlot, bookingDto.customerId());
         onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
         MedicalAppointment medicalAppointment = MedicalAppointment.of(
