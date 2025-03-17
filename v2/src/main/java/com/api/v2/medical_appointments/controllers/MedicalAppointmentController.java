@@ -29,9 +29,19 @@ public class MedicalAppointmentController {
         this.retrievalService = retrievalService;
     }
 
-    @PostMapping
-    public ResponseEntity<MedicalAppointmentResponseResource> book(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
-        return bookingService.book(bookingDto);
+    @PostMapping("private-insurance")
+    public ResponseEntity<MedicalAppointmentResponseResource> privateInsurance(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
+        return bookingService.privateInsurance(bookingDto);
+    }
+
+    @PostMapping("public-insurance")
+    public ResponseEntity<MedicalAppointmentResponseResource> publicInsurance(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
+        return bookingService.publicInsurance(bookingDto);
+    }
+
+    @PostMapping("paid-by-patient")
+    public ResponseEntity<MedicalAppointmentResponseResource> paidByPatient(@RequestBody @Valid MedicalAppointmentBookingDto bookingDto) {
+        return bookingService.paidByPatient(bookingDto);
     }
 
     @PatchMapping("{customerId}/{medicalAppointmentId}/cancellation")
@@ -56,4 +66,5 @@ public class MedicalAppointmentController {
     public ResponseEntity<List<MedicalAppointmentResponseResource>> findAll() {
         return retrievalService.findAll();
     }
+
 }

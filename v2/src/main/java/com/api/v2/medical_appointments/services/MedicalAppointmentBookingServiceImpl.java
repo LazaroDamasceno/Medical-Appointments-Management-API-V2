@@ -8,6 +8,7 @@ import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
+import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
@@ -49,9 +50,23 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
 
 
     @Override
-    public ResponseEntity<MedicalAppointmentResponseResource> book(@Valid MedicalAppointmentBookingDto bookingDto) {
+    public ResponseEntity<MedicalAppointmentResponseResource> privateInsurance(@Valid MedicalAppointmentBookingDto bookingDto) {
+        return bookAppointment(bookingDto, MedicalAppointmentType.PRIVATE_INSURANCE);
+    }
+
+    @Override
+    public ResponseEntity<MedicalAppointmentResponseResource> publicInsurance(MedicalAppointmentBookingDto bookingDto) {
+        return bookAppointment(bookingDto, MedicalAppointmentType.PUBLIC_INSURANCE);
+    }
+
+    @Override
+    public ResponseEntity<MedicalAppointmentResponseResource> paidByPatient(MedicalAppointmentBookingDto bookingDto) {
+        return bookAppointment(bookingDto, MedicalAppointmentType.PAID_BY_PATIENT);
+    }
+
+    private ResponseEntity<MedicalAppointmentResponseResource> bookAppointment(MedicalAppointmentBookingDto bookingDto, MedicalAppointmentType appointmentType) {
         MedicalSlot medicalSlot = medicalSlotFinder.findById(bookingDto.medicalSlotId());
-        Customer customer = customerFinder.findById(bookingDto.medicalSlotId());
+        Customer customer = customerFinder.findById(bookingDto.customerId());
         Doctor doctor = medicalSlot.getDoctor();
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetTime
@@ -61,6 +76,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         onBlockedBooking(medicalSlot, bookingDto.customerId());
         onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
         MedicalAppointment medicalAppointment = MedicalAppointment.of(
+                appointmentType,
                 customer,
                 doctor,
                 bookingDto.availableAt(),

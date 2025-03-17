@@ -3,6 +3,7 @@ package com.api.v2.medical_appointments.domain.exposed;
 import com.api.v2.common.DstChecker;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,7 @@ public class MedicalAppointment {
 
     @Id
     private String id;
+    private MedicalAppointmentType type;
     private Customer customer;
     private Doctor doctor;
     private LocalDateTime bookedAt;
@@ -37,12 +39,14 @@ public class MedicalAppointment {
     private ZoneOffset paidAtZoneOffset;
     private Boolean isPaymentDuringDST;
 
-    private MedicalAppointment(Customer customer,
+    private MedicalAppointment(MedicalAppointmentType type,
+                               Customer customer,
                                Doctor doctor,
                                LocalDateTime bookedAt,
                                ZoneId bookedAtZoneId,
                                ZoneOffset bookedAtZoneOffset
     ) {
+        this.type = type;
         this.id = UUID.randomUUID().toString();
         this.customer = customer;
         this.doctor = doctor;
@@ -59,13 +63,14 @@ public class MedicalAppointment {
     public MedicalAppointment() {
     }
 
-    public static MedicalAppointment of(Customer customer,
+    public static MedicalAppointment of(MedicalAppointmentType type,
+                                        Customer customer,
                                         Doctor doctor,
                                         LocalDateTime bookedAt,
                                         ZoneId bookedAtZoneId,
                                         ZoneOffset bookedAtZoneOffset
     ) {
-        return new MedicalAppointment(customer, doctor, bookedAt, bookedAtZoneId, bookedAtZoneOffset);
+        return new MedicalAppointment(type, customer, doctor, bookedAt, bookedAtZoneId, bookedAtZoneOffset);
     }
 
     public void markAsCanceled() {
@@ -178,6 +183,30 @@ public class MedicalAppointment {
     }
 
     public Boolean isPaymentDuringDST() {
+        return isPaymentDuringDST;
+    }
+
+    public MedicalAppointmentType getType() {
+        return type;
+    }
+
+    public Boolean getBookedDuringDST() {
+        return isBookedDuringDST;
+    }
+
+    public Boolean getCreatedDuringDST() {
+        return isCreatedDuringDST;
+    }
+
+    public Boolean getCanceledDuringDST() {
+        return isCanceledDuringDST;
+    }
+
+    public Boolean getCompletedDuringDST() {
+        return isCompletedDuringDST;
+    }
+
+    public Boolean getPaymentDuringDST() {
         return isPaymentDuringDST;
     }
 }
