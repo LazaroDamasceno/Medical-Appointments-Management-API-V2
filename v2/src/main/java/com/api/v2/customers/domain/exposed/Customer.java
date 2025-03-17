@@ -1,7 +1,7 @@
 package com.api.v2.customers.domain.exposed;
 
 import com.api.v2.common.Address;
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.people.domain.exposed.Person;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,7 +34,7 @@ public class Customer {
         this.createdAt = LocalDateTime.now();
         this.createdAtZoneId = ZoneId.systemDefault();
         this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
-        this.isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
+        this.isCreatedDuringDST = DstChecker.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
     public static Customer of(Address address, Person person) {

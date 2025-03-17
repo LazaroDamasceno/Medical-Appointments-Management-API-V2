@@ -1,7 +1,7 @@
 package com.api.v2.payments.domain;
 
 import com.api.v2.cards.domain.exposed.Card;
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -35,7 +35,7 @@ public record Payment(
                 localDateTime,
                 zoneId,
                 zoneOffset,
-                DstCheckerUtil.isGivenDateTimeFollowingDst(localDateTime, zoneId)
+                DstChecker.isGivenDateTimeFollowingDst(localDateTime, zoneId)
         );
     }
 }

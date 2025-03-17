@@ -6,11 +6,11 @@ import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomerFinderUtil {
+public class CustomerFinder {
 
     private final CustomerRepository customerRepository;
 
-    public CustomerFinderUtil(CustomerRepository customerRepository) {
+    public CustomerFinder(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 

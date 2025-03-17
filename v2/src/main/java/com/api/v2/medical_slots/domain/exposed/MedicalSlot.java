@@ -1,6 +1,6 @@
 package com.api.v2.medical_slots.domain.exposed;
 
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import org.springframework.data.annotation.Id;
@@ -44,7 +44,7 @@ public class MedicalSlot {
         this.createdAt = LocalDateTime.now();
         this.createdAtZoneId = ZoneId.systemDefault();
         this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
-        this.isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(availableAt, availableAtZoneId);
+        this.isCreatedDuringDST = DstChecker.isGivenDateTimeFollowingDst(availableAt, availableAtZoneId);
     }
 
     public MedicalSlot() {
@@ -66,7 +66,7 @@ public class MedicalSlot {
         canceledAt = LocalDateTime.now();
         canceledAtZoneId = ZoneId.systemDefault();
         canceledAtZoneOffset = OffsetDateTime.now().getOffset();
-        isCanceledDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
+        isCanceledDuringDST = DstChecker.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
         medicalAppointment = null;
     }
 
@@ -74,7 +74,7 @@ public class MedicalSlot {
         completedAt = LocalDateTime.now();
         completedAtZoneId = ZoneId.systemDefault();
         completedAtZoneOffset = OffsetDateTime.now().getOffset();
-        isCompletedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(completedAt, canceledAtZoneId);
+        isCompletedDuringDST = DstChecker.isGivenDateTimeFollowingDst(completedAt, canceledAtZoneId);
         medicalAppointment = completedMedicalAppointment;
     }
 

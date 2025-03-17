@@ -1,6 +1,6 @@
 package com.api.v2.doctors.domain;
 
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import org.springframework.data.annotation.Id;
 
@@ -27,7 +27,7 @@ public record DoctorAuditTrail(
                 LocalDateTime.now(),
                 ZoneId.systemDefault(),
                 OffsetDateTime.now().getOffset(),
-                DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault())
+                DstChecker.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault())
         );
     }
 }

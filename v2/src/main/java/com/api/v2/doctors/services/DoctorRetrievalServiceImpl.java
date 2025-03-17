@@ -4,7 +4,7 @@ import com.api.v2.common.MLN;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.resources.DoctorResponseResource;
-import com.api.v2.doctors.utils.DoctorFinderUtil;
+import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
 
     private final DoctorRepository doctorRepository;
-    private final DoctorFinderUtil doctorFinderUtil;
+    private final DoctorFinder doctorFinder;
 
     public DoctorRetrievalServiceImpl(DoctorRepository doctorRepository,
-                                      DoctorFinderUtil doctorFinderUtil
+                                      DoctorFinder doctorFinder
     ) {
         this.doctorRepository = doctorRepository;
-        this.doctorFinderUtil = doctorFinderUtil;
+        this.doctorFinder = doctorFinder;
     }
 
     @Override
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@MLN String medicalLicenseNumber) {
         DoctorResponseResource responseResource = DoctorResponseMapper
-                .mapToResource(doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber))
+                .mapToResource(doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber))
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber)

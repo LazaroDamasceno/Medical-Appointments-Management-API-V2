@@ -1,6 +1,6 @@
 package com.api.v2.medical_appointments.domain.exposed;
 
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import org.springframework.data.annotation.Id;
@@ -49,11 +49,11 @@ public class MedicalAppointment {
         this.bookedAt = bookedAt;
         this.bookedAtZoneId = bookedAtZoneId;
         this.bookedAtZoneOffset = bookedAtZoneOffset;
-        this.isBookedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(bookedAt, bookedAtZoneId);
+        this.isBookedDuringDST = DstChecker.isGivenDateTimeFollowingDst(bookedAt, bookedAtZoneId);
         this.createdAt = LocalDateTime.now();
         this.createdAtZoneId = ZoneId.systemDefault();
         this.createdAtZoneOffset = OffsetDateTime.now().getOffset();
-        isCreatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(createdAt, createdAtZoneId);
+        isCreatedDuringDST = DstChecker.isGivenDateTimeFollowingDst(createdAt, createdAtZoneId);
     }
 
     public MedicalAppointment() {
@@ -72,21 +72,21 @@ public class MedicalAppointment {
         canceledAt = LocalDateTime.now();
         canceledAtZoneId = ZoneId.systemDefault();
         canceledAtZoneOffset = OffsetDateTime.now().getOffset();
-        isCanceledDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
+        isCanceledDuringDST = DstChecker.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
     }
 
     public void markAsCompleted() {
         completedAt = LocalDateTime.now();
         completedAtZoneId = ZoneId.systemDefault();
         completedAtZoneOffset = OffsetDateTime.now().getOffset();
-        isCompletedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(completedAt, completedAtZoneId);
+        isCompletedDuringDST = DstChecker.isGivenDateTimeFollowingDst(completedAt, completedAtZoneId);
     }
 
     public void markAsPaid() {
         paidAt = LocalDateTime.now();
         paidAtZoneId = ZoneOffset.systemDefault();
         paidAtZoneOffset = OffsetDateTime.now().getOffset();
-        isPaymentDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(paidAt, paidAtZoneId);
+        isPaymentDuringDST = DstChecker.isGivenDateTimeFollowingDst(paidAt, paidAtZoneId);
     }
 
     public String getId() {

@@ -1,6 +1,6 @@
 package com.api.v2.doctors.domain.exposed;
 
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.people.domain.exposed.Person;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -37,7 +37,7 @@ public class Doctor {
         this.hiredAt = LocalDateTime.now();
         this.hiredAtZoneId = ZoneId.systemDefault();
         this.hiredAtZoneOffset = OffsetDateTime.now().getOffset();
-        this.isHiredDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
+        this.isHiredDuringDST = DstChecker.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault());
     }
 
     public static Doctor of(Person person, String medicalLicenseNumber) {
@@ -48,7 +48,7 @@ public class Doctor {
         terminatedAt = LocalDateTime.now();
         terminatedAtZoneId = ZoneId.systemDefault();
         terminatedAtZoneOffset = OffsetDateTime.now().getOffset();
-        isTerminatedDuringDST = DstCheckerUtil.isGivenDateTimeFollowingDst(terminatedAt, terminatedAtZoneId);
+        isTerminatedDuringDST = DstChecker.isGivenDateTimeFollowingDst(terminatedAt, terminatedAtZoneId);
     }
 
     public void markAsRehired() {

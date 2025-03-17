@@ -3,7 +3,7 @@ package com.api.v2.cards.services;
 import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;
 import com.api.v2.cards.dtos.CardResponseDto;
-import com.api.v2.cards.util.CardFinderUtil;
+import com.api.v2.cards.util.CardFinder;
 import com.api.v2.cards.util.CardResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ import java.util.List;
 public class CardRetrievalServiceImpl implements CardRetrievalService {
 
     private final CardRepository cardRepository;
-    private final CardFinderUtil cardFinderUtil;
+    private final CardFinder cardFinder;
 
     public CardRetrievalServiceImpl(CardRepository cardRepository,
-                                    CardFinderUtil cardFinderUtil
+                                    CardFinder cardFinder
     ) {
         this.cardRepository = cardRepository;
-        this.cardFinderUtil = cardFinderUtil;
+        this.cardFinder = cardFinder;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CardRetrievalServiceImpl implements CardRetrievalService {
 
     @Override
     public ResponseEntity<CardResponseDto> findById(String id) {
-        Card card = cardFinderUtil.findById(id);
+        Card card = cardFinder.findById(id);
         CardResponseDto responseDto = CardResponseMapper.map(card);
         return ResponseEntity.ok(responseDto);
     }

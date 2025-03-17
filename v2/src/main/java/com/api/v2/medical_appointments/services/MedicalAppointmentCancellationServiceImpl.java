@@ -2,16 +2,16 @@ package com.api.v2.medical_appointments.services;
 
 import com.api.v2.common.ResourceResponse;
 import com.api.v2.customers.domain.exposed.Customer;
-import com.api.v2.customers.utils.CustomerFinderUtil;
+import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
-import com.api.v2.medical_appointments.utils.MedicalAppointmentFinderUtil;
+import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
-import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
+import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,32 +22,32 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MedicalAppointmentCancellationServiceImpl implements MedicalAppointmentCancellationService {
 
     private final MedicalAppointmentRepository medicalAppointmentRepository;
-    private final CustomerFinderUtil customerFinderUtil;
-    private final MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final CustomerFinder customerFinder;
+    private final MedicalAppointmentFinder medicalAppointmentFinder;
+    private final MedicalSlotFinder medicalSlotFinder;
     private final MedicalSlotRepository medicalSlotRepository;
 
     public MedicalAppointmentCancellationServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository,
-                                                     CustomerFinderUtil customerFinderUtil,
-                                                     MedicalAppointmentFinderUtil medicalAppointmentFinderUtil,
-                                                     MedicalSlotFinderUtil medicalSlotFinderUtil,
+                                                     CustomerFinder customerFinder,
+                                                     MedicalAppointmentFinder medicalAppointmentFinder,
+                                                     MedicalSlotFinder medicalSlotFinder,
                                                      MedicalSlotRepository medicalSlotRepository
     ) {
         this.medicalAppointmentRepository = medicalAppointmentRepository;
-        this.customerFinderUtil = customerFinderUtil;
-        this.medicalAppointmentFinderUtil = medicalAppointmentFinderUtil;
-        this.medicalSlotFinderUtil = medicalSlotFinderUtil;
+        this.customerFinder = customerFinder;
+        this.medicalAppointmentFinder = medicalAppointmentFinder;
+        this.medicalSlotFinder = medicalSlotFinder;
         this.medicalSlotRepository = medicalSlotRepository;
     }
 
     @Override
     public ResponseEntity<ResourceResponse> cancelById(String customerId, String medicalAppointmentId) {
-        MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
-        Customer customer = customerFinderUtil.findById(customerId);
+        MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
+        Customer customer = customerFinder.findById(customerId);
         onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);
         onCanceledMedicalAppointment(medicalAppointment);
         onCompletedMedicalAppointment(medicalAppointment);
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findByMedicalAppointment(medicalAppointment);
+        MedicalSlot medicalSlot = medicalSlotFinder.findByMedicalAppointment(medicalAppointment);
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.markAsCanceled();

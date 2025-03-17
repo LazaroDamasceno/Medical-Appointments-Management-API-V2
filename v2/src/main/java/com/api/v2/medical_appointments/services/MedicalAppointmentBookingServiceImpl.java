@@ -1,7 +1,7 @@
 package com.api.v2.medical_appointments.services;
 
 import com.api.v2.customers.domain.exposed.Customer;
-import com.api.v2.customers.utils.CustomerFinderUtil;
+import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
@@ -13,7 +13,7 @@ import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResou
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
-import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
+import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,24 +31,24 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
     private final MedicalAppointmentRepository medicalAppointmentRepository;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private final CustomerFinderUtil customerFinderUtil;
+    private final MedicalSlotFinder medicalSlotFinder;
+    private final CustomerFinder customerFinder;
 
 
     public MedicalAppointmentBookingServiceImpl(@Valid MedicalSlotRepository medicalSlotRepository,
                                                 MedicalAppointmentRepository medicalAppointmentRepository,
-                                                MedicalSlotFinderUtil medicalSlotFinderUtil,
-                                                CustomerFinderUtil customerFinderUtil
+                                                MedicalSlotFinder medicalSlotFinder,
+                                                CustomerFinder customerFinder
     ) {
         this.medicalAppointmentRepository = medicalAppointmentRepository;
-        this.medicalSlotFinderUtil = medicalSlotFinderUtil;
-        this.customerFinderUtil = customerFinderUtil;
+        this.medicalSlotFinder = medicalSlotFinder;
+        this.customerFinder = customerFinder;
     }
 
     @Override
     public ResponseEntity<MedicalAppointmentResponseResource> book(@Valid MedicalAppointmentBookingDto bookingDto) {
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(bookingDto.medicalSlotId());
-        Customer customer = customerFinderUtil.findById(bookingDto.medicalSlotId());
+        MedicalSlot medicalSlot = medicalSlotFinder.findById(bookingDto.medicalSlotId());
+        Customer customer = customerFinder.findById(bookingDto.medicalSlotId());
         Doctor doctor = medicalSlot.getDoctor();
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetTime

@@ -2,13 +2,13 @@ package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.utils.DoctorFinderUtil;
+import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
-import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
+import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,22 +22,22 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalService {
 
     private final MedicalSlotRepository medicalSlotRepository;
-    private final DoctorFinderUtil doctorFinderUtil;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
+    private final DoctorFinder doctorFinder;
+    private final MedicalSlotFinder medicalSlotFinder;
 
     public MedicalSlotRetrievalServiceImpl(MedicalSlotRepository medicalSlotRepository,
-                                           DoctorFinderUtil doctorFinderUtil,
-                                           MedicalSlotFinderUtil medicalSlotFinderUtil
+                                           DoctorFinder doctorFinder,
+                                           MedicalSlotFinder medicalSlotFinder
     ) {
         this.medicalSlotRepository = medicalSlotRepository;
-        this.doctorFinderUtil = doctorFinderUtil;
-        this.medicalSlotFinderUtil = medicalSlotFinderUtil;
+        this.doctorFinder = doctorFinder;
+        this.medicalSlotFinder = medicalSlotFinder;
     }
 
     @Override
     public ResponseEntity<MedicalSlotResponseResource> findById(@MLN String medicalLicenseNumber, String slotId) {
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
+        MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(medicalSlot)
@@ -63,7 +63,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
 
     @Override
     public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber) {
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
                 .stream()

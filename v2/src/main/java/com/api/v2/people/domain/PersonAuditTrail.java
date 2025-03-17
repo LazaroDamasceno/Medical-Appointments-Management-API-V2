@@ -1,6 +1,6 @@
 package com.api.v2.people.domain;
 
-import com.api.v2.common.DstCheckerUtil;
+import com.api.v2.common.DstChecker;
 import com.api.v2.people.domain.exposed.Person;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,7 +26,7 @@ public record PersonAuditTrail(
                 LocalDate.now(),
                 ZoneId.systemDefault(),
                 OffsetDateTime.now().getOffset(),
-                DstCheckerUtil.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault())
+                DstChecker.isGivenDateTimeFollowingDst(LocalDateTime.now(), ZoneId.systemDefault())
         );
     }
 }

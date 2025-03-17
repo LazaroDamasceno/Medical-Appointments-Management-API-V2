@@ -8,7 +8,7 @@ import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.resources.DoctorResponseResource;
-import com.api.v2.doctors.utils.DoctorFinderUtil;
+import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,22 +19,22 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class DoctorRehireServiceImpl implements DoctorRehireService {
 
-    private final DoctorFinderUtil doctorFinderUtil;
+    private final DoctorFinder doctorFinder;
     private final DoctorRepository doctorRepository;
     private final DoctorAuditTrailRepository doctorAuditTrailRepository;
 
-    public DoctorRehireServiceImpl(DoctorFinderUtil doctorFinderUtil,
-                                        DoctorRepository doctorRepository,
-                                        DoctorAuditTrailRepository doctorAuditTrailRepository
+    public DoctorRehireServiceImpl(DoctorFinder doctorFinder,
+                                   DoctorRepository doctorRepository,
+                                   DoctorAuditTrailRepository doctorAuditTrailRepository
     ) {
-        this.doctorFinderUtil = doctorFinderUtil;
+        this.doctorFinder = doctorFinder;
         this.doctorRepository = doctorRepository;
         this.doctorAuditTrailRepository = doctorAuditTrailRepository;
     }
 
     @Override
     public ResponseEntity<DoctorResponseResource> rehire(@MLN String medicalLicenseNumber) {
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);

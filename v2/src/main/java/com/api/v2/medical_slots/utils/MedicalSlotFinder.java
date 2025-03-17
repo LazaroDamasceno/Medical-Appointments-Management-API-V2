@@ -7,11 +7,11 @@ import com.api.v2.medical_slots.exceptions.NonExistentMedicalSlotException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MedicalSlotFinderUtil {
+public class MedicalSlotFinder {
 
     private final MedicalSlotRepository medicalSlotRepository;
 
-    public MedicalSlotFinderUtil(MedicalSlotRepository medicalSlotRepository) {
+    public MedicalSlotFinder(MedicalSlotRepository medicalSlotRepository) {
         this.medicalSlotRepository = medicalSlotRepository;
     }
 

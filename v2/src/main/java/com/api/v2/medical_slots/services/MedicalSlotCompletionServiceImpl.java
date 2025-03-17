@@ -3,14 +3,14 @@ package com.api.v2.medical_slots.services;
 import com.api.v2.common.ResourceResponse;
 import com.api.v2.common.MLN;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.utils.DoctorFinderUtil;
+import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.MedicalAppointmentCompletionService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.utils.MedicalSlotFinderUtil;
+import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,24 +22,24 @@ public class MedicalSlotCompletionServiceImpl implements MedicalSlotCompletionSe
 
     private final MedicalSlotRepository medicalSlotRepository;
     private final MedicalAppointmentCompletionService medicalAppointmentCompletionService;
-    private final MedicalSlotFinderUtil medicalSlotFinderUtil;
-    private final DoctorFinderUtil doctorFinderUtil;
+    private final MedicalSlotFinder medicalSlotFinder;
+    private final DoctorFinder doctorFinder;
 
     public MedicalSlotCompletionServiceImpl(MedicalSlotRepository medicalSlotRepository,
                                             MedicalAppointmentCompletionService medicalAppointmentCompletionService,
-                                            MedicalSlotFinderUtil medicalSlotFinderUtil,
-                                            DoctorFinderUtil doctorFinderUtil
+                                            MedicalSlotFinder medicalSlotFinder,
+                                            DoctorFinder doctorFinder
     ) {
         this.medicalSlotRepository = medicalSlotRepository;
         this.medicalAppointmentCompletionService = medicalAppointmentCompletionService;
-        this.medicalSlotFinderUtil = medicalSlotFinderUtil;
-        this.doctorFinderUtil = doctorFinderUtil;
+        this.medicalSlotFinder = medicalSlotFinder;
+        this.doctorFinder = doctorFinder;
     }
 
     @Override
     public ResponseEntity<ResourceResponse> completeById(@MLN String medicalLicenseNumber, String slotId) {
-        MedicalSlot medicalSlot = medicalSlotFinderUtil.findById(slotId);
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(medicalLicenseNumber);
+        MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();

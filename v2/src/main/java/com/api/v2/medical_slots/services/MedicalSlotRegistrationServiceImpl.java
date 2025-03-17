@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.services;
 
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.utils.DoctorFinderUtil;
+import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
@@ -26,19 +26,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrationService {
 
     private final MedicalSlotRepository medicalSlotRepository;
-    private final DoctorFinderUtil doctorFinderUtil;
+    private final DoctorFinder doctorFinder;
 
     public MedicalSlotRegistrationServiceImpl(MedicalSlotRepository medicalSlotRepository,
-                                              DoctorFinderUtil doctorFinderUtil
+                                              DoctorFinder doctorFinder
     ) {
         this.medicalSlotRepository = medicalSlotRepository;
-        this.doctorFinderUtil = doctorFinderUtil;
+        this.doctorFinder = doctorFinder;
     }
 
 
     @Override
     public ResponseEntity<MedicalSlotResponseResource> register(@Valid MedicalSlotRegistrationDto registrationDto) {
-        Doctor doctor = doctorFinderUtil.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(registrationDto.medicalLicenseNumber());
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime
                 .ofInstant(registrationDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
@@ -79,4 +79,6 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
             throw new UnavailableMedicalBookingDateTimeException();
         }
     }
+
+    private void
 }

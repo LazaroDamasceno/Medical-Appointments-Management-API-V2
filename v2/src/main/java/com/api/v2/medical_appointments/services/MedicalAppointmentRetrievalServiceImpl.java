@@ -1,13 +1,13 @@
 package com.api.v2.medical_appointments.services;
 
 import com.api.v2.customers.domain.exposed.Customer;
-import com.api.v2.customers.utils.CustomerFinderUtil;
+import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
-import com.api.v2.medical_appointments.utils.MedicalAppointmentFinderUtil;
+import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,23 +20,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmentRetrievalService {
 
-    private final CustomerFinderUtil customerFinderUtil;
+    private final CustomerFinder customerFinder;
     private final MedicalAppointmentRepository medicalAppointmentRepository;
-    private final MedicalAppointmentFinderUtil medicalAppointmentFinderUtil;
+    private final MedicalAppointmentFinder medicalAppointmentFinder;
 
-    public MedicalAppointmentRetrievalServiceImpl(CustomerFinderUtil customerFinderUtil,
+    public MedicalAppointmentRetrievalServiceImpl(CustomerFinder customerFinder,
                                                   MedicalAppointmentRepository medicalAppointmentRepository,
-                                                  MedicalAppointmentFinderUtil medicalAppointmentFinderUtil
+                                                  MedicalAppointmentFinder medicalAppointmentFinder
     ) {
-        this.customerFinderUtil = customerFinderUtil;
+        this.customerFinder = customerFinder;
         this.medicalAppointmentRepository = medicalAppointmentRepository;
-        this.medicalAppointmentFinderUtil = medicalAppointmentFinderUtil;
+        this.medicalAppointmentFinder = medicalAppointmentFinder;
     }
 
     @Override
     public ResponseEntity<MedicalAppointmentResponseResource> findById(String customerId, String medicalAppointmentId) {
-        Customer customer = customerFinderUtil.findById(customerId);
-        MedicalAppointment medicalAppointment = medicalAppointmentFinderUtil.findById(medicalAppointmentId);
+        Customer customer = customerFinder.findById(customerId);
+        MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);
         MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
                 .mapToResource(medicalAppointment)
@@ -70,7 +70,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
     }
     @Override
     public ResponseEntity<List<MedicalAppointmentResponseResource>> findAllByCustomer(String customerId) {
-        Customer customer = customerFinderUtil.findById(customerId);
+        Customer customer = customerFinder.findById(customerId);
         List<MedicalAppointmentResponseResource> list = medicalAppointmentRepository
                 .findAll()
                 .stream()

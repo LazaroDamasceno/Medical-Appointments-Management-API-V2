@@ -6,11 +6,11 @@ import com.api.v2.cards.exceptions.NonExistentCardException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CardFinderUtil {
+public class CardFinder {
 
     private final CardRepository cardRepository;
 
-    public CardFinderUtil(CardRepository cardRepository) {
+    public CardFinder(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
     }
 

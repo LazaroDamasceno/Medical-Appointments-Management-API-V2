@@ -6,11 +6,11 @@ import com.api.v2.medical_appointments.exceptions.NonExistentMedicalAppointmentE
 import org.springframework.stereotype.Component;
 
 @Component
-public class MedicalAppointmentFinderUtil {
+public class MedicalAppointmentFinder {
 
     private final MedicalAppointmentRepository medicalAppointmentRepository;
 
-    public MedicalAppointmentFinderUtil(MedicalAppointmentRepository medicalAppointmentRepository) {
+    public MedicalAppointmentFinder(MedicalAppointmentRepository medicalAppointmentRepository) {
         this.medicalAppointmentRepository = medicalAppointmentRepository;
     }
 

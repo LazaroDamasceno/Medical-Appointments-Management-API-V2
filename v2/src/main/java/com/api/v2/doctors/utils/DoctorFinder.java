@@ -6,11 +6,11 @@ import com.api.v2.doctors.exceptions.NonExistentDoctorException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DoctorFinderUtil {
+public class DoctorFinder {
 
     private final DoctorRepository doctorRepository;
 
-    public DoctorFinderUtil(DoctorRepository doctorRepository) {
+    public DoctorFinder(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
