@@ -13,7 +13,7 @@ import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentB
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
-import com.api.v2.medical_slots.domain.MedicalSlotRepository;
+import com.api.v2.medical_slots.services.exposed.MedicalAppointmentSetterService;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,20 +31,22 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentBookingService {
 
+    private final MedicalAppointmentSetterService medicalAppointmentSetterService;
     private final MedicalAppointmentRepository medicalAppointmentRepository;
     private final MedicalSlotFinder medicalSlotFinder;
     private final CustomerFinder customerFinder;
 
-
-    public MedicalAppointmentBookingServiceImpl(@Valid MedicalSlotRepository medicalSlotRepository,
+    public MedicalAppointmentBookingServiceImpl(MedicalAppointmentSetterService medicalAppointmentSetterService,
                                                 MedicalAppointmentRepository medicalAppointmentRepository,
                                                 MedicalSlotFinder medicalSlotFinder,
                                                 CustomerFinder customerFinder
     ) {
+        this.medicalAppointmentSetterService = medicalAppointmentSetterService;
         this.medicalAppointmentRepository = medicalAppointmentRepository;
         this.medicalSlotFinder = medicalSlotFinder;
         this.customerFinder = customerFinder;
     }
+
 
     @Override
     public ResponseEntity<MedicalAppointmentResponseResource> book(@Valid MedicalAppointmentBookingDto bookingDto) {
@@ -66,7 +68,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                 zoneOffset
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
-        medicalSlot.setMedicalAppointment(medicalAppointment);
+        var changedMedicalSlot = medicalAppointmentSetterService.set(medicalSlot, medicalAppointment);
         MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
                 .mapToResource(savedMedicalAppointment)
                 .add(

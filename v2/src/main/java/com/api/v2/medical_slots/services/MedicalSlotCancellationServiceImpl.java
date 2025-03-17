@@ -52,6 +52,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     }
 
     private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot) {
+        medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         ResourceResponse responseResource = ResourceResponse
@@ -79,6 +80,7 @@ public class MedicalSlotCancellationServiceImpl implements MedicalSlotCancellati
     private ResponseEntity<ResourceResponse> response(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentCancellationService.cancel(medicalAppointment);
         MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
+        medicalSlot.markAsCanceled();
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()
