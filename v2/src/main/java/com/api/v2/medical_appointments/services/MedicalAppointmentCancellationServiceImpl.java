@@ -12,7 +12,7 @@ import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCancel
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
-import com.api.v2.medical_slots.services.exposed.MedicalAppointmentSetterService;
+import com.api.v2.medical_slots.services.exposed.MedicalSlotChangerService;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,19 +27,19 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     private final CustomerFinder customerFinder;
     private final MedicalAppointmentFinder medicalAppointmentFinder;
     private final MedicalSlotFinder medicalSlotFinder;
-    private final MedicalAppointmentSetterService medicalAppointmentSetterService;
+    private final MedicalSlotChangerService medicalSlotChangerService;
 
     public MedicalAppointmentCancellationServiceImpl(MedicalAppointmentRepository medicalAppointmentRepository,
                                                      CustomerFinder customerFinder,
                                                      MedicalAppointmentFinder medicalAppointmentFinder,
                                                      MedicalSlotFinder medicalSlotFinder,
-                                                     MedicalSlotRepository medicalSlotRepository, MedicalAppointmentSetterService medicalAppointmentSetterService
+                                                     MedicalSlotRepository medicalSlotRepository, MedicalSlotChangerService medicalSlotChangerService
     ) {
         this.medicalAppointmentRepository = medicalAppointmentRepository;
         this.customerFinder = customerFinder;
         this.medicalAppointmentFinder = medicalAppointmentFinder;
         this.medicalSlotFinder = medicalSlotFinder;
-        this.medicalAppointmentSetterService = medicalAppointmentSetterService;
+        this.medicalSlotChangerService = medicalSlotChangerService;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.markAsCanceled();
-        MedicalSlot canceledMedicalSlot = medicalAppointmentSetterService.set(medicalSlot, null);
+        MedicalSlot canceledMedicalSlot = medicalSlotChangerService.set(medicalSlot, null);
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()
                 .add(
