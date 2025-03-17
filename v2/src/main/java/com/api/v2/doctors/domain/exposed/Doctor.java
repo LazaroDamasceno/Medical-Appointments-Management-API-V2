@@ -1,7 +1,7 @@
 package com.api.v2.doctors.domain.exposed;
 
 import com.api.v2.common.DstChecker;
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.people.domain.exposed.Person;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

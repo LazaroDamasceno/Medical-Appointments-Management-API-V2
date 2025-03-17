@@ -2,12 +2,12 @@ package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
-import com.api.v2.medical_appointments.services.MedicalAppointmentCancellationService;
+import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCancellationService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
-import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
+import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;

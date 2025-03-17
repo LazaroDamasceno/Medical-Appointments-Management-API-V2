@@ -1,5 +1,6 @@
 package com.api.v2.doctors.dto;
 
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import jakarta.validation.Valid;
 

@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.dto;
 
 
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;

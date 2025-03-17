@@ -1,6 +1,6 @@
 package com.api.v2;
 
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;

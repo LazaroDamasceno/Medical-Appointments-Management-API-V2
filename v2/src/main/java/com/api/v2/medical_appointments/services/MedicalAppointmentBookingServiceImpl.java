@@ -12,7 +12,7 @@ import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointment
 import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
-import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
+import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.services.exposed.MedicalAppointmentSetterService;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import jakarta.validation.Valid;

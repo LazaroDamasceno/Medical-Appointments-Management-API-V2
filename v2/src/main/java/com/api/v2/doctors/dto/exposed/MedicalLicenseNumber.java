@@ -1,4 +1,4 @@
-package com.api.v2.doctors.dto;
+package com.api.v2.doctors.dto.exposed;
 
 import com.api.v2.doctors.enums.Regions;
 import jakarta.validation.constraints.NotBlank;

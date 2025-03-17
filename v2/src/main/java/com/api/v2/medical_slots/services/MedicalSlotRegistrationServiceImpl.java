@@ -4,7 +4,7 @@ import com.api.v2.common.BlockedDateTimeHandler;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
-import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
+import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeException;

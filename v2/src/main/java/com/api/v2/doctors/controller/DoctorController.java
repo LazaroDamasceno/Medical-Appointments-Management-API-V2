@@ -1,7 +1,7 @@
 package com.api.v2.doctors.controller;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.services.DoctorHiringService;
 import com.api.v2.doctors.services.DoctorRehireService;
@@ -51,7 +51,7 @@ public class DoctorController {
         return terminationService.terminate(medicalLicenseNumber);
     }
 
-    @GetMapping
+    @GetMapping("by-medical-license-number")
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@RequestBody @Valid MedicalLicenseNumber medicalLicenseNumber) {
         return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber);
     }

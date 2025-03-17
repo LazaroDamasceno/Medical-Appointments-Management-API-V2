@@ -1,7 +1,7 @@
 package com.api.v2;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.enums.Regions;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;

@@ -1,4 +1,4 @@
-package com.api.v2.medical_slots.domain.exposed;
+package com.api.v2.medical_slots.domain;
 
 import com.api.v2.common.DstChecker;
 import com.api.v2.doctors.domain.exposed.Doctor;
@@ -67,7 +67,6 @@ public class MedicalSlot {
         canceledAtZoneId = ZoneId.systemDefault();
         canceledAtZoneOffset = OffsetDateTime.now().getOffset();
         isCanceledDuringDST = DstChecker.isGivenDateTimeFollowingDst(canceledAt, canceledAtZoneId);
-        medicalAppointment = null;
     }
 
     public void markAsCompleted(MedicalAppointment completedMedicalAppointment) {
@@ -149,4 +148,6 @@ public class MedicalSlot {
     public Boolean isCompletedDuringDST() {
         return isCompletedDuringDST;
     }
+
+
 }

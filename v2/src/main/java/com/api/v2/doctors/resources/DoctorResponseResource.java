@@ -2,7 +2,7 @@ package com.api.v2.doctors.resources;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.api.v2.doctors.dto.MedicalLicenseNumber;
+import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 
 public class DoctorResponseResource extends RepresentationModel<DoctorResponseResource> {
 
