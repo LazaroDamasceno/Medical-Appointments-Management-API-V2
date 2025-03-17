@@ -21,7 +21,7 @@ public class DoctorFinder {
                 .stream()
                 .filter(d -> d.getMedicalLicenseNumber().equals(medicalLicenseNumber))
                 .findFirst()
-                .orElseThrow(() -> new NonExistentDoctorException(medicalLicenseNumber.licenseNumber()));
+                .orElseThrow(() -> new NonExistentDoctorException(medicalLicenseNumber));
 
     }
 }
