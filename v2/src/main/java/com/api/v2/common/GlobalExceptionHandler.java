@@ -68,6 +68,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(ex.getMessage());
     }
 
+    @ExceptionHandler(BlockedBookingDateTimeException.class)
+    public ResponseEntity<String> handleException(BlockedBookingDateTimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(ex.getMessage());
+    }
+
     @ExceptionHandler(UnavailableMedicalBookingDateTimeException.class)
     public ResponseEntity<String> handleException(UnavailableMedicalBookingDateTimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
