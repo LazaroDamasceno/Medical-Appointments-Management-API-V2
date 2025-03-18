@@ -9,11 +9,9 @@ import com.api.v2.doctors.exceptions.NonExistentDoctorException;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.exceptions.NonExistentMedicalAppointmentException;
-import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.exceptions.NonExistentMedicalSlotException;
-import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeException;
 import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
 import org.springframework.http.HttpStatus;
@@ -42,11 +40,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ImmutableDoctorStatusException.class)
     public ResponseEntity<String> handleException(ImmutableDoctorStatusException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(UnavailableMedicalAppointmentBookingDateTimeException.class)
-    public ResponseEntity<String> handleException(UnavailableMedicalAppointmentBookingDateTimeException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     @ExceptionHandler(InaccessibleMedicalAppointmentException.class)
@@ -79,8 +72,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ExceptionHandler(UnavailableMedicalBookingDateTimeException.class)
-    public ResponseEntity<String> handleException(UnavailableMedicalBookingDateTimeException ex) {
+    @ExceptionHandler(UnavailableBookingDateTimeException.class)
+    public ResponseEntity<String> handleException(UnavailableBookingDateTimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

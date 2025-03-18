@@ -7,7 +7,7 @@ import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
-import com.api.v2.medical_slots.exceptions.UnavailableMedicalBookingDateTimeException;
+import com.api.v2.common.UnavailableBookingDateTimeException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import jakarta.validation.Valid;
@@ -80,7 +80,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                         && slot.getAvailableAtZoneOffset().equals(zoneOffset)
                 );
         if (isGivenBookingDateTimeDuplicated) {
-            throw new UnavailableMedicalBookingDateTimeException();
+            throw new UnavailableBookingDateTimeException();
         }
     }
 }

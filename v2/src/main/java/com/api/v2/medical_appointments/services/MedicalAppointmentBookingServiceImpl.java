@@ -1,6 +1,7 @@
 package com.api.v2.medical_appointments.services;
 
 import com.api.v2.common.PastDateHandler;
+import com.api.v2.common.UnavailableBookingDateTimeException;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.doctors.domain.exposed.Doctor;
@@ -10,7 +11,6 @@ import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
-import com.api.v2.medical_appointments.exceptions.UnavailableMedicalAppointmentBookingDateTimeException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import com.api.v2.medical_slots.domain.MedicalSlot;
@@ -133,7 +133,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                         && appointment.getBookedAtZoneId().equals(zoneId)
                 );
         if (isGivenBookingDateTimeDuplicated) {
-            throw new UnavailableMedicalAppointmentBookingDateTimeException();
+            throw new UnavailableBookingDateTimeException();
         }
     }
 }

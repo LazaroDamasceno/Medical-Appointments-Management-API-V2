@@ -1,5 +1,6 @@
 package com.api.v2.doctors.services;
 
+import com.api.v2.common.DuplicatedPersonalDataHandler;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
@@ -25,18 +26,21 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
 
     private final DoctorRepository doctorRepository;
     private final PersonRegistrationService personRegistrationService;
+    private final DuplicatedPersonalDataHandler duplicatedPersonalDataHandler;
 
     public DoctorHiringServiceImpl(DoctorRepository doctorRepository,
-                                   PersonRegistrationService personRegistrationService
+                                   PersonRegistrationService personRegistrationService,
+                                   DuplicatedPersonalDataHandler duplicatedPersonalDataHandler
     ) {
         this.doctorRepository = doctorRepository;
         this.personRegistrationService = personRegistrationService;
+        this.duplicatedPersonalDataHandler = duplicatedPersonalDataHandler;
     }
 
     @Override
     public ResponseEntity<DoctorResponseResource> hire(@Valid DoctorHiringDto hiringDto) {
-        onDuplicatedSsn(hiringDto.personRegistrationDto().ssn());
-        onDuplicatedEmail(hiringDto.personRegistrationDto().email());
+        duplicatedPersonalDataHandler.handleDuplicatedSsn(hiringDto.personRegistrationDto().ssn());
+        duplicatedPersonalDataHandler.handleDuplicatedEmail(hiringDto.personRegistrationDto().email());
         onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
         Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
@@ -54,26 +58,6 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
-    }
-
-    private void onDuplicatedSsn(String ssn) {
-        boolean isSsnDuplicated = doctorRepository
-                .findAll()
-                .stream()
-                .anyMatch(c -> c.getPerson().getSsn().equals(ssn));
-        if (isSsnDuplicated) {
-            throw new DuplicatedSsnException();
-        }
-    }
-
-    private void onDuplicatedEmail(String email) {
-        boolean isEmailDuplicated = doctorRepository
-                .findAll()
-                .stream()
-                .anyMatch(c -> c.getPerson().getEmail().equals(email));
-        if (isEmailDuplicated) {
-            throw new DuplicatedEmailException();
-        }
     }
 
     private void onDuplicatedMedicalLicenseNumber(MedicalLicenseNumber medicalLicenseNumber) {
