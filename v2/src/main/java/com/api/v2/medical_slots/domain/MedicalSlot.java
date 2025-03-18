@@ -35,6 +35,9 @@ public class MedicalSlot {
     private ZoneOffset completedAtZoneOffset;
     private Boolean isCompletedDuringDST;
 
+    public MedicalSlot() {
+    }
+
     private MedicalSlot(Doctor doctor, LocalDateTime availableAt, ZoneId availableAtZoneId, ZoneOffset availableAtZoneOffset) {
         this.id = UUID.randomUUID().toString();
         this.doctor = doctor;

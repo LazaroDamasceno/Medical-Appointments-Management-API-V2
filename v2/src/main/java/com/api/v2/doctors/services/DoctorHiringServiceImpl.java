@@ -10,8 +10,6 @@ import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
-import com.api.v2.people.exceptions.DuplicatedEmailException;
-import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

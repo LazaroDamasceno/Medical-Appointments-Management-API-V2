@@ -24,6 +24,9 @@ public class Customer {
     private ZoneOffset createdAtZoneOffset;
     private Boolean isCreatedDuringDST;
 
+    public Customer() {
+    }
+
     private Customer(Address address, Person person) {
         this.id = UUID.randomUUID().toString();
         this.address = address;

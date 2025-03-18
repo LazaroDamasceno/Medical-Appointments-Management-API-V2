@@ -39,6 +39,9 @@ public class MedicalAppointment {
     private ZoneOffset paidAtZoneOffset;
     private Boolean isPaymentDuringDST;
 
+    public MedicalAppointment() {
+    }
+
     private MedicalAppointment(MedicalAppointmentType type,
                                Customer customer,
                                Doctor doctor,
