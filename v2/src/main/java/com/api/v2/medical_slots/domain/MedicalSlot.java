@@ -47,9 +47,6 @@ public class MedicalSlot {
         this.isCreatedDuringDST = DstChecker.isGivenDateTimeFollowingDst(availableAt, availableAtZoneId);
     }
 
-    public MedicalSlot() {
-    }
-
     public void setMedicalAppointment(MedicalAppointment medicalAppointment) {
         this.medicalAppointment = medicalAppointment;
     }

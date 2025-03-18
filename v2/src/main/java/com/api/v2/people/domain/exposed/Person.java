@@ -31,9 +31,6 @@ public class Person {
     private ZoneOffset modifiedAtZoneOffset;
     private Boolean isModifiedDuringDST;
 
-    public Person() {
-    }
-
     private Person(PersonRegistrationDto registrationDto) {
         this.id = UUID.randomUUID().toString();
         this.firstName = registrationDto.firstName();

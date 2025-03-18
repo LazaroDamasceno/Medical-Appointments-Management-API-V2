@@ -60,9 +60,6 @@ public class MedicalAppointment {
         isCreatedDuringDST = DstChecker.isGivenDateTimeFollowingDst(createdAt, createdAtZoneId);
     }
 
-    public MedicalAppointment() {
-    }
-
     public static MedicalAppointment of(MedicalAppointmentType type,
                                         Customer customer,
                                         Doctor doctor,

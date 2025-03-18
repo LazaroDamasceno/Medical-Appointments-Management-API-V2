@@ -28,9 +28,6 @@ public class Doctor {
     private ZoneOffset terminatedAtZoneOffset;
     private Boolean isTerminatedDuringDST;
 
-    public Doctor() {
-    }
-
     private Doctor(Person person, MedicalLicenseNumber medicalLicenseNumber) {
         this.id = UUID.randomUUID().toString();
         this.person = person;
