@@ -40,52 +40,18 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
 
     @Override
     public ResponseEntity<ResourceResponse> cancelById(String medicalLicenseNumber, String medicalRegion, String id) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion));
         MedicalSlot medicalSlot = medicalSlotFinder.findById(id);
-        validate(medicalSlot, doctor);
+        validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
-        if (medicalAppointment == null) {
-            return cancellationResponse(medicalSlot);
+        return buildCancellationResponse(medicalSlot, medicalAppointment);
+    }
+
+    private ResponseEntity<ResourceResponse> buildCancellationResponse(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
+        MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
+        if (medicalAppointment != null) {
+            MedicalAppointment canceledMedicalAppointment = medicalAppointmentManagementService.cancel(medicalAppointment);
         }
-        return cancellationResponse(medicalSlot, medicalAppointment);
-    }
-
-    private ResponseEntity<ResourceResponse> cancellationResponse(MedicalSlot medicalSlot) {
-        medicalSlot.markAsCanceled();
-        medicalSlot.setMedicalAppointment(null);
-        MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
-        MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
-        ResourceResponse responseResource = ResourceResponse
-                .createEmpty()
-                .add(
-                        linkTo(
-                                methodOn(MedicalSlotController.class).cancel(
-                                        medicalLicenseNumber.licenseNumber(),
-                                        medicalLicenseNumber.medicalRegion().toString(),
-                                        medicalSlot.getId()
-                                )
-                        ).withSelfRel(),
-                        linkTo(
-                                methodOn(MedicalSlotController.class).findById(
-                                        medicalLicenseNumber.licenseNumber(),
-                                        medicalLicenseNumber.medicalRegion().toString(),
-                                        medicalSlot.getId()
-                                )
-                        ).withRel("find_medical_slot_by_id"),
-                        linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(
-                                        medicalLicenseNumber.licenseNumber(),
-                                        medicalLicenseNumber.medicalRegion().toString()
-                                )
-                        ).withRel("find_medical_slots_by_doctor")
-                );
-        return ResponseEntity.ok(responseResource);
-    }
-
-    private ResponseEntity<ResourceResponse> cancellationResponse(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
-        MedicalAppointment canceledMedicalAppointment = medicalAppointmentManagementService.cancel(medicalAppointment);
-        MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         medicalSlot.markAsCanceled();
         medicalSlot.setMedicalAppointment(null);
         MedicalSlot canceledMedicalSlot = medicalSlotRepository.save(medicalSlot);
@@ -118,8 +84,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
 
     @Override
     public ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String medicalRegion, String slotId) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion));
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
@@ -143,7 +108,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
         return ResponseEntity.ok(responseResource);
     }
 
-    private void validate(MedicalSlot medicalSlot, Doctor doctor) {
+    private void validateCancellation(MedicalSlot medicalSlot, Doctor doctor) {
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         onCanceledMedicalSlot(medicalSlot);
         onCompletedMedicalSlot(medicalSlot);
@@ -168,6 +133,5 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
             throw new ImmutableMedicalSlotStatusException(message);
         }
     }
-
 
 }
