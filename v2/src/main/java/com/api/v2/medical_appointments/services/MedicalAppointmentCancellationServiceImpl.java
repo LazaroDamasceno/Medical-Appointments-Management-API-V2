@@ -46,9 +46,7 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     public ResponseEntity<ResourceResponse> cancelById(String customerId, String medicalAppointmentId) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         Customer customer = customerFinder.findById(customerId);
-        onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);
-        onCanceledMedicalAppointment(medicalAppointment);
-        onCompletedMedicalAppointment(medicalAppointment);
+        validate(medicalAppointment, customer);
         MedicalSlot medicalSlot = medicalSlotFinder.findByMedicalAppointment(medicalAppointment);
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
@@ -80,6 +78,12 @@ public class MedicalAppointmentCancellationServiceImpl implements MedicalAppoint
     public MedicalAppointment cancel(MedicalAppointment medicalAppointment) {
         medicalAppointment.markAsCanceled();
         return medicalAppointmentRepository.save(medicalAppointment);
+    }
+
+    private void validate(MedicalAppointment medicalAppointment, Customer customer) {
+        onNonAssociatedMedicalAppointmentWithCustomer(medicalAppointment, customer);
+        onCanceledMedicalAppointment(medicalAppointment);
+        onCompletedMedicalAppointment(medicalAppointment);
     }
 
     private void onNonAssociatedMedicalAppointmentWithCustomer(MedicalAppointment medicalAppointment, Customer customer) {

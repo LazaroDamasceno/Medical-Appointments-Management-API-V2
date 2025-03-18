@@ -47,9 +47,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
         MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(id);
-        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
-        onCanceledMedicalSlot(medicalSlot);
-        onCompletedMedicalSlot(medicalSlot);
+        validate(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         if (medicalAppointment == null) {
             return cancellationResponse(medicalSlot);
@@ -147,6 +145,12 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
                         ).withRel("find_medical_slots_by_doctor")
                 );
         return ResponseEntity.ok(responseResource);
+    }
+
+    private void validate(MedicalSlot medicalSlot, Doctor doctor) {
+        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
+        onCanceledMedicalSlot(medicalSlot);
+        onCompletedMedicalSlot(medicalSlot);
     }
 
     private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {

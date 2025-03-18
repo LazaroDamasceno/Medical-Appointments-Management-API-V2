@@ -39,8 +39,11 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
 
     @Override
     public ResponseEntity<DoctorResponseResource> hire(@Valid DoctorHiringDto hiringDto) {
-        duplicatedPersonalDataHandler.handleDuplicatedSsn(hiringDto.personRegistrationDto().ssn());
-        duplicatedPersonalDataHandler.handleDuplicatedEmail(hiringDto.personRegistrationDto().email());
+        validateRegistration(
+                hiringDto.personRegistrationDto().ssn(),
+                hiringDto.personRegistrationDto().email(),
+                hiringDto.medicalLicenseNumber()
+        );
         onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
         Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
@@ -58,6 +61,12 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
+    }
+
+    private void validateRegistration(String ssn, String email, MedicalLicenseNumber medicalLicenseNumber) {
+        duplicatedPersonalDataHandler.handleDuplicatedSsn(ssn);
+        duplicatedPersonalDataHandler.handleDuplicatedEmail(email);
+        onDuplicatedMedicalLicenseNumber(medicalLicenseNumber);
     }
 
     private void onDuplicatedMedicalLicenseNumber(MedicalLicenseNumber medicalLicenseNumber) {

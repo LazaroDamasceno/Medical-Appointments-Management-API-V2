@@ -74,9 +74,14 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         ZoneOffset zoneOffset = OffsetTime
                 .ofInstant(bookingDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        PastDateHandler.handle(bookingDto.availableAt().toLocalDate());
-        onBlockedBooking(medicalSlot, bookingDto.customerId());
-        onDuplicatedBookingDateTime(customer, doctor, bookingDto.availableAt(), zoneOffset, zoneId);
+        validateBooking(
+                medicalSlot,
+                customer,
+                doctor,
+                bookingDto.availableAt(),
+                zoneOffset,
+                zoneId
+        );
         MedicalAppointment medicalAppointment = MedicalAppointment.of(
                 appointmentType,
                 customer,
@@ -109,8 +114,21 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
     }
 
+    private void validateBooking(
+            MedicalSlot medicalSlot,
+            Customer customer,
+            Doctor doctor,
+            LocalDateTime availableAt,
+            ZoneOffset zoneOffset,
+            ZoneId zoneId
+    ) {
+        PastDateHandler.handle(availableAt.toLocalDate());
+        onBlockedBooking(medicalSlot, customer.getId());
+        onDuplicatedBookingDateTime(customer, doctor, availableAt, zoneOffset, zoneId);
+    }
+
     private void onBlockedBooking(MedicalSlot medicalSlot, String customerId) {
-        if (medicalSlot.getDoctor().getPerson().getId().equals(new String(customerId))) {
+        if (medicalSlot.getDoctor().getPerson().getId().equals(customerId)) {
             String message = "Customer cannot book a medical appointment which they're the related medical slot's doctor.";
             throw new InaccessibleMedicalAppointmentException(message);
         }

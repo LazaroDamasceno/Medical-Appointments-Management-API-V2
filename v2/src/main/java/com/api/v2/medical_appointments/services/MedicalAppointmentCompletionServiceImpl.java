@@ -1,5 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
+import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
@@ -17,10 +18,14 @@ public class MedicalAppointmentCompletionServiceImpl implements MedicalAppointme
 
     @Override
     public MedicalAppointment complete(MedicalAppointment medicalAppointment) {
-        onCanceledMedicalAppointment(medicalAppointment);
-        onCompletedMedicalAppointment(medicalAppointment);
+        validate(medicalAppointment);
         medicalAppointment.markAsCompleted();
         return medicalAppointmentRepository.save(medicalAppointment);
+    }
+
+    private void validate(MedicalAppointment medicalAppointment) {
+        onCanceledMedicalAppointment(medicalAppointment);
+        onCompletedMedicalAppointment(medicalAppointment);
     }
 
     private void onCanceledMedicalAppointment(MedicalAppointment medicalAppointment) {

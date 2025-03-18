@@ -31,12 +31,19 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
 
     @Override
     public ResponseEntity<CustomerResponseDto> register(@Valid CustomerRegistrationDto registrationDto) {
-        duplicatedPersonalDataHandler.handleDuplicatedSsn(registrationDto.personRegistrationDto().ssn());
-        duplicatedPersonalDataHandler.handleDuplicatedEmail(registrationDto.personRegistrationDto().email());
+        validateRegistration(
+                registrationDto.personRegistrationDto().ssn(),
+                registrationDto.personRegistrationDto().email()
+        );
         Person savedPerson = personRegistrationService.register(registrationDto.personRegistrationDto());
         Customer customer = Customer.of(registrationDto.address(), savedPerson);
         Customer savedCustomer = customerRepository.save(customer);
         CustomerResponseDto responseDto = CustomerResponseMapper.mapToDto(savedCustomer);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    private void validateRegistration(String ssn, String email) {
+        duplicatedPersonalDataHandler.handleDuplicatedSsn(ssn);
+        duplicatedPersonalDataHandler.handleDuplicatedEmail(email);
     }
 }

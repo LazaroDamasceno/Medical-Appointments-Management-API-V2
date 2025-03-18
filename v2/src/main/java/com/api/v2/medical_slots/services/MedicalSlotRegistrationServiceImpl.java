@@ -44,8 +44,12 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
         ZoneOffset zoneOffset = OffsetDateTime
                 .ofInstant(registrationDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        PastDateHandler.handle(registrationDto.availableAt().toLocalDate());
-        onDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
+        validateRegistration(
+                doctor,
+                registrationDto.availableAt(),
+                zoneId,
+                zoneOffset
+        );
         MedicalSlot medicalSlot = MedicalSlot.of(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         String medicalLicenseNumber = registrationDto.medicalLicenseNumber().licenseNumber();
@@ -64,6 +68,16 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
+    }
+
+    private void validateRegistration(
+            Doctor doctor,
+            LocalDateTime availableAt,
+            ZoneId zoneId,
+            ZoneOffset zoneOffset
+    ) {
+        PastDateHandler.handle(availableAt.toLocalDate());
+        onDuplicatedBookingDateTime(doctor, availableAt, zoneId, zoneOffset);
     }
 
     private void onDuplicatedBookingDateTime(Doctor doctor,

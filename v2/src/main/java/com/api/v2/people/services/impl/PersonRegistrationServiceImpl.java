@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonRegistrationServiceImpl implements PersonRegistrationService {
 
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public PersonRegistrationServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
