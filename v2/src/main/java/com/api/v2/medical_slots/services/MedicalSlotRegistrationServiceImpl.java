@@ -1,6 +1,6 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.common.PastDateTimeHandler;
+import com.api.v2.common.PastDateHandler;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
@@ -44,7 +44,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
         ZoneOffset zoneOffset = OffsetDateTime
                 .ofInstant(registrationDto.availableAt().toInstant(ZoneOffset.UTC), zoneId)
                 .getOffset();
-        PastDateTimeHandler.handle(registrationDto.availableAt().toLocalDate());
+        PastDateHandler.handle(registrationDto.availableAt().toLocalDate());
         onDuplicatedBookingDateTime(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot medicalSlot = MedicalSlot.of(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);

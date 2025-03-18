@@ -2,10 +2,10 @@ package com.api.v2.common;
 
 import java.time.LocalDate;
 
-public final class PastDateTimeHandler {
+public final class PastDateHandler {
 
     public static void handle(LocalDate date) {
-        if (PastDateTimeChecker.isBeforeToday(date)) {
+        if (PastDateChecker.isBeforeToday(date)) {
             throw new PastBookingDateTimeException();
         }
     }
