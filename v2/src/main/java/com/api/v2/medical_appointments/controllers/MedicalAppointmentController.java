@@ -4,8 +4,8 @@ import com.api.v2.common.ResourceResponse;
 import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
-import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCancellationService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentRetrievalService;
+import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +17,15 @@ import java.util.List;
 public class MedicalAppointmentController {
 
     private final MedicalAppointmentBookingService bookingService;
-    private final MedicalAppointmentCancellationService cancellationService;
+    private final MedicalAppointmentManagementService managementService;
     private final MedicalAppointmentRetrievalService retrievalService;
 
     public MedicalAppointmentController(MedicalAppointmentBookingService bookingService,
-                                        MedicalAppointmentCancellationService cancellationService,
+                                        MedicalAppointmentManagementService managementService,
                                         MedicalAppointmentRetrievalService retrievalService
     ) {
         this.bookingService = bookingService;
-        this.cancellationService = cancellationService;
+        this.managementService = managementService;
         this.retrievalService = retrievalService;
     }
 
@@ -47,7 +47,7 @@ public class MedicalAppointmentController {
     @PatchMapping("{customerId}/{medicalAppointmentId}/cancellation")
     public ResponseEntity<ResourceResponse> cancel(@PathVariable String customerId,
                                                    @PathVariable String medicalAppointmentId) {
-        return cancellationService.cancelById(customerId, medicalAppointmentId);
+        return managementService.cancelById(customerId, medicalAppointmentId);
     }
 
     @GetMapping("{customerId}/{medicalAppointmentId}")

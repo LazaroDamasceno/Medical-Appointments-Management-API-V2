@@ -6,8 +6,6 @@ import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
-import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCancellationService;
-import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentCompletionService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
