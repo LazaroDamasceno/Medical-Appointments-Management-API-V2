@@ -6,7 +6,7 @@ public final class PastDateHandler {
 
     public static void handle(LocalDate date) {
         if (PastDateChecker.isBeforeToday(date)) {
-            throw new PastBookingDateTimeException();
+            throw new PastBookingDateException();
         }
     }
 

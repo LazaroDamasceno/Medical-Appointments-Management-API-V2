@@ -69,8 +69,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(PastBookingDateTimeException.class)
-    public ResponseEntity<String> handleException(PastBookingDateTimeException ex) {
+    @ExceptionHandler(PastBookingDateException.class)
+    public ResponseEntity<String> handleException(PastBookingDateException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
