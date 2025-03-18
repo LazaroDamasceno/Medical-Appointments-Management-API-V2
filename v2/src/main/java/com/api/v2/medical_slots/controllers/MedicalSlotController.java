@@ -3,8 +3,7 @@ package com.api.v2.medical_slots.controllers;
 import com.api.v2.common.ResourceResponse;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
-import com.api.v2.medical_slots.services.MedicalSlotCancellationService;
-import com.api.v2.medical_slots.services.MedicalSlotCompletionService;
+import com.api.v2.medical_slots.services.MedicalSlotManagementService;
 import com.api.v2.medical_slots.services.MedicalSlotRegistrationService;
 import com.api.v2.medical_slots.services.MedicalSlotRetrievalService;
 import jakarta.validation.Valid;
@@ -18,18 +17,16 @@ import java.util.List;
 public class MedicalSlotController {
 
     private final MedicalSlotRegistrationService registrationService;
-    private final MedicalSlotCancellationService cancellationService;
+    private final MedicalSlotManagementService managementService;
     private final MedicalSlotRetrievalService retrievalService;
-    private final MedicalSlotCompletionService completionService;
 
     public MedicalSlotController(MedicalSlotRegistrationService registrationService,
-                                 MedicalSlotCancellationService cancellationService,
-                                 MedicalSlotRetrievalService retrievalService, MedicalSlotCompletionService completionService
+                                 MedicalSlotManagementService managementService,
+                                 MedicalSlotRetrievalService retrievalService
     ) {
         this.registrationService = registrationService;
-        this.cancellationService = cancellationService;
+        this.managementService = managementService;
         this.retrievalService = retrievalService;
-        this.completionService = completionService;
     }
 
     @PostMapping
@@ -42,7 +39,7 @@ public class MedicalSlotController {
                                                    @PathVariable String medicalRegion,
                                                    @PathVariable String slotId
     ) {
-        return cancellationService.cancelById(medicalLicenseNumber, medicalRegion, slotId);
+        return managementService.cancelById(medicalLicenseNumber, medicalRegion, slotId);
     }
 
     @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/{slotId}/completion")
@@ -50,7 +47,7 @@ public class MedicalSlotController {
                                                      @PathVariable String medicalRegion,
                                                      @PathVariable String slotId
     ) {
-        return completionService.completeById(medicalLicenseNumber, medicalRegion, slotId);
+        return managementService.completeById(medicalLicenseNumber, medicalRegion, slotId);
     }
 
     @GetMapping("{medicalLicenseNumber}/{medicalRegion}/{slotId}")
