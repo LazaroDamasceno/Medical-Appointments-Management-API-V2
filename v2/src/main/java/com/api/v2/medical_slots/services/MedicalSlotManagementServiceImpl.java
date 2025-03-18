@@ -6,6 +6,7 @@ import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
+import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
@@ -21,23 +22,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementService {
 
-    private final MedicalAppointmentCancellationService medicalAppointmentCancellationService;
+    private final MedicalAppointmentManagementService medicalAppointmentManagementService;
     private final MedicalSlotRepository medicalSlotRepository;
     private final MedicalSlotFinder medicalSlotFinder;
     private final DoctorFinder doctorFinder;
-    private final MedicalAppointmentCompletionService medicalAppointmentCompletionService;
 
-    public MedicalSlotManagementServiceImpl(MedicalAppointmentCancellationService medicalAppointmentCancellationService,
+    public MedicalSlotManagementServiceImpl(MedicalAppointmentManagementService medicalAppointmentManagementService,
                                             MedicalSlotRepository medicalSlotRepository,
                                             MedicalSlotFinder medicalSlotFinder,
-                                            DoctorFinder doctorFinder,
-                                            MedicalAppointmentCompletionService medicalAppointmentCompletionService
+                                            DoctorFinder doctorFinder
     ) {
-        this.medicalAppointmentCancellationService = medicalAppointmentCancellationService;
+        this.medicalAppointmentManagementService = medicalAppointmentManagementService;
         this.medicalSlotRepository = medicalSlotRepository;
         this.medicalSlotFinder = medicalSlotFinder;
         this.doctorFinder = doctorFinder;
-        this.medicalAppointmentCompletionService = medicalAppointmentCompletionService;
     }
 
     @Override
@@ -86,7 +84,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
     }
 
     private ResponseEntity<ResourceResponse> cancellationResponse(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
-        MedicalAppointment canceledMedicalAppointment = medicalAppointmentCancellationService.cancel(medicalAppointment);
+        MedicalAppointment canceledMedicalAppointment = medicalAppointmentManagementService.cancel(medicalAppointment);
         MedicalLicenseNumber medicalLicenseNumber = medicalSlot.getDoctor().getMedicalLicenseNumber();
         medicalSlot.markAsCanceled();
         medicalSlot.setMedicalAppointment(null);
@@ -126,7 +124,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();
-        MedicalAppointment completedMedicalAppointment = medicalAppointmentCompletionService.complete(medicalAppointment);
+        MedicalAppointment completedMedicalAppointment = medicalAppointmentManagementService.complete(medicalAppointment);
         medicalSlot.markAsCompleted(completedMedicalAppointment);
         MedicalSlot completedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         ResourceResponse responseResource = ResourceResponse
