@@ -77,18 +77,12 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
             ZoneOffset zoneOffset
     ) {
         PastDateHandler.handle(availableAt.toLocalDate());
-        onDuplicatedBookingDateTime(doctor, availableAt, zoneId, zoneOffset);
-    }
 
-    private void onDuplicatedBookingDateTime(Doctor doctor,
-                                             LocalDateTime availableAt,
-                                             ZoneId zoneId,
-                                             ZoneOffset zoneOffset
-    ) {
         boolean isGivenBookingDateTimeDuplicated = medicalSlotRepository
                 .findAll()
                 .stream()
-                .anyMatch(slot -> slot.getDoctor().getId().equals(doctor.getId())
+                .anyMatch(slot ->
+                        slot.getDoctor().getId().equals(doctor.getId())
                         && slot.getAvailableAt().equals(availableAt)
                         && slot.getAvailableAtZoneId().equals(zoneId)
                         && slot.getAvailableAtZoneOffset().equals(zoneOffset)
@@ -97,4 +91,5 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
             throw new UnavailableBookingDateTimeException();
         }
     }
+
 }

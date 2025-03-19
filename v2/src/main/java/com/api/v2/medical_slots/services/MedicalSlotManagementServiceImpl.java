@@ -86,7 +86,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
     public ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String medicalRegion, String slotId) {
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion));
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
-        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
+        validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
         medicalAppointment.markAsCompleted();
         MedicalAppointment completedMedicalAppointment = medicalAppointmentManagementService.complete(medicalAppointment);
@@ -109,25 +109,15 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
     }
 
     private void validateCancellation(MedicalSlot medicalSlot, Doctor doctor) {
-        onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
-        onCanceledMedicalSlot(medicalSlot);
-        onCompletedMedicalSlot(medicalSlot);
-    }
-
-    private void onNonAssociatedMedicalSlotWithDoctor(MedicalSlot medicalSlot, Doctor doctor) {
         if (!medicalSlot.getDoctor().getId().equals(doctor.getId())) {
             throw new InaccessibleMedicalSlotException(doctor.getId(), medicalSlot.getId());
         }
-    }
 
-    private void onCanceledMedicalSlot(MedicalSlot medicalSlot) {
         if (medicalSlot.getCanceledAt() != null && medicalSlot.getCompletedAt() == null) {
             String message = "Medical slot whose id is %s is already canceled.".formatted(medicalSlot.getId());
             throw new ImmutableMedicalSlotStatusException(message);
         }
-    }
 
-    private void onCompletedMedicalSlot(MedicalSlot medicalSlot) {
         if (medicalSlot.getCanceledAt() == null && medicalSlot.getCompletedAt() != null) {
             String message = "Medical slot whose id is %s is already completed.".formatted(medicalSlot.getId());
             throw new ImmutableMedicalSlotStatusException(message);

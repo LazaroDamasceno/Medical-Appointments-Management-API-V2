@@ -1,6 +1,5 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.common.DuplicatedPersonalDataHandler;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
@@ -10,6 +9,8 @@ import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
+import com.api.v2.people.exceptions.DuplicatedEmailException;
+import com.api.v2.people.exceptions.DuplicatedSsnException;
 import com.api.v2.people.services.interfaces.PersonRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,15 +25,12 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
 
     private final DoctorRepository doctorRepository;
     private final PersonRegistrationService personRegistrationService;
-    private final DuplicatedPersonalDataHandler duplicatedPersonalDataHandler;
 
     public DoctorHiringServiceImpl(DoctorRepository doctorRepository,
-                                   PersonRegistrationService personRegistrationService,
-                                   DuplicatedPersonalDataHandler duplicatedPersonalDataHandler
+                                   PersonRegistrationService personRegistrationService
     ) {
         this.doctorRepository = doctorRepository;
         this.personRegistrationService = personRegistrationService;
-        this.duplicatedPersonalDataHandler = duplicatedPersonalDataHandler;
     }
 
     @Override
@@ -42,7 +40,11 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                 hiringDto.personRegistrationDto().email(),
                 hiringDto.medicalLicenseNumber()
         );
-        onDuplicatedMedicalLicenseNumber(hiringDto.medicalLicenseNumber());
+        validateRegistration(
+                hiringDto.personRegistrationDto().ssn(),
+                hiringDto.personRegistrationDto().email(),
+                hiringDto.medicalLicenseNumber()
+        );
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
         Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
@@ -62,12 +64,22 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
     }
 
     private void validateRegistration(String ssn, String email, MedicalLicenseNumber medicalLicenseNumber) {
-        duplicatedPersonalDataHandler.handleDuplicatedSsn(ssn);
-        duplicatedPersonalDataHandler.handleDuplicatedEmail(email);
-        onDuplicatedMedicalLicenseNumber(medicalLicenseNumber);
-    }
+        boolean isSsnDuplicated = doctorRepository
+                .findAll()
+                .stream()
+                .anyMatch(x -> x.getPerson().getSsn().equals(ssn));
+        if (isSsnDuplicated) {
+            throw new DuplicatedSsnException();
+        }
 
-    private void onDuplicatedMedicalLicenseNumber(MedicalLicenseNumber medicalLicenseNumber) {
+        boolean isEmailDuplicated = doctorRepository
+                .findAll()
+                .stream()
+                .anyMatch(x -> x.getPerson().getEmail().equals(email));
+        if (isEmailDuplicated) {
+            throw new DuplicatedEmailException();
+        }
+
         boolean isMedicalLicenseNumberDuplicated = doctorRepository
                 .findAll()
                 .stream()
@@ -76,4 +88,5 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
             throw new DuplicatedMedicalLicenseNumberException();
         }
     }
+
 }

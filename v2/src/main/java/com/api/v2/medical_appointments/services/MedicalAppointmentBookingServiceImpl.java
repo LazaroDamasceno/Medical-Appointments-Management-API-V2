@@ -123,35 +123,25 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
             ZoneId zoneId
     ) {
         PastDateHandler.handle(availableAt.toLocalDate());
-        onBlockedBooking(medicalSlot, customer.getId());
-        onDuplicatedBookingDateTime(customer, doctor, availableAt, zoneOffset, zoneId);
-    }
 
-    private void onBlockedBooking(MedicalSlot medicalSlot, String customerId) {
-        if (medicalSlot.getDoctor().getPerson().getId().equals(customerId)) {
+        if (medicalSlot.getDoctor().getPerson().getId().equals(customer.getId())) {
             String message = "Customer cannot book a medical appointment which they're the related medical slot's doctor.";
             throw new InaccessibleMedicalAppointmentException(message);
         }
-    }
 
-    private void onDuplicatedBookingDateTime(Customer customer,
-                                             Doctor doctor,
-                                             LocalDateTime availableAt,
-                                             ZoneOffset zoneOffset,
-                                             ZoneId zoneId
-    ) {
         boolean isGivenBookingDateTimeDuplicated = medicalAppointmentRepository
                 .findAll()
                 .stream()
                 .anyMatch(appointment ->
                         appointment.getCustomer().getId().equals(customer.getId())
-                        && appointment.getDoctor().getId().equals(doctor.getId())
-                        && appointment.getBookedAt().equals(availableAt)
-                        && appointment.getBookedAtZoneOffset().equals(zoneOffset)
-                        && appointment.getBookedAtZoneId().equals(zoneId)
+                                && appointment.getDoctor().getId().equals(doctor.getId())
+                                && appointment.getBookedAt().equals(availableAt)
+                                && appointment.getBookedAtZoneOffset().equals(zoneOffset)
+                                && appointment.getBookedAtZoneId().equals(zoneId)
                 );
         if (isGivenBookingDateTimeDuplicated) {
             throw new UnavailableBookingDateTimeException();
         }
     }
+
 }
