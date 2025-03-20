@@ -1,4 +1,4 @@
-package com.api.v2;
+package com.api.v2.doctors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;

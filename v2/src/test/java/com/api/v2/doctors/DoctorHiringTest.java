@@ -1,4 +1,4 @@
-package com.api.v2;
+package com.api.v2.doctors;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;

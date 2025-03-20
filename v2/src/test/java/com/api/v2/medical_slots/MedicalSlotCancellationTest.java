@@ -1,4 +1,4 @@
-package com.api.v2;
+package com.api.v2.medical_slots;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MedicalSlotCompletionTest {
+class MedicalSlotCancellationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -28,11 +28,11 @@ class MedicalSlotCompletionTest {
 
     @Test
     @Order(1)
-    void testSuccessfulCompletion() throws Exception {
+    void testSuccessfulCancellation() throws Exception {
         String licenseNumber = "12345678";
         String medicalRegion = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is2xxSuccessful());
@@ -40,11 +40,11 @@ class MedicalSlotCompletionTest {
 
     @Test
     @Order(2)
-    void testUnSuccessfulCompletionForPastCompletion() throws Exception {
+    void testUnSuccessfulCancellationForPastCancellation() throws Exception {
         String licenseNumber = "12345678";
         String medicalRegion = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());
@@ -52,11 +52,11 @@ class MedicalSlotCompletionTest {
 
     @Test
     @Order(3)
-    void testUnsuccessfulCompletionForNotFoundMedicalLicenseNumber() throws Exception {
+    void testUnsuccessfulCancellationForNotFoundMedicalLicenseNumber() throws Exception {
         String licenseNumber = "12345677";
         String medicalRegion = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());
@@ -64,11 +64,11 @@ class MedicalSlotCompletionTest {
 
     @Test
     @Order(4)
-    void testUnsuccessfulCompletionForNotFoundMedicalSlotId() throws Exception {
+    void testUnsuccessfulCancellationForNotFoundMedicalSlotId() throws Exception {
         String licenseNumber = "12345678";
         String medicalRegion = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());

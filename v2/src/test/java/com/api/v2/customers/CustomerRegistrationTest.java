@@ -1,4 +1,4 @@
-package com.api.v2;
+package com.api.v2.customers;
 
 import com.api.v2.common.Address;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;

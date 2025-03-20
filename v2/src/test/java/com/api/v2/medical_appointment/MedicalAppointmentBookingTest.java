@@ -1,8 +1,6 @@
-package com.api.v2;
+package com.api.v2.medical_appointment;
 
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
-import com.api.v2.doctors.enums.MedicalRegions;
-import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -22,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MedicalSlotRegistrationTest {
+class MedicalAppointmentBookingTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -30,44 +28,43 @@ class MedicalSlotRegistrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    MedicalSlotRegistrationDto registrationDto = new MedicalSlotRegistrationDto(
-            new MedicalLicenseNumber("12345678", MedicalRegions.AK),
-            LocalDateTime.parse("2024-12-12T12:30:30")
+    MedicalAppointmentBookingDto bookingDto = new MedicalAppointmentBookingDto(
+            "123456789",
+            LocalDateTime.parse("2024-12-12T12:30:30"),
+            ""
     );
 
-    @Test
     @Order(1)
+    @Test
     void testSuccessfulRegistration() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v2/medical-slots")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(registrationDto))
+                        .content(objectMapper.writeValueAsString(bookingDto))
         ).andExpect(status().is2xxSuccessful());
     }
 
-    @Test
     @Order(2)
-    void testUnsuccessfulRegistrationForDuplicatedBookingDateTime() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/medical-slots")
+    @Test
+    void testUnSuccessfulRegistrationForDuplicatedBookingDateTime() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto))
+                .content(objectMapper.writeValueAsString(bookingDto))
         ).andExpect(status().is4xxClientError());
     }
 
-
-    MedicalSlotRegistrationDto registrationDtoForNonFoundMedicalAppointment = new MedicalSlotRegistrationDto(
-        new MedicalLicenseNumber("12345677", MedicalRegions.AK),
-        LocalDateTime.parse("2024-12-12T12:30:30")
+    MedicalAppointmentBookingDto bookingDtoWithWrongMedicalSlotId = new MedicalAppointmentBookingDto(
+            "123456789",
+            LocalDateTime.parse("2025-12-12T12:30:30"),
+            ""
     );
 
-    @Test
     @Order(3)
-    void testUnsuccessfulRegistrationForNonFoundMedicalAppointment() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/medical-slots")
+    @Test
+    void testUnSuccessfulRegistrationForWrongMedicalSlotId() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDtoForNonFoundMedicalAppointment))
+                .content(objectMapper.writeValueAsString(bookingDtoWithWrongMedicalSlotId))
         ).andExpect(status().is4xxClientError());
     }
+
 }
