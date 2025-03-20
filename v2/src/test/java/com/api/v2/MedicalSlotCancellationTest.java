@@ -40,7 +40,7 @@ class MedicalSlotCancellationTest {
 
     @Test
     @Order(2)
-    void testUnSuccessfulCompletionForPastCancellation() throws Exception {
+    void testUnSuccessfulCancellationForPastCancellation() throws Exception {
         String licenseNumber = "12345678";
         String medicalRegion = "AK";
         String medicalSlotId = "";
