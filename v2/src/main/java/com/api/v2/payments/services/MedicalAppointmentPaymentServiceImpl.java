@@ -17,17 +17,17 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 @Service
-public class MedicalAppointmentServiceImpl implements MedicalAppointmentService {
+public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentPaymentService {
 
     private final CustomerFinder customerFinder;
     private final MedicalAppointmentFinder medicalAppointmentFinder;
     private final CardFinder cardFinder;
     private final PaymentRepository paymentRepository;
 
-    public MedicalAppointmentServiceImpl(CustomerFinder customerFinder,
-                                         MedicalAppointmentFinder medicalAppointmentFinder,
-                                         CardFinder cardFinder,
-                                         PaymentRepository paymentRepository
+    public MedicalAppointmentPaymentServiceImpl(CustomerFinder customerFinder,
+                                                MedicalAppointmentFinder medicalAppointmentFinder,
+                                                CardFinder cardFinder,
+                                                PaymentRepository paymentRepository
     ) {
         this.customerFinder = customerFinder;
         this.medicalAppointmentFinder = medicalAppointmentFinder;
