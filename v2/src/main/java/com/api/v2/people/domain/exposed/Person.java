@@ -54,13 +54,6 @@ public class Person {
         return new Person(registrationDto);
     }
 
-    public String getFullName() {
-        if (middleName.isBlank()) {
-            return "%s %s".formatted(firstName, lastName);
-        }
-        return "%s %s %s".formatted(firstName, middleName, lastName);
-    }
-
     public String getId() {
         return id;
     }
@@ -114,6 +107,26 @@ public class Person {
     }
 
     public boolean isModifiedDuringDST() {
+        return isModifiedDuringDST;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Boolean getCreatedDuringDST() {
+        return isCreatedDuringDST;
+    }
+
+    public Boolean getModifiedDuringDST() {
         return isModifiedDuringDST;
     }
 }
