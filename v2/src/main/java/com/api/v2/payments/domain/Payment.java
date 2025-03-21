@@ -6,6 +6,7 @@ import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -18,13 +19,14 @@ public record Payment(
         String id,
         Card card,
         MedicalAppointment medicalAppointment,
+        BigDecimal price,
         LocalDateTime paidAt,
         ZoneId paidAtZoneId,
         ZoneOffset paidAtZoneOffset,
         Boolean isPaymentDuringDST
 ) {
 
-    public static Payment of(Card card, MedicalAppointment medicalAppointment) {
+    public static Payment of(Card card, BigDecimal price, MedicalAppointment medicalAppointment) {
         LocalDateTime localDateTime = LocalDateTime.now();
         ZoneId zoneId = ZoneId.systemDefault();
         ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();
@@ -32,6 +34,7 @@ public record Payment(
                 UUID.randomUUID().toString(),
                 card,
                 medicalAppointment,
+                price,
                 localDateTime,
                 zoneId,
                 zoneOffset,
