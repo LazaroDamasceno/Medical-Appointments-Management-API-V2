@@ -4,7 +4,6 @@ import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
-import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
@@ -40,7 +39,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
 
     @Override
     public ResponseEntity<ResourceResponse> cancelById(String medicalLicenseNumber, String state, String id) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(state, state));
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(id);
         validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
@@ -84,7 +83,7 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
 
     @Override
     public ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String state, String slotId) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(state, state));
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();

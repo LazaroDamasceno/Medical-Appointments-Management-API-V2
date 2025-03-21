@@ -31,7 +31,7 @@ class MedicalSlotCancellationTest {
     void testSuccessfulCancellation() throws Exception {
         String licenseNumber = "12345678";
         String state = "CA";
-        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49dda";
+        String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,7 +43,7 @@ class MedicalSlotCancellationTest {
     void testUnSuccessfulCancellationForPastCancellation() throws Exception {
         String licenseNumber = "12345678";
         String state = "CA";
-        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49dda";
+        String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,7 +55,7 @@ class MedicalSlotCancellationTest {
     void testUnsuccessfulCancellationForNotFoundMedicalLicenseNumber() throws Exception {
         String licenseNumber = "12345677";
         String state = "CA";
-        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49dda";
+        String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +67,7 @@ class MedicalSlotCancellationTest {
     void testUnsuccessfulCancellationForNotFoundMedicalSlotId() throws Exception {
         String licenseNumber = "12345678";
         String state = "CA";
-        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49ddd";
+        String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)

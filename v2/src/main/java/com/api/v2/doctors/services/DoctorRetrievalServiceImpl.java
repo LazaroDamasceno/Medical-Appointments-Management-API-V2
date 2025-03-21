@@ -2,11 +2,9 @@ package com.api.v2.doctors.services;
 
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.doctors.utils.DoctorResponseMapper;
-import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +28,8 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
 
     @Override
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String state) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, state);
         DoctorResponseResource responseResource = DoctorResponseMapper
-                .mapToResource(doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber))
+                .mapToResource(doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state))
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)

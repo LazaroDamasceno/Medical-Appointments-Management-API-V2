@@ -6,10 +6,8 @@ import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorAuditTrail;
 import com.api.v2.doctors.domain.DoctorAuditTrailRepository;
 import com.api.v2.doctors.domain.DoctorRepository;
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.utils.DoctorFinder;
-import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +32,7 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
 
     @Override
     public ResponseEntity<ResourceResponse> rehire(String medicalLicenseNumber, String state) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, state);
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
         doctorAuditTrailRepository.save(doctorAuditTrail);

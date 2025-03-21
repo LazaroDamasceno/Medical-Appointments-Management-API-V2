@@ -1,9 +1,7 @@
 package com.api.v2.medical_slots.services;
 
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
-import com.api.v2.doctors.utils.MedicalLicenseNumberFormatter;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
@@ -37,8 +35,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
 
     @Override
     public ResponseEntity<MedicalSlotResponseResource> findById(String medicalLicenseNumber, String state, String slotId) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(state, state);
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
@@ -65,8 +62,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
 
     @Override
     public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber, String state) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(state, state);
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state);
         List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
                 .stream()

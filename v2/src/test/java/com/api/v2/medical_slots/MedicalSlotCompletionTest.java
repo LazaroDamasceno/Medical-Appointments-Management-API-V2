@@ -51,6 +51,18 @@ class MedicalSlotCompletionTest {
     }
 
     @Test
+    @Order(2)
+    void testUnSuccessfulCompletionForNoMedicalAppointmentAssociatedWith() throws Exception {
+        String licenseNumber = "12345678";
+        String state = "CA";
+        String medicalSlotId = "";
+        String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, state, medicalSlotId);
+        mockMvc.perform(MockMvcRequestBuilders.patch(url)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().is4xxClientError());
+    }
+
+    @Test
     @Order(3)
     void testUnsuccessfulCompletionForNotFoundMedicalLicenseNumber() throws Exception {
         String licenseNumber = "12345677";
