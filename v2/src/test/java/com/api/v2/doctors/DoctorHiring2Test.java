@@ -77,7 +77,7 @@ class DoctorHiring2Test {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678CA", States.AK)
+            new MedicalLicenseNumber("12345678", States.AK)
     );
 
     @Test

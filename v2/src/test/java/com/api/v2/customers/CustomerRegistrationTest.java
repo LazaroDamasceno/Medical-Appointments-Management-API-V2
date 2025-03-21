@@ -1,6 +1,7 @@
 package com.api.v2.customers;
 
 import com.api.v2.common.Address;
+import com.api.v2.common.States;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;
@@ -43,7 +44,7 @@ class CustomerRegistrationTest {
                     Gender.CIS_MALE
             ),
             new Address(
-                    "CA",
+                    States.CA,
                     "LA",
                     "Downtown",
                     "90012"
