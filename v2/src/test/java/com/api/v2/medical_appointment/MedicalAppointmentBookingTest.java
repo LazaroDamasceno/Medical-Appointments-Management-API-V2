@@ -29,7 +29,7 @@ class MedicalAppointmentBookingTest {
     private ObjectMapper objectMapper;
 
     MedicalAppointmentBookingDto bookingDto = new MedicalAppointmentBookingDto(
-            "123456789",
+            "",
             LocalDateTime.parse("2024-12-12T12:30:30"),
             ""
     );
@@ -37,7 +37,7 @@ class MedicalAppointmentBookingTest {
     @Order(1)
     @Test
     void testSuccessfulRegistration() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookingDto))
         ).andExpect(status().is2xxSuccessful());
@@ -46,14 +46,29 @@ class MedicalAppointmentBookingTest {
     @Order(2)
     @Test
     void testUnSuccessfulRegistrationForDuplicatedBookingDateTime() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookingDto))
         ).andExpect(status().is4xxClientError());
     }
 
+    MedicalAppointmentBookingDto bookingDtoWithWrongCustomerId = new MedicalAppointmentBookingDto(
+            "",
+            LocalDateTime.parse("2025-12-12T12:30:30"),
+            ""
+    );
+
+    @Order(3)
+    @Test
+    void testUnSuccessfulRegistrationForWrongCustomerId() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(bookingDtoWithWrongCustomerId))
+        ).andExpect(status().is4xxClientError());
+    }
+
     MedicalAppointmentBookingDto bookingDtoWithWrongMedicalSlotId = new MedicalAppointmentBookingDto(
-            "123456789",
+            "",
             LocalDateTime.parse("2025-12-12T12:30:30"),
             ""
     );
@@ -61,7 +76,7 @@ class MedicalAppointmentBookingTest {
     @Order(3)
     @Test
     void testUnSuccessfulRegistrationForWrongMedicalSlotId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookingDtoWithWrongMedicalSlotId))
         ).andExpect(status().is4xxClientError());
