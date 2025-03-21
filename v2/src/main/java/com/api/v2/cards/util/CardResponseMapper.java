@@ -1,7 +1,7 @@
 package com.api.v2.cards.util;
 
 import com.api.v2.cards.domain.exposed.Card;
-import com.api.v2.cards.dtos.CardResponseDto;
+import com.api.v2.cards.dtos.exposed.CardResponseDto;
 
 public final class CardResponseMapper {
     public static CardResponseDto map(Card card) {

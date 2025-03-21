@@ -1,4 +1,4 @@
-package com.api.v2.cards.dtos;
+package com.api.v2.cards.dtos.exposed;
 
 import java.time.LocalDate;
 

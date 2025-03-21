@@ -7,6 +7,7 @@ import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
+import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentUpdatingService;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.payments.domain.Payment;
 import com.api.v2.payments.domain.PaymentRepository;
@@ -23,16 +24,19 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
     private final MedicalAppointmentFinder medicalAppointmentFinder;
     private final CardFinder cardFinder;
     private final PaymentRepository paymentRepository;
+    private final MedicalAppointmentUpdatingService medicalAppointmentUpdatingService;
 
     public MedicalAppointmentPaymentServiceImpl(CustomerFinder customerFinder,
                                                 MedicalAppointmentFinder medicalAppointmentFinder,
                                                 CardFinder cardFinder,
-                                                PaymentRepository paymentRepository
+                                                PaymentRepository paymentRepository,
+                                                MedicalAppointmentUpdatingService medicalAppointmentUpdatingService
     ) {
         this.customerFinder = customerFinder;
         this.medicalAppointmentFinder = medicalAppointmentFinder;
         this.cardFinder = cardFinder;
         this.paymentRepository = paymentRepository;
+        this.medicalAppointmentUpdatingService = medicalAppointmentUpdatingService;
     }
 
     @Override
@@ -71,6 +75,7 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         Card card = cardFinder.findById(cardId);
         validate(medicalAppointment, customer);
+        MedicalAppointment paidMedicalAppointment = medicalAppointmentUpdatingService.set(medicalAppointment);
         Payment payment = Payment.of(card, price, medicalAppointment);
         Payment savedPayment = paymentRepository.save(payment);
         return PaymentResponseMapper.map(savedPayment);

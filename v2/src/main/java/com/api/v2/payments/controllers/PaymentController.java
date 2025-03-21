@@ -1,4 +1,4 @@
-package com.api.v2.payments;
+package com.api.v2.payments.controllers;
 
 import com.api.v2.payments.dtos.PaymentResponseDto;
 import com.api.v2.payments.services.MedicalAppointmentPaymentService;
