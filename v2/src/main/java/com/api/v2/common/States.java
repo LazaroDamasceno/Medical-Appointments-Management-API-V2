@@ -1,6 +1,5 @@
 package com.api.v2.common;
 
-import com.api.v2.doctors.exceptions.NonExistentStateException;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Arrays;

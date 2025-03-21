@@ -1,6 +1,7 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.common.PastDateHandler;
+import com.api.v2.common.PastBookingDateException;
+import com.api.v2.common.PastDateChecker;
 import com.api.v2.common.UnavailableBookingDateTimeException;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinder;
@@ -122,7 +123,9 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
             ZoneOffset zoneOffset,
             ZoneId zoneId
     ) {
-        PastDateHandler.handle(availableAt.toLocalDate());
+        if (PastDateChecker.isBeforeToday(availableAt.toLocalDate())) {
+            throw new PastBookingDateException();
+        }
 
         if (medicalSlot.getDoctor().getPerson().getId().equals(customer.getId())) {
             String message = "Customer cannot book a medical appointment which they're the related medical slot's doctor.";

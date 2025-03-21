@@ -1,4 +1,4 @@
-package com.api.v2.doctors.exceptions;
+package com.api.v2.common;
 
 public class NonExistentStateException extends RuntimeException {
     public NonExistentStateException() {

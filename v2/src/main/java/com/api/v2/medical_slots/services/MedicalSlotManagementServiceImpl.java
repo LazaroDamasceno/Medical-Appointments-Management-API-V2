@@ -88,6 +88,10 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
+        if (medicalAppointment == null) {
+            String message = "There's no active medical appointment associated with the current medical slot.";
+            throw new ImmutableMedicalSlotStatusException(message);
+        }
         medicalAppointment.markAsCompleted();
         MedicalAppointment completedMedicalAppointment = medicalAppointmentManagementService.complete(medicalAppointment);
         medicalSlot.markAsCompleted(completedMedicalAppointment);

@@ -30,8 +30,8 @@ class MedicalSlotCancellationTest {
     @Order(1)
     void testSuccessfulCancellation() throws Exception {
         String licenseNumber = "12345678";
-        String state = "AK";
-        String medicalSlotId = "";
+        String state = "CA";
+        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49dda";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -42,8 +42,8 @@ class MedicalSlotCancellationTest {
     @Order(2)
     void testUnSuccessfulCancellationForPastCancellation() throws Exception {
         String licenseNumber = "12345678";
-        String state = "AK";
-        String medicalSlotId = "";
+        String state = "CA";
+        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49dda";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -54,8 +54,8 @@ class MedicalSlotCancellationTest {
     @Order(3)
     void testUnsuccessfulCancellationForNotFoundMedicalLicenseNumber() throws Exception {
         String licenseNumber = "12345677";
-        String state = "AK";
-        String medicalSlotId = "";
+        String state = "CA";
+        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49dda";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -66,8 +66,8 @@ class MedicalSlotCancellationTest {
     @Order(4)
     void testUnsuccessfulCancellationForNotFoundMedicalSlotId() throws Exception {
         String licenseNumber = "12345678";
-        String state = "AK";
-        String medicalSlotId = "";
+        String state = "CA";
+        String medicalSlotId = "b508c1f1-2254-4c92-8606-9d94fca49ddd";
         String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)

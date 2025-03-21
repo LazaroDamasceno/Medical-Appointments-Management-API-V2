@@ -1,6 +1,7 @@
 package com.api.v2.medical_slots.services;
 
-import com.api.v2.common.PastDateHandler;
+import com.api.v2.common.PastBookingDateException;
+import com.api.v2.common.PastDateChecker;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
@@ -76,7 +77,9 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
             ZoneId zoneId,
             ZoneOffset zoneOffset
     ) {
-        PastDateHandler.handle(availableAt.toLocalDate());
+        if (PastDateChecker.isBeforeToday(availableAt.toLocalDate())) {
+            throw new PastBookingDateException();
+        }
 
         boolean isGivenBookingDateTimeDuplicated = medicalSlotRepository
                 .findAll()

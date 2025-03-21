@@ -31,7 +31,7 @@ class MedicalSlotRegistrationTest {
     private ObjectMapper objectMapper;
 
     MedicalSlotRegistrationDto registrationDto = new MedicalSlotRegistrationDto(
-            new MedicalLicenseNumber("12345678", States.AK),
+            new MedicalLicenseNumber("12345678", States.CA),
             LocalDateTime.parse("2025-12-12T12:30:30")
     );
 
@@ -57,7 +57,7 @@ class MedicalSlotRegistrationTest {
 
 
     MedicalSlotRegistrationDto registrationDtoForNonFoundMedicalAppointment = new MedicalSlotRegistrationDto(
-        new MedicalLicenseNumber("12345677", States.AK),
+        new MedicalLicenseNumber("12345677", States.CA),
         LocalDateTime.parse("2025-12-12T12:30:30")
     );
 

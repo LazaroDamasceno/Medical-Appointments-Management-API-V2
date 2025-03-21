@@ -30,7 +30,7 @@ class MedicalSlotCompletionTest {
     @Order(1)
     void testSuccessfulCompletion() throws Exception {
         String licenseNumber = "12345678";
-        String state = "AK";
+        String state = "CA";
         String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
@@ -42,7 +42,7 @@ class MedicalSlotCompletionTest {
     @Order(2)
     void testUnSuccessfulCompletionForPastCompletion() throws Exception {
         String licenseNumber = "12345678";
-        String state = "AK";
+        String state = "CA";
         String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
@@ -54,7 +54,7 @@ class MedicalSlotCompletionTest {
     @Order(3)
     void testUnsuccessfulCompletionForNotFoundMedicalLicenseNumber() throws Exception {
         String licenseNumber = "12345677";
-        String state = "AK";
+        String state = "CA";
         String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
@@ -66,7 +66,7 @@ class MedicalSlotCompletionTest {
     @Order(4)
     void testUnsuccessfulCompletionForNotFoundMedicalSlotId() throws Exception {
         String licenseNumber = "12345678";
-        String state = "AK";
+        String state = "CA";
         String medicalSlotId = "";
         String url = "/api/v2/medical-slots/%s/%s/%s/completion".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)

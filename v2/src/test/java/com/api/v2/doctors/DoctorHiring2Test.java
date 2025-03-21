@@ -43,7 +43,7 @@ class DoctorHiring2Test {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", States.AK)
+            new MedicalLicenseNumber("12345678", States.CA)
     );
 
     @Test
@@ -77,7 +77,7 @@ class DoctorHiring2Test {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", States.AK)
+            new MedicalLicenseNumber("12345678", States.CA)
     );
 
     @Test
@@ -101,7 +101,7 @@ class DoctorHiring2Test {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", States.AK)
+            new MedicalLicenseNumber("12345678", States.CA)
     );
 
     @Test
