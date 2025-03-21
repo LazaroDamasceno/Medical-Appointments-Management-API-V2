@@ -26,7 +26,7 @@ public class PaymentController {
         return paymentService.payPrivateInsurance(customerId, medicalAppointmentId, cardId, price);
     }
 
-    @PostMapping("public-insurance/{customerId}/{medicalAppointmentId}/{cardId}/{price}")
+    @PostMapping("public-insurance/{customerId}/{medicalAppointmentId}/{cardId}")
     public PaymentResponseDto payPublicInsurance(@PathVariable String customerId,
                                                  @PathVariable String medicalAppointmentId,
                                                  @PathVariable String cardId
