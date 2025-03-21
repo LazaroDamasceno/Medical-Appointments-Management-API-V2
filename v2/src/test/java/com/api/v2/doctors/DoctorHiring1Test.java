@@ -2,7 +2,7 @@ package com.api.v2.doctors;
 
 import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
-import com.api.v2.doctors.enums.MedicalRegions;
+import com.api.v2.common.States;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.utils.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DoctorHiringTest {
+class DoctorHiring1Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,7 +43,7 @@ class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", MedicalRegions.AK)
+            new MedicalLicenseNumber("12345678", States.AK)
     );
 
     @Test
@@ -77,7 +77,7 @@ class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678CA", MedicalRegions.AK)
+            new MedicalLicenseNumber("12345678CA", States.AK)
     );
 
     @Test
@@ -101,7 +101,7 @@ class DoctorHiringTest {
                     "1234567890",
                     Gender.CIS_MALE
             ),
-            new MedicalLicenseNumber("12345678", MedicalRegions.AK)
+            new MedicalLicenseNumber("12345678", States.AK)
     );
 
     @Test

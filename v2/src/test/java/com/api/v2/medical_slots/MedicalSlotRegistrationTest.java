@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots;
 
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
-import com.api.v2.doctors.enums.MedicalRegions;
+import com.api.v2.common.States;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
@@ -31,8 +31,8 @@ class MedicalSlotRegistrationTest {
     private ObjectMapper objectMapper;
 
     MedicalSlotRegistrationDto registrationDto = new MedicalSlotRegistrationDto(
-            new MedicalLicenseNumber("12345678", MedicalRegions.AK),
-            LocalDateTime.parse("2024-12-12T12:30:30")
+            new MedicalLicenseNumber("12345678", States.AK),
+            LocalDateTime.parse("2025-12-12T12:30:30")
     );
 
     @Test
@@ -57,8 +57,8 @@ class MedicalSlotRegistrationTest {
 
 
     MedicalSlotRegistrationDto registrationDtoForNonFoundMedicalAppointment = new MedicalSlotRegistrationDto(
-        new MedicalLicenseNumber("12345677", MedicalRegions.AK),
-        LocalDateTime.parse("2024-12-12T12:30:30")
+        new MedicalLicenseNumber("12345677", States.AK),
+        LocalDateTime.parse("2025-12-12T12:30:30")
     );
 
     @Test

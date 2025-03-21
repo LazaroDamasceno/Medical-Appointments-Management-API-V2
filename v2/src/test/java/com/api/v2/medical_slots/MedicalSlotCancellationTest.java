@@ -30,9 +30,9 @@ class MedicalSlotCancellationTest {
     @Order(1)
     void testSuccessfulCancellation() throws Exception {
         String licenseNumber = "12345678";
-        String medicalRegion = "AK";
+        String state = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is2xxSuccessful());
@@ -42,9 +42,9 @@ class MedicalSlotCancellationTest {
     @Order(2)
     void testUnSuccessfulCancellationForPastCancellation() throws Exception {
         String licenseNumber = "12345678";
-        String medicalRegion = "AK";
+        String state = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());
@@ -54,9 +54,9 @@ class MedicalSlotCancellationTest {
     @Order(3)
     void testUnsuccessfulCancellationForNotFoundMedicalLicenseNumber() throws Exception {
         String licenseNumber = "12345677";
-        String medicalRegion = "AK";
+        String state = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());
@@ -66,9 +66,9 @@ class MedicalSlotCancellationTest {
     @Order(4)
     void testUnsuccessfulCancellationForNotFoundMedicalSlotId() throws Exception {
         String licenseNumber = "12345678";
-        String medicalRegion = "AK";
+        String state = "AK";
         String medicalSlotId = "";
-        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, medicalRegion, medicalSlotId);
+        String url = "/api/v2/medical-slots/%s/%s/%s/cancellation".formatted(licenseNumber, state, medicalSlotId);
         mockMvc.perform(MockMvcRequestBuilders.patch(url)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());

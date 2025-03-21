@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface MedicalSlotRetrievalService {
-    ResponseEntity<MedicalSlotResponseResource> findById(String medicalLicenseNumber, String medicalRegion, String slotId);
-    ResponseEntity<List<MedicalSlotResponseResource> >findAllByDoctor(String medicalLicenseNumber, String medicalRegion);
+    ResponseEntity<MedicalSlotResponseResource> findById(String medicalLicenseNumber, String state, String slotId);
+    ResponseEntity<List<MedicalSlotResponseResource> >findAllByDoctor(String medicalLicenseNumber, String state);
     ResponseEntity<List<MedicalSlotResponseResource>> findAll();
 }

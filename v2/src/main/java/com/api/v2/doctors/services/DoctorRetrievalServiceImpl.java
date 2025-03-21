@@ -29,16 +29,16 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     }
 
     @Override
-    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String medicalRegion) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, medicalRegion);
+    public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String state) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, state);
         DoctorResponseResource responseResource = DoctorResponseMapper
                 .mapToResource(doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber))
                 .add(
                         linkTo(
-                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, state)
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
         return ResponseEntity.ok(responseResource);

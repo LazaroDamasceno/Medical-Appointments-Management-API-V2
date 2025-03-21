@@ -39,8 +39,8 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> cancelById(String medicalLicenseNumber, String medicalRegion, String id) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion));
+    public ResponseEntity<ResourceResponse> cancelById(String medicalLicenseNumber, String state, String id) {
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(state, state));
         MedicalSlot medicalSlot = medicalSlotFinder.findById(id);
         validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
@@ -61,21 +61,21 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
                         linkTo(
                                 methodOn(MedicalSlotController.class).cancel(
                                         medicalLicenseNumber.licenseNumber(),
-                                        medicalLicenseNumber.medicalRegion().toString(),
+                                        medicalLicenseNumber.state().toString(),
                                         medicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(
                                         medicalLicenseNumber.licenseNumber(),
-                                        medicalLicenseNumber.medicalRegion().toString(),
+                                        medicalLicenseNumber.state().toString(),
                                         medicalSlot.getId()
                                 )
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
                                 methodOn(MedicalSlotController.class).findAllByDoctor(
                                         medicalLicenseNumber.licenseNumber(),
-                                        medicalLicenseNumber.medicalRegion().toString()
+                                        medicalLicenseNumber.state().toString()
                                 )
                         ).withRel("find_medical_slots_by_doctor")
                 );
@@ -83,8 +83,8 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String medicalRegion, String slotId) {
-        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion));
+    public ResponseEntity<ResourceResponse> completeById(String medicalLicenseNumber, String state, String slotId) {
+        Doctor doctor = doctorFinder.findByMedicalLicenseNumber(MedicalLicenseNumberFormatter.format(state, state));
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         validateCancellation(medicalSlot, doctor);
         MedicalAppointment medicalAppointment = medicalSlot.getMedicalAppointment();
@@ -96,13 +96,13 @@ public class MedicalSlotManagementServiceImpl implements MedicalSlotManagementSe
                 .createEmpty()
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).complete(medicalLicenseNumber, medicalRegion, slotId)
+                                methodOn(MedicalSlotController.class).complete(medicalLicenseNumber, state, slotId)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, slotId)
+                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, slotId)
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, state)
                         ).withRel("find_medical_slots_by_doctor")
                 );
         return ResponseEntity.ok(responseResource);

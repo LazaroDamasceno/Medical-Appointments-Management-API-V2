@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface DoctorRetrievalService {
-    ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String medicalRegion);
+    ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String state);
     ResponseEntity<List<DoctorResponseResource>> findAll();
 }

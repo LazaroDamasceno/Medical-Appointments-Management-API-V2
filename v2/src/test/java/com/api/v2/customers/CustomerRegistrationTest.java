@@ -82,7 +82,7 @@ class CustomerRegistrationTest {
                     Gender.CIS_MALE
             ),
             new Address(
-                    "CA",
+                    States.CA,
                     "LA",
                     "Downtown",
                     "90012"

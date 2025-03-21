@@ -8,7 +8,6 @@ import com.api.v2.doctors.services.DoctorRehireService;
 import com.api.v2.doctors.services.DoctorRetrievalService;
 import com.api.v2.doctors.services.DoctorTerminationService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,25 +38,25 @@ public class DoctorController {
         return hiringService.hire(hiringDto);
     }
 
-    @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/rehiring")
+    @PatchMapping("{medicalLicenseNumber}/{state}/rehiring")
     public ResponseEntity<ResourceResponse> rehire(@PathVariable String medicalLicenseNumber,
-                                                   @PathVariable String medicalRegion
+                                                   @PathVariable String state
     ) {
-        return rehireService.rehire(medicalLicenseNumber, medicalRegion);
+        return rehireService.rehire(medicalLicenseNumber, state);
     }
 
-    @PatchMapping("{medicalLicenseNumber}/{medicalRegion}/termination")
+    @PatchMapping("{medicalLicenseNumber}/{state}/termination")
     public ResponseEntity<ResourceResponse> terminate(@PathVariable String medicalLicenseNumber,
-                                                      @PathVariable String medicalRegion
+                                                      @PathVariable String state
     ) {
-        return terminationService.terminate(medicalLicenseNumber, medicalRegion);
+        return terminationService.terminate(medicalLicenseNumber, state);
     }
 
-    @GetMapping("{medicalLicenseNumber}/{medicalRegion}")
+    @GetMapping("{medicalLicenseNumber}/{state}")
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@PathVariable String medicalLicenseNumber,
-                                                                             @PathVariable String medicalRegion
+                                                                             @PathVariable String state
     ) {
-        return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber, medicalRegion);
+        return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber, state);
     }
 
     @GetMapping

@@ -49,15 +49,15 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
         String medicalLicenseNumber = hiringDto.medicalLicenseNumber().licenseNumber();
-        String medicalRegion = hiringDto.medicalLicenseNumber().medicalRegion().toString();
+        String state = hiringDto.medicalLicenseNumber().state().toString();
         DoctorResponseResource responseResource = DoctorResponseMapper
                 .mapToResource(savedDoctor)
                 .add(
                         linkTo(
-                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)
                         ).withRel("find_doctor_by_medical_license_number"),
                         linkTo(
-                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, state)
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);

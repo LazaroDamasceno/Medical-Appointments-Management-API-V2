@@ -36,8 +36,8 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public ResponseEntity<MedicalSlotResponseResource> findById(String medicalLicenseNumber, String medicalRegion, String slotId) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
+    public ResponseEntity<MedicalSlotResponseResource> findById(String medicalLicenseNumber, String state, String slotId) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(state, state);
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
@@ -45,13 +45,13 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                 .mapToResource(medicalSlot)
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, slotId)
+                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, slotId)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, state)
                         ).withRel("find_medical_slots_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, medicalRegion, slotId)
+                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, state, slotId)
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.ok(responseResource);
@@ -64,8 +64,8 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
     }
 
     @Override
-    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber, String medicalRegion) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalRegion, medicalRegion);
+    public ResponseEntity<List<MedicalSlotResponseResource>> findAllByDoctor(String medicalLicenseNumber, String state) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(state, state);
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
@@ -74,13 +74,13 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                 .map(MedicalSlotResponseMapper::mapToResource)
                 .peek(slot -> slot.add(
                             linkTo(
-                                    methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
+                                    methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, state)
                             ).withSelfRel(),
                             linkTo(
-                                    methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, slot.getId())
+                                    methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, slot.getId())
                             ).withRel("find_medical_slot_by_id"),
                             linkTo(
-                                    methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, medicalRegion, slot.getId())
+                                    methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, state, slot.getId())
                             ).withRel("cancel_medical_slot_by_id")
                     )
                 )

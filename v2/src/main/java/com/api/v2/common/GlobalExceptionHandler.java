@@ -4,7 +4,7 @@ import com.api.v2.cards.exceptions.NonExistentCardException;
 import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
-import com.api.v2.doctors.exceptions.NonExistentAmericanRegionException;
+import com.api.v2.doctors.exceptions.NonExistentStateException;
 import com.api.v2.doctors.exceptions.NonExistentDoctorException;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
@@ -67,8 +67,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(NonExistentAmericanRegionException.class)
-    public ResponseEntity<String> handleException(NonExistentAmericanRegionException ex) {
+    @ExceptionHandler(NonExistentStateException.class)
+    public ResponseEntity<String> handleException(NonExistentStateException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

@@ -33,8 +33,8 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
     }
 
     @Override
-    public ResponseEntity<ResourceResponse> rehire(String medicalLicenseNumber, String medicalRegion) {
-        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, medicalRegion);
+    public ResponseEntity<ResourceResponse> rehire(String medicalLicenseNumber, String state) {
+        MedicalLicenseNumber doctorLicenseNumber = MedicalLicenseNumberFormatter.format(medicalLicenseNumber, state);
         Doctor doctor = doctorFinder.findByMedicalLicenseNumber(doctorLicenseNumber);
         onActiveDoctor(doctor);
         DoctorAuditTrail doctorAuditTrail = DoctorAuditTrail.of(doctor);
@@ -45,13 +45,13 @@ public class DoctorRehireServiceImpl implements DoctorRehireService {
                 .createEmpty()
                 .add(
                         linkTo(
-                                methodOn(DoctorController.class).rehire(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).rehire(medicalLicenseNumber, state)
                         ).withSelfRel(),
                         linkTo(
-                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)
                         ).withRel("find_doctor_by_medical_license_number"),
                         linkTo(
-                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, medicalRegion)
+                                methodOn(DoctorController.class).terminate(medicalLicenseNumber, state)
                         ).withRel("terminate_doctor_by_medical_license_number")
                 );
         return ResponseEntity.ok(responseResource);

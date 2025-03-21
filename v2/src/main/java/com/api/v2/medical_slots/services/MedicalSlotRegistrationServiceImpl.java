@@ -53,18 +53,18 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
         MedicalSlot medicalSlot = MedicalSlot.of(doctor, registrationDto.availableAt(), zoneId, zoneOffset);
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         String medicalLicenseNumber = registrationDto.medicalLicenseNumber().licenseNumber();
-        String medicalRegion = registrationDto.medicalLicenseNumber().medicalRegion().toString();
+        String state = registrationDto.medicalLicenseNumber().state().toString();
         MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
                 .mapToResource(savedMedicalSlot)
                 .add(
                         linkTo(
-                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, medicalRegion, savedMedicalSlot.getId())
+                                methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, savedMedicalSlot.getId())
                         ).withRel("find_medical_slot_by_id"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, medicalRegion)
+                                methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, state)
                         ).withRel("find_medical_slot_by_doctor"),
                         linkTo(
-                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, medicalRegion, savedMedicalSlot.getId())
+                                methodOn(MedicalSlotController.class).cancel(medicalLicenseNumber, state, savedMedicalSlot.getId())
                         ).withRel("cancel_medical_slot_by_id")
                 );
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
