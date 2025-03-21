@@ -26,10 +26,6 @@ public class Person {
     private ZoneId createdAtZoneId;
     private ZoneOffset createdAtZoneOffset;
     private Boolean isCreatedDuringDST;
-    private LocalDateTime modifiedAt;
-    private ZoneId modifiedAtZoneId;
-    private ZoneOffset modifiedAtZoneOffset;
-    private Boolean isModifiedDuringDST;
 
     public Person() {
     }
@@ -56,6 +52,18 @@ public class Person {
 
     public String getId() {
         return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public LocalDate getBirthDate() {
@@ -86,47 +94,11 @@ public class Person {
         return createdAtZoneId;
     }
 
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public ZoneId getModifiedAtZoneId() {
-        return modifiedAtZoneId;
-    }
-
     public ZoneOffset getCreatedAtZoneOffset() {
         return createdAtZoneOffset;
     }
 
-    public ZoneOffset getModifiedAtZoneOffset() {
-        return modifiedAtZoneOffset;
-    }
-
-    public boolean isCreatedDuringDST() {
-        return isCreatedDuringDST;
-    }
-
-    public boolean isModifiedDuringDST() {
-        return isModifiedDuringDST;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     public Boolean getCreatedDuringDST() {
         return isCreatedDuringDST;
-    }
-
-    public Boolean getModifiedDuringDST() {
-        return isModifiedDuringDST;
     }
 }
