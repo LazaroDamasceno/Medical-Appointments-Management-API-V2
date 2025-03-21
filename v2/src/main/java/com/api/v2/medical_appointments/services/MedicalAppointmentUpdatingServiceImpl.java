@@ -3,9 +3,9 @@ package com.api.v2.medical_appointments.services;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentUpdatingService;
-import io.swagger.v3.oas.annotations.servers.Server;
+import org.springframework.stereotype.Service;
 
-@Server
+@Service
 public class MedicalAppointmentUpdatingServiceImpl implements MedicalAppointmentUpdatingService {
 
     private final MedicalAppointmentRepository medicalAppointmentRepository;
