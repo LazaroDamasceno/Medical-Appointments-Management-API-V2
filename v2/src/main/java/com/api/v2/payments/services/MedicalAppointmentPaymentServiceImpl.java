@@ -10,6 +10,7 @@ import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.payments.domain.Payment;
 import com.api.v2.payments.domain.PaymentRepository;
 import com.api.v2.payments.dtos.PaymentResponseDto;
+import com.api.v2.payments.exception.IllegalChargingException;
 import com.api.v2.payments.utils.PaymentResponseMapper;
 import org.springframework.stereotype.Service;
 
@@ -51,11 +52,7 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
     private void validate(MedicalAppointment medicalAppointment) {
 
         if (medicalAppointment.getType().equals(MedicalAppointmentType.PUBLIC_INSURANCE)) {
-            String message = """
-                        Medical appointment whose id is %s under the public health national program. It's cannot be charged.
-                    """
-                    .formatted(medicalAppointment.getId());
-            throw new ImmutableMedicalAppointmentStatusException(message);
+            throw new IllegalChargingException(medicalAppointment.getId());
         }
 
         if (medicalAppointment.getCanceledAt() != null && medicalAppointment.getCompletedAt() == null) {
