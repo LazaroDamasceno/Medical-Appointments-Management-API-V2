@@ -18,7 +18,7 @@ public class PaymentController {
     }
 
     @PostMapping("{medicalAppointmentId}/{cardId}/{price}")
-    public PaymentResponseDto payPrivateInsurance(@PathVariable String medicalAppointmentId,
+    public PaymentResponseDto pay(@PathVariable String medicalAppointmentId,
                                                   @PathVariable String cardId,
                                                   @PathVariable double price
     ) {
