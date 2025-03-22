@@ -17,29 +17,19 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("private-insurance/{customerId}/{medicalAppointmentId}/{cardId}/{price}")
-    public PaymentResponseDto payPrivateInsurance(@PathVariable String customerId,
-                                                  @PathVariable String medicalAppointmentId,
+    @PostMapping("private-insurance/{medicalAppointmentId}/{cardId}/{price}")
+    public PaymentResponseDto payPrivateInsurance(@PathVariable String medicalAppointmentId,
                                                   @PathVariable String cardId,
                                                   @PathVariable double price
     ) {
-        return paymentService.payPrivateInsurance(customerId, medicalAppointmentId, cardId, price);
+        return paymentService.payPrivateInsurance(medicalAppointmentId, cardId, price);
     }
 
-    @PostMapping("public-insurance/{customerId}/{medicalAppointmentId}/{cardId}")
-    public PaymentResponseDto payPublicInsurance(@PathVariable String customerId,
-                                                 @PathVariable String medicalAppointmentId,
-                                                 @PathVariable String cardId
-    ) {
-        return paymentService.payPublicInsurance(customerId, medicalAppointmentId, cardId);
-    }
-
-    @PostMapping("paid-by-patient/{customerId}/{medicalAppointmentId}/{cardId}/{price}")
-    public PaymentResponseDto payPaidByPatient(@PathVariable String customerId,
-                                               @PathVariable String medicalAppointmentId,
+    @PostMapping("paid-by-patient/{medicalAppointmentId}/{cardId}/{price}")
+    public PaymentResponseDto payPaidByPatient(@PathVariable String medicalAppointmentId,
                                                @PathVariable String cardId,
                                                @PathVariable double price
     ) {
-        return paymentService.payPaidByPatient(customerId, medicalAppointmentId, cardId, price);
+        return paymentService.payPaidByPatient(medicalAppointmentId, cardId, price);
     }
 }

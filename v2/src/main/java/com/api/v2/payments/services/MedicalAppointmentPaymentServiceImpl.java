@@ -2,11 +2,8 @@ package com.api.v2.payments.services;
 
 import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.util.CardFinder;
-import com.api.v2.customers.domain.exposed.Customer;
-import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
-import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentUpdatingService;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.payments.domain.Payment;
@@ -20,19 +17,16 @@ import java.math.BigDecimal;
 @Service
 public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentPaymentService {
 
-    private final CustomerFinder customerFinder;
     private final MedicalAppointmentFinder medicalAppointmentFinder;
     private final CardFinder cardFinder;
     private final PaymentRepository paymentRepository;
     private final MedicalAppointmentUpdatingService medicalAppointmentUpdatingService;
 
-    public MedicalAppointmentPaymentServiceImpl(CustomerFinder customerFinder,
-                                                MedicalAppointmentFinder medicalAppointmentFinder,
+    public MedicalAppointmentPaymentServiceImpl(MedicalAppointmentFinder medicalAppointmentFinder,
                                                 CardFinder cardFinder,
                                                 PaymentRepository paymentRepository,
                                                 MedicalAppointmentUpdatingService medicalAppointmentUpdatingService
     ) {
-        this.customerFinder = customerFinder;
         this.medicalAppointmentFinder = medicalAppointmentFinder;
         this.cardFinder = cardFinder;
         this.paymentRepository = paymentRepository;
@@ -40,55 +34,35 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
     }
 
     @Override
-    public PaymentResponseDto payPrivateInsurance(String customerId,
-                                                  String medicalAppointmentId,
+    public PaymentResponseDto payPrivateInsurance(String medicalAppointmentId,
                                                   String cardId,
                                                   double price
     ) {
-        return pay(customerId, medicalAppointmentId, cardId, BigDecimal.valueOf(price));
+        return pay(medicalAppointmentId, cardId, BigDecimal.valueOf(price));
     }
 
     @Override
-    public PaymentResponseDto payPublicInsurance(String customerId,
-                                                 String medicalAppointmentId,
-                                                 String cardId
-    ) {
-        double zeroedPrice = 0.0;
-        return pay(customerId, medicalAppointmentId, cardId, BigDecimal.valueOf(zeroedPrice));
-    }
-
-    @Override
-    public PaymentResponseDto payPaidByPatient(String customerId,
-                                               String medicalAppointmentId,
+    public PaymentResponseDto payPaidByPatient(String medicalAppointmentId,
                                                String cardId,
                                                double price
     ) {
-        return pay(customerId, medicalAppointmentId, cardId, BigDecimal.valueOf(price));
+        return pay(medicalAppointmentId, cardId, BigDecimal.valueOf(price));
     }
 
-    private PaymentResponseDto pay(String customerId,
-                                   String medicalAppointmentId,
+    private PaymentResponseDto pay(String medicalAppointmentId,
                                    String cardId,
                                    BigDecimal price
     ) {
-        Customer customer = customerFinder.findById(customerId);
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         Card card = cardFinder.findById(cardId);
-        validate(medicalAppointment, customer);
+        validate(medicalAppointment);
         MedicalAppointment paidMedicalAppointment = medicalAppointmentUpdatingService.set(medicalAppointment);
         Payment payment = Payment.of(card, price, medicalAppointment);
         Payment savedPayment = paymentRepository.save(payment);
         return PaymentResponseMapper.map(savedPayment);
     }
 
-    private void validate(MedicalAppointment medicalAppointment, Customer customer) {
-
-        if (medicalAppointment.getCustomer().getId().equals(customer.getId())) {
-            String message = """
-                   Customer whose id is %s is not associated with the medical appointment whose id is  %s
-            """.formatted(customer.getId(), medicalAppointment.getId());
-            throw new InaccessibleMedicalAppointmentException(message);
-        }
+    private void validate(MedicalAppointment medicalAppointment) {
 
         if (medicalAppointment.getCanceledAt() != null && medicalAppointment.getCompletedAt() == null) {
             String message = "Medical appointment whose id is %s is already canceled.".formatted(medicalAppointment.getId());

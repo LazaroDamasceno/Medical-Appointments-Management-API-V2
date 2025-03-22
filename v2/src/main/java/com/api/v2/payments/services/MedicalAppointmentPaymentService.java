@@ -3,7 +3,6 @@ package com.api.v2.payments.services;
 import com.api.v2.payments.dtos.PaymentResponseDto;
 
 public interface MedicalAppointmentPaymentService {
-    PaymentResponseDto payPrivateInsurance(String customerId, String medicalAppointmentId, String cardId, double price);
-    PaymentResponseDto payPublicInsurance(String customerId, String medicalAppointmentId, String cardId);
-    PaymentResponseDto payPaidByPatient(String customerId, String medicalAppointmentId, String cardId, double price);
+    PaymentResponseDto payPrivateInsurance(String medicalAppointmentId, String cardId, double price);
+    PaymentResponseDto payPaidByPatient(String medicalAppointmentId, String cardId, double price);
 }
