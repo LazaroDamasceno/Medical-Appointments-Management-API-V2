@@ -5,7 +5,6 @@ import com.api.v2.cards.util.CardFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
-import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentUpdatingService;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.payments.domain.Payment;
@@ -56,7 +55,7 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
                         Medical appointment whose id is %s under the public health national program. It's cannot be charged.
                     """
                     .formatted(medicalAppointment.getId());
-            throw new InaccessibleMedicalAppointmentException(message);
+            throw new ImmutableMedicalAppointmentStatusException(message);
         }
 
         if (medicalAppointment.getCanceledAt() != null && medicalAppointment.getCompletedAt() == null) {
@@ -71,7 +70,7 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
         }
 
         if (medicalAppointment.getPaidAt() != null) {
-            String message = "Medical appointment whose id is %s is already paid..".formatted(medicalAppointment.getId());
+            String message = "Medical appointment whose id is %s is already paid.".formatted(medicalAppointment.getId());
             throw new ImmutableMedicalAppointmentStatusException(message);
         }
     }
