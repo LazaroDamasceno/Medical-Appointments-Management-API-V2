@@ -34,30 +34,15 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
     }
 
     @Override
-    public PaymentResponseDto payPrivateInsurance(String medicalAppointmentId,
-                                                  String cardId,
-                                                  double price
-    ) {
-        return pay(medicalAppointmentId, cardId, BigDecimal.valueOf(price));
-    }
-
-    @Override
-    public PaymentResponseDto payPaidByPatient(String medicalAppointmentId,
-                                               String cardId,
-                                               double price
-    ) {
-        return pay(medicalAppointmentId, cardId, BigDecimal.valueOf(price));
-    }
-
-    private PaymentResponseDto pay(String medicalAppointmentId,
+    public PaymentResponseDto pay(String medicalAppointmentId,
                                    String cardId,
-                                   BigDecimal price
+                                   double price
     ) {
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         Card card = cardFinder.findById(cardId);
         validate(medicalAppointment);
         MedicalAppointment paidMedicalAppointment = medicalAppointmentUpdatingService.set(medicalAppointment);
-        Payment payment = Payment.of(card, price, medicalAppointment);
+        Payment payment = Payment.of(card, BigDecimal.valueOf(price), medicalAppointment);
         Payment savedPayment = paymentRepository.save(payment);
         return PaymentResponseMapper.map(savedPayment);
     }
@@ -80,5 +65,4 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
             throw new ImmutableMedicalAppointmentStatusException(message);
         }
     }
-
 }

@@ -17,19 +17,11 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("private-insurance/{medicalAppointmentId}/{cardId}/{price}")
+    @PostMapping("{medicalAppointmentId}/{cardId}/{price}")
     public PaymentResponseDto payPrivateInsurance(@PathVariable String medicalAppointmentId,
                                                   @PathVariable String cardId,
                                                   @PathVariable double price
     ) {
-        return paymentService.payPrivateInsurance(medicalAppointmentId, cardId, price);
-    }
-
-    @PostMapping("paid-by-patient/{medicalAppointmentId}/{cardId}/{price}")
-    public PaymentResponseDto payPaidByPatient(@PathVariable String medicalAppointmentId,
-                                               @PathVariable String cardId,
-                                               @PathVariable double price
-    ) {
-        return paymentService.payPaidByPatient(medicalAppointmentId, cardId, price);
+        return paymentService.pay(medicalAppointmentId, cardId, price);
     }
 }
