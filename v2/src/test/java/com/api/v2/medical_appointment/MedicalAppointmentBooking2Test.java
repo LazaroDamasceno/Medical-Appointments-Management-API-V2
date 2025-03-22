@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MedicalAppointmentBookingTest {
+class MedicalAppointmentBooking2Test {
 
     @Autowired
     private MockMvc mockMvc;
@@ -30,14 +30,14 @@ class MedicalAppointmentBookingTest {
 
     MedicalAppointmentBookingDto bookingDto = new MedicalAppointmentBookingDto(
             "",
-            LocalDateTime.parse("2024-12-12T12:30:30"),
+            LocalDateTime.parse("2025-12-12T12:30:30"),
             ""
     );
 
     @Order(1)
     @Test
     void testSuccessfulRegistration() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/paid-by-patient")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookingDto))
         ).andExpect(status().is2xxSuccessful());
@@ -46,7 +46,7 @@ class MedicalAppointmentBookingTest {
     @Order(2)
     @Test
     void testUnSuccessfulRegistrationForDuplicatedBookingDateTime() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/paid-by-patient")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookingDto))
         ).andExpect(status().is4xxClientError());
@@ -61,7 +61,7 @@ class MedicalAppointmentBookingTest {
     @Order(3)
     @Test
     void testUnSuccessfulRegistrationForWrongCustomerId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/paid-by-patient")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookingDtoWithWrongCustomerId))
         ).andExpect(status().is4xxClientError());
@@ -76,7 +76,7 @@ class MedicalAppointmentBookingTest {
     @Order(3)
     @Test
     void testUnSuccessfulRegistrationForWrongMedicalSlotId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/public-insurance")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v2/medical-appointments/paid-by-patient")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookingDtoWithWrongMedicalSlotId))
         ).andExpect(status().is4xxClientError());
