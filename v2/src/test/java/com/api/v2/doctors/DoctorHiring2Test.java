@@ -56,13 +56,27 @@ class DoctorHiring2Test {
         ).andExpect(status().is2xxSuccessful());
     }
 
+    DoctorHiringDto hiringDtoWithDuplicatedSsn = new DoctorHiringDto(
+            new PersonRegistrationDto(
+                    "Leonardo",
+                    "",
+                    "Silveira",
+                    LocalDate.parse("2000-12-12"),
+                    "987654321",
+                    "leosilveira@mail.com",
+                    "1234567890",
+                    Gender.CIS_MALE
+            ),
+            new MedicalLicenseNumber("12345678", States.CA)
+    );
+
     @Test
     @Order(2)
     void testUnSuccessfulHiringForDuplicatedSsn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/doctors")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(hiringDto))
+                .content(objectMapper.writeValueAsString(hiringDtoWithDuplicatedSsn))
         ).andExpect(status().is4xxClientError());
     }
 

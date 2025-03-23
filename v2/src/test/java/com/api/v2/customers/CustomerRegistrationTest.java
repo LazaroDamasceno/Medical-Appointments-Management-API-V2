@@ -61,13 +61,32 @@ class CustomerRegistrationTest {
         ).andExpect(status().is2xxSuccessful());
     }
 
+    CustomerRegistrationDto registrationDtoWithDuplicatedSsn = new CustomerRegistrationDto(
+            new PersonRegistrationDto(
+                    "Leo",
+                    "",
+                    "Santos",
+                    LocalDate.parse("2000-12-12"),
+                    "123456789",
+                    "leosantos@mail.com",
+                    "1234567890",
+                    Gender.CIS_MALE
+            ),
+            new Address(
+                    States.CA,
+                    "LA",
+                    "Downtown",
+                    "90012"
+            )
+    );
+
     @Test
     @Order(2)
     void testUnSuccessfulRegistrationForDuplicatedSsn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v2/customers")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto))
+                .content(objectMapper.writeValueAsString(registrationDtoWithDuplicatedSsn))
         ).andExpect(status().is4xxClientError());
     }
 
