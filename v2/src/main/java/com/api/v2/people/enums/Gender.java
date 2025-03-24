@@ -1,4 +1,4 @@
-package com.api.v2.people.utils;
+package com.api.v2.people.enums;
 
 public enum Gender {
     CIS_MALE,

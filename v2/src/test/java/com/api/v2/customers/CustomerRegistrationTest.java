@@ -4,7 +4,7 @@ import com.api.v2.common.Address;
 import com.api.v2.common.States;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
-import com.api.v2.people.utils.Gender;
+import com.api.v2.people.enums.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

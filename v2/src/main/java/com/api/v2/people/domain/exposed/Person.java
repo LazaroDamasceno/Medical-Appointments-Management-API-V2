@@ -2,7 +2,7 @@ package com.api.v2.people.domain.exposed;
 
 import com.api.v2.common.DstChecker;
 import com.api.v2.people.dtos.PersonRegistrationDto;
-import com.api.v2.people.utils.Gender;
+import com.api.v2.people.enums.Gender;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
