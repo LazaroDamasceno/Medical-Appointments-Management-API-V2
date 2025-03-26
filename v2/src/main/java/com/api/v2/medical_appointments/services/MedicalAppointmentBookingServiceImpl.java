@@ -94,7 +94,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         var changedMedicalSlot = medicalAppointmentSetterService.set(medicalSlot, medicalAppointment);
         MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
-                .mapToResource(savedMedicalAppointment)
+                .toResource(savedMedicalAppointment)
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(

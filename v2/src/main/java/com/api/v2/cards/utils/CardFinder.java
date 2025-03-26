@@ -1,4 +1,4 @@
-package com.api.v2.cards.util;
+package com.api.v2.cards.utils;
 
 import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;

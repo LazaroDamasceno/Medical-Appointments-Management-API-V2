@@ -56,7 +56,7 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
         String medicalLicenseNumber = registrationDto.medicalLicenseNumber().licenseNumber();
         String state = registrationDto.medicalLicenseNumber().state().toString();
         MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
-                .mapToResource(savedMedicalSlot)
+                .toResource(savedMedicalSlot)
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, savedMedicalSlot.getId())

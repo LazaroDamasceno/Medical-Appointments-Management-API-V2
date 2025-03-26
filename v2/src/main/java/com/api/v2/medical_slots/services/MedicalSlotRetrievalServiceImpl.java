@@ -39,7 +39,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
         MedicalSlot medicalSlot = medicalSlotFinder.findById(slotId);
         onNonAssociatedMedicalSlotWithDoctor(medicalSlot, doctor);
         MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
-                .mapToResource(medicalSlot)
+                .toResource(medicalSlot)
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, slotId)
@@ -67,7 +67,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
                 .findAll()
                 .stream()
                 .filter(slot -> slot.getDoctor().getId().equals(doctor.getId()))
-                .map(MedicalSlotResponseMapper::mapToResource)
+                .map(MedicalSlotResponseMapper::toResource)
                 .peek(slot -> slot.add(
                             linkTo(
                                     methodOn(MedicalSlotController.class).findAllByDoctor(medicalLicenseNumber, state)
@@ -92,7 +92,7 @@ public class MedicalSlotRetrievalServiceImpl implements MedicalSlotRetrievalServ
         List<MedicalSlotResponseResource> list = medicalSlotRepository
                 .findAll()
                 .stream()
-                .map(MedicalSlotResponseMapper::mapToResource)
+                .map(MedicalSlotResponseMapper::toResource)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

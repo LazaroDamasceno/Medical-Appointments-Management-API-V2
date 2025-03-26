@@ -9,12 +9,12 @@ import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResou
 
 public final class MedicalAppointmentResponseMapper {
 
-    public static MedicalAppointmentResponseResource mapToResource(MedicalAppointment medicalAppointment) {
+    public static MedicalAppointmentResponseResource toResource(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCompletedAt() != null && medicalAppointment.getCanceledAt() == null) {
             return new MedicalAppointmentResponseResource(
                     medicalAppointment.getId(),
-                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
-                    DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
+                    CustomerResponseMapper.toDto(medicalAppointment.getCustomer()),
+                    DoctorResponseMapper.toResource(medicalAppointment.getDoctor()),
                     DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
@@ -31,8 +31,8 @@ public final class MedicalAppointmentResponseMapper {
         if (medicalAppointment.getCompletedAt() == null && medicalAppointment.getCanceledAt() != null) {
             return new MedicalAppointmentResponseResource(
                     medicalAppointment.getId(),
-                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
-                    DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
+                    CustomerResponseMapper.toDto(medicalAppointment.getCustomer()),
+                    DoctorResponseMapper.toResource(medicalAppointment.getDoctor()),
                     DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
@@ -48,8 +48,8 @@ public final class MedicalAppointmentResponseMapper {
         }
         return new MedicalAppointmentResponseResource(
                 medicalAppointment.getId(),
-                CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
-                DoctorResponseMapper.mapToResource(medicalAppointment.getDoctor()),
+                CustomerResponseMapper.toDto(medicalAppointment.getCustomer()),
+                DoctorResponseMapper.toResource(medicalAppointment.getDoctor()),
                 DateTimeFormatter.format(
                         medicalAppointment.getBookedAt(),
                         medicalAppointment.getBookedAtZoneOffset(),
@@ -60,11 +60,11 @@ public final class MedicalAppointmentResponseMapper {
         );
     }
 
-    public static SimplifiedMedicalAppointmentResponseDto mapToDto(MedicalAppointment medicalAppointment) {
+    public static SimplifiedMedicalAppointmentResponseDto toDto(MedicalAppointment medicalAppointment) {
         if (medicalAppointment.getCompletedAt() == null && medicalAppointment.getCanceledAt() != null) {
             return new SimplifiedMedicalAppointmentResponseDto(
                     medicalAppointment.getId(),
-                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
+                    CustomerResponseMapper.toDto(medicalAppointment.getCustomer()),
                     DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
@@ -81,7 +81,7 @@ public final class MedicalAppointmentResponseMapper {
         if (medicalAppointment.getCompletedAt() != null && medicalAppointment.getCanceledAt() == null) {
             return new SimplifiedMedicalAppointmentResponseDto(
                     medicalAppointment.getId(),
-                    CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
+                    CustomerResponseMapper.toDto(medicalAppointment.getCustomer()),
                     DateTimeFormatter.format(
                             medicalAppointment.getBookedAt(),
                             medicalAppointment.getBookedAtZoneOffset(),
@@ -97,7 +97,7 @@ public final class MedicalAppointmentResponseMapper {
         }
         return new SimplifiedMedicalAppointmentResponseDto(
                 medicalAppointment.getId(),
-                CustomerResponseMapper.mapToDto(medicalAppointment.getCustomer()),
+                CustomerResponseMapper.toDto(medicalAppointment.getCustomer()),
                 DateTimeFormatter.format(
                         medicalAppointment.getBookedAt(),
                         medicalAppointment.getBookedAtZoneOffset(),

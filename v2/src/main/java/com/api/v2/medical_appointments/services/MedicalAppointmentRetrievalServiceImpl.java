@@ -39,7 +39,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);
         MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
-                .mapToResource(medicalAppointment)
+                .toResource(medicalAppointment)
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(
@@ -75,7 +75,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                 .findAll()
                 .stream()
                 .filter(medicalAppointment -> medicalAppointment.getCustomer().getId().equals(customer.getId()))
-                .map(MedicalAppointmentResponseMapper::mapToResource)
+                .map(MedicalAppointmentResponseMapper::toResource)
                 .peek(resource ->
                         resource.add(
                                 linkTo(
@@ -107,7 +107,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
         List<MedicalAppointmentResponseResource> list = medicalAppointmentRepository
                 .findAll()
                 .stream()
-                .map(MedicalAppointmentResponseMapper::mapToResource)
+                .map(MedicalAppointmentResponseMapper::toResource)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

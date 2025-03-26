@@ -5,7 +5,7 @@ import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.people.utils.FullNameFormatter;
 
 public final class DoctorResponseMapper {
-    public static DoctorResponseResource mapToResource(Doctor doctor) {
+    public static DoctorResponseResource toResource(Doctor doctor) {
         return new DoctorResponseResource(
                 FullNameFormatter.format(doctor.getPerson()),
                 doctor.getMedicalLicenseNumber()

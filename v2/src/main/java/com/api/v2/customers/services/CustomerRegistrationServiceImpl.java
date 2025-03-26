@@ -36,7 +36,7 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
         Person savedPerson = personRegistrationService.register(registrationDto.personRegistrationDto());
         Customer customer = Customer.of(registrationDto.address(), savedPerson);
         Customer savedCustomer = customerRepository.save(customer);
-        CustomerResponseDto responseDto = CustomerResponseMapper.mapToDto(savedCustomer);
+        CustomerResponseDto responseDto = CustomerResponseMapper.toDto(savedCustomer);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 

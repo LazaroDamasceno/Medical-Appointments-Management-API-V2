@@ -26,7 +26,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
     @Override
     public ResponseEntity<CustomerResponseDto> findById(String id) {
         Customer customer = customerFinder.findById(id);
-        CustomerResponseDto responseDto = CustomerResponseMapper.mapToDto(customer);
+        CustomerResponseDto responseDto = CustomerResponseMapper.toDto(customer);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -35,7 +35,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
         List<CustomerResponseDto> list = customerRepository
                 .findAll()
                 .stream()
-                .map(CustomerResponseMapper::mapToDto)
+                .map(CustomerResponseMapper::toDto)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

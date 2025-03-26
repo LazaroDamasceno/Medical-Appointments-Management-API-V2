@@ -29,7 +29,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
     @Override
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String state) {
         DoctorResponseResource responseResource = DoctorResponseMapper
-                .mapToResource(doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state))
+                .toResource(doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state))
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)
@@ -46,7 +46,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
         List<DoctorResponseResource> list = doctorRepository
                 .findAll()
                 .stream()
-                .map(DoctorResponseMapper::mapToResource)
+                .map(DoctorResponseMapper::toResource)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

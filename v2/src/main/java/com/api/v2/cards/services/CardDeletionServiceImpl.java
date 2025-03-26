@@ -2,7 +2,7 @@ package com.api.v2.cards.services;
 
 import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;
-import com.api.v2.cards.util.CardFinder;
+import com.api.v2.cards.utils.CardFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

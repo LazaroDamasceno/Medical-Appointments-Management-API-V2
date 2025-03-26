@@ -8,27 +8,27 @@ import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 
 public final class MedicalSlotResponseMapper {
 
-    public static MedicalSlotResponseResource mapToResource(MedicalSlot slot) {
+    public static MedicalSlotResponseResource toResource(MedicalSlot slot) {
         if (slot.getCanceledAt() == null && slot.getCompletedAt() != null) {
-            return mapToCompletedResource(slot);
+            return toCompletedResource(slot);
         }
         if (slot.getCanceledAt() != null && slot.getCompletedAt() == null) {
-            return mapToCanceledResourceWithoutMedicalAppointment(slot);
+            return toCanceledResourceWithoutMedicalAppointment(slot);
         }
         if (slot.getCanceledAt() != null && slot.getCompletedAt() == null && slot.getMedicalAppointment() != null) {
-            return mapToCanceledResourceWithMedicalAppointment(slot);
+            return toCanceledResourceWithMedicalAppointment(slot);
         }
         if (slot.getCanceledAt() == null && slot.getCompletedAt() == null && slot.getMedicalAppointment() != null) {
-            return mapToActiveResourceWithMedicalAppointment(slot);
+            return toActiveResourceWithMedicalAppointment(slot);
         }
-        return mapToActiveResourceWithoutMedicalAppointment(slot);
+        return toActiveResourceWithoutMedicalAppointment(slot);
     }
 
-    private static MedicalSlotResponseResource mapToCompletedResource(MedicalSlot medicalSlot) {
+    private static MedicalSlotResponseResource toCompletedResource(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
                 medicalSlot.getId(),
-                DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
-                MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
+                DoctorResponseMapper.toResource(medicalSlot.getDoctor()),
+                MedicalAppointmentResponseMapper.toDto(medicalSlot.getMedicalAppointment()),
                 DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
@@ -43,10 +43,10 @@ public final class MedicalSlotResponseMapper {
         );
     }
 
-    private static MedicalSlotResponseResource mapToCanceledResourceWithoutMedicalAppointment(MedicalSlot medicalSlot) {
+    private static MedicalSlotResponseResource toCanceledResourceWithoutMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
                 medicalSlot.getId(),
-                DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
+                DoctorResponseMapper.toResource(medicalSlot.getDoctor()),
                 null,
                 DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
@@ -62,11 +62,11 @@ public final class MedicalSlotResponseMapper {
         );
     }
 
-    private static MedicalSlotResponseResource mapToCanceledResourceWithMedicalAppointment(MedicalSlot medicalSlot) {
+    private static MedicalSlotResponseResource toCanceledResourceWithMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
                 medicalSlot.getId(),
-                DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
-                MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
+                DoctorResponseMapper.toResource(medicalSlot.getDoctor()),
+                MedicalAppointmentResponseMapper.toDto(medicalSlot.getMedicalAppointment()),
                 DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
@@ -81,11 +81,11 @@ public final class MedicalSlotResponseMapper {
         );
     }
 
-    private static MedicalSlotResponseResource mapToActiveResourceWithMedicalAppointment(MedicalSlot medicalSlot) {
+    private static MedicalSlotResponseResource toActiveResourceWithMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
                 medicalSlot.getId(),
-                DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
-                MedicalAppointmentResponseMapper.mapToDto(medicalSlot.getMedicalAppointment()),
+                DoctorResponseMapper.toResource(medicalSlot.getDoctor()),
+                MedicalAppointmentResponseMapper.toDto(medicalSlot.getMedicalAppointment()),
                 DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),
                         medicalSlot.getAvailableAtZoneOffset(),
@@ -96,10 +96,10 @@ public final class MedicalSlotResponseMapper {
         );
     }
 
-    private static MedicalSlotResponseResource mapToActiveResourceWithoutMedicalAppointment(MedicalSlot medicalSlot) {
+    private static MedicalSlotResponseResource toActiveResourceWithoutMedicalAppointment(MedicalSlot medicalSlot) {
         return new MedicalSlotResponseResource(
                 medicalSlot.getId(),
-                DoctorResponseMapper.mapToResource(medicalSlot.getDoctor()),
+                DoctorResponseMapper.toResource(medicalSlot.getDoctor()),
                 null,
                 DateTimeFormatter.format(
                         medicalSlot.getAvailableAt(),

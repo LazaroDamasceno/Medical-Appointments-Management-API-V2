@@ -1,7 +1,7 @@
 package com.api.v2.payments.services;
 
 import com.api.v2.cards.domain.exposed.Card;
-import com.api.v2.cards.util.CardFinder;
+import com.api.v2.cards.utils.CardFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
@@ -46,7 +46,7 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
         MedicalAppointment paidMedicalAppointment = medicalAppointmentUpdatingService.set(medicalAppointment);
         Payment payment = Payment.of(card, BigDecimal.valueOf(price), medicalAppointment);
         Payment savedPayment = paymentRepository.save(payment);
-        return PaymentResponseMapper.map(savedPayment);
+        return PaymentResponseMapper.toDto(savedPayment);
     }
 
     private void validate(MedicalAppointment medicalAppointment) {

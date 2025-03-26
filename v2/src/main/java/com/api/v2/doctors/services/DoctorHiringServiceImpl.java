@@ -51,7 +51,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         String medicalLicenseNumber = hiringDto.medicalLicenseNumber().licenseNumber();
         String state = hiringDto.medicalLicenseNumber().state().toString();
         DoctorResponseResource responseResource = DoctorResponseMapper
-                .mapToResource(savedDoctor)
+                .toResource(savedDoctor)
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)

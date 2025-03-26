@@ -4,7 +4,7 @@ import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;
 import com.api.v2.cards.dtos.CardRegistrationDto;
 import com.api.v2.cards.dtos.exposed.CardResponseDto;
-import com.api.v2.cards.util.CardResponseMapper;
+import com.api.v2.cards.utils.CardResponseMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class CardRegistrationServiceImpl implements CardRegistrationService {
     public ResponseEntity<CardResponseDto> registerCreditCard(@Valid CardRegistrationDto registrationDto) {
         Card card = Card.of("credit card", registrationDto);
         Card savedCard = cardRepository.save(card);
-        CardResponseDto responseDto = CardResponseMapper.map(savedCard);
+        CardResponseDto responseDto = CardResponseMapper.toDto(savedCard);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
@@ -31,7 +31,7 @@ public class CardRegistrationServiceImpl implements CardRegistrationService {
     public ResponseEntity<CardResponseDto> registerDebitCard(@Valid CardRegistrationDto registrationDto) {
         Card card = Card.of("debit card", registrationDto);
         Card savedCard = cardRepository.save(card);
-        CardResponseDto responseDto = CardResponseMapper.map(savedCard);
+        CardResponseDto responseDto = CardResponseMapper.toDto(savedCard);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 }
