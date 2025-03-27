@@ -8,6 +8,7 @@ import com.api.v2.doctors.services.DoctorRehireService;
 import com.api.v2.doctors.services.DoctorRetrievalService;
 import com.api.v2.doctors.services.DoctorTerminationService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +34,13 @@ public class DoctorController {
         this.terminationService = terminationService;
     }
 
+    @Operation(summary = "Hire a new doctor")
     @PostMapping
     public ResponseEntity<DoctorResponseResource> hire(@RequestBody DoctorHiringDto hiringDto) {
         return hiringService.hire(hiringDto);
     }
 
+    @Operation(summary = "Terminate a doctor")
     @PatchMapping("{medicalLicenseNumber}/{state}/rehiring")
     public ResponseEntity<ResourceResponse> rehire(@PathVariable String medicalLicenseNumber,
                                                    @PathVariable String state
@@ -45,6 +48,7 @@ public class DoctorController {
         return rehireService.rehire(medicalLicenseNumber, state);
     }
 
+    @Operation(summary = "Cancel a doctor")
     @PatchMapping("{medicalLicenseNumber}/{state}/termination")
     public ResponseEntity<ResourceResponse> terminate(@PathVariable String medicalLicenseNumber,
                                                       @PathVariable String state
@@ -52,6 +56,7 @@ public class DoctorController {
         return terminationService.terminate(medicalLicenseNumber, state);
     }
 
+    @Operation(summary = "Retrieve a doctor by its id")
     @GetMapping("{medicalLicenseNumber}/{state}")
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(@PathVariable String medicalLicenseNumber,
                                                                              @PathVariable String state
@@ -59,6 +64,7 @@ public class DoctorController {
         return retrievalService.findByMedicalLicenseNumber(medicalLicenseNumber, state);
     }
 
+    @Operation(summary = "Retrieve all doctors")
     @GetMapping
     public ResponseEntity<List<DoctorResponseResource>> findAll() {
         return retrievalService.findAll();

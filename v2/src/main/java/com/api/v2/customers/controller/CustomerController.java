@@ -4,6 +4,7 @@ import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.services.CustomerRegistrationService;
 import com.api.v2.customers.services.CustomerRetrievalService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +25,19 @@ public class CustomerController {
         this.retrievalService = retrievalService;
     }
 
+    @Operation(summary = "Register a new customer")
     @PostMapping
     public ResponseEntity<CustomerResponseDto> register(@Valid @RequestBody CustomerRegistrationDto registrationDto) {
         return registrationService.register(registrationDto);
     }
 
+    @Operation(summary = "Retrieve a customer by its id")
     @GetMapping("{id}")
     public ResponseEntity<CustomerResponseDto> findById(@PathVariable String id) {
         return retrievalService.findById(id);
     }
 
+    @Operation(summary = "Retrieve all customers")
     @GetMapping
     public ResponseEntity<List<CustomerResponseDto> >findAll() {
         return retrievalService.findAll();

@@ -2,6 +2,7 @@ package com.api.v2.payments.controllers;
 
 import com.api.v2.payments.dtos.PaymentResponseDto;
 import com.api.v2.payments.services.MedicalAppointmentPaymentService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    @Operation(summary = "Pay a medical appointment")
     @PostMapping("{medicalAppointmentId}/{cardId}/{price}")
     public PaymentResponseDto pay(@PathVariable String medicalAppointmentId,
                                                   @PathVariable String cardId,
