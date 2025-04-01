@@ -7,7 +7,7 @@ import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;

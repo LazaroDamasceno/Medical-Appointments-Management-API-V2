@@ -5,12 +5,11 @@ import com.api.v2.common.PastDateChecker;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_slots.controllers.MedicalSlotController;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
 import com.api.v2.common.UnavailableBookingDateTimeException;
 import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
-import com.api.v2.medical_slots.utils.MedicalSlotResponseMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +54,8 @@ public class MedicalSlotRegistrationServiceImpl implements MedicalSlotRegistrati
         MedicalSlot savedMedicalSlot = medicalSlotRepository.save(medicalSlot);
         String medicalLicenseNumber = registrationDto.medicalLicenseNumber().licenseNumber();
         String state = registrationDto.medicalLicenseNumber().state().toString();
-        MedicalSlotResponseResource responseResource = MedicalSlotResponseMapper
-                .toResource(savedMedicalSlot)
+        MedicalSlotResponseResource responseResource = savedMedicalSlot
+                .toResource()
                 .add(
                         linkTo(
                                 methodOn(MedicalSlotController.class).findById(medicalLicenseNumber, state, savedMedicalSlot.getId())

@@ -10,7 +10,7 @@ import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentSta
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.services.exposed.MedicalSlotUpdatingService;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import org.springframework.http.ResponseEntity;

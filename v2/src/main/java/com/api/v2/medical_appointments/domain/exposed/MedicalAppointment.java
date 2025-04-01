@@ -3,7 +3,10 @@ package com.api.v2.medical_appointments.domain.exposed;
 import com.api.v2.common.DstChecker;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
+import com.api.v2.medical_appointments.dtos.SimplifiedMedicalAppointmentResponseDto;
 import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
+import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -92,6 +95,29 @@ public class MedicalAppointment {
         paidAtZoneId = ZoneOffset.systemDefault();
         paidAtZoneOffset = OffsetDateTime.now().getOffset();
         isPaymentDuringDST = DstChecker.isGivenDateTimeFollowingDst(paidAt, paidAtZoneId);
+    }
+
+    public SimplifiedMedicalAppointmentResponseDto toDto() {
+        return new SimplifiedMedicalAppointmentResponseDto(
+                id,
+                type,
+                customer.toDto(),
+                "%s%s[%s]".formatted(bookedAt, bookedAtZoneOffset, bookedAtZoneId),
+                "%s%s[%s]".formatted(canceledAt, canceledAtZoneOffset, canceledAtZoneId),
+                "%s%s[%s]".formatted(completedAt, completedAtZoneOffset, completedAtZoneId)
+        );
+    }
+
+    public MedicalAppointmentResponseResource toResource() {
+        return new MedicalAppointmentResponseResource(
+                id,
+                type,
+                customer.toDto(),
+                doctor.toResource(),
+                "%s%s[%s]".formatted(bookedAt, bookedAtZoneOffset, bookedAtZoneId),
+                "%s%s[%s]".formatted(canceledAt, canceledAtZoneOffset, canceledAtZoneId),
+                "%s%s[%s]".formatted(completedAt, completedAtZoneOffset, completedAtZoneId)
+        );
     }
 
     public String getId() {

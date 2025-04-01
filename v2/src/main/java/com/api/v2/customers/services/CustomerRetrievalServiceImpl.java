@@ -4,7 +4,6 @@ import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
 import com.api.v2.customers.utils.CustomerFinder;
-import com.api.v2.customers.utils.CustomerResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
     @Override
     public ResponseEntity<CustomerResponseDto> findById(String id) {
         Customer customer = customerFinder.findById(id);
-        CustomerResponseDto responseDto = CustomerResponseMapper.toDto(customer);
+        CustomerResponseDto responseDto = customer.toDto();
         return ResponseEntity.ok(responseDto);
     }
 
@@ -35,7 +34,7 @@ public class CustomerRetrievalServiceImpl implements CustomerRetrievalService {
         List<CustomerResponseDto> list = customerRepository
                 .findAll()
                 .stream()
-                .map(CustomerResponseMapper::toDto)
+                .map(Customer::toDto)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

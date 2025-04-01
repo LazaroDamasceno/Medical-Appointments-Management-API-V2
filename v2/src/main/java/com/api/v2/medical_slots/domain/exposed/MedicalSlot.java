@@ -1,8 +1,9 @@
-package com.api.v2.medical_slots.domain;
+package com.api.v2.medical_slots.domain.exposed;
 
 import com.api.v2.common.DstChecker;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
+import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -75,6 +76,17 @@ public class MedicalSlot {
         completedAtZoneOffset = OffsetDateTime.now().getOffset();
         isCompletedDuringDST = DstChecker.isGivenDateTimeFollowingDst(completedAt, canceledAtZoneId);
         medicalAppointment = completedMedicalAppointment;
+    }
+
+    public MedicalSlotResponseResource toResource() {
+        return new MedicalSlotResponseResource(
+                id,
+                doctor.toResource(),
+                medicalAppointment.toDto(),
+                "%s%s[%s]".formatted(availableAt, availableAtZoneOffset, availableAtZoneId),
+                "%s%s[%s]".formatted(canceledAt, canceledAtZoneOffset, canceledAtZoneId),
+                "%s%s[%s]".formatted(completedAt, completedAtZoneOffset, completedAtZoneId)
+        );
     }
 
     public String getId() {

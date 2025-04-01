@@ -13,8 +13,7 @@ import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
 import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
-import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.services.exposed.MedicalSlotUpdatingService;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import jakarta.validation.Valid;
@@ -93,8 +92,8 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         var changedMedicalSlot = medicalAppointmentSetterService.set(medicalSlot, medicalAppointment);
-        MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
-                .toResource(savedMedicalAppointment)
+        MedicalAppointmentResponseResource responseResource = savedMedicalAppointment
+                .toResource()
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(

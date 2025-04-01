@@ -2,7 +2,9 @@ package com.api.v2.doctors.domain.exposed;
 
 import com.api.v2.common.DstChecker;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
+import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.people.domain.exposed.Person;
+import com.api.v2.people.utils.FullNameFormatter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -57,6 +59,13 @@ public class Doctor {
         terminatedAtZoneId = null;
         terminatedAtZoneOffset = null;
         isTerminatedDuringDST = null;
+    }
+
+    public DoctorResponseResource toResource() {
+        return new DoctorResponseResource(
+                FullNameFormatter.format(person),
+                medicalLicenseNumber
+        );
     }
 
     public String getId() {

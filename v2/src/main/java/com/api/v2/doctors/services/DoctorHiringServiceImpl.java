@@ -7,7 +7,6 @@ import com.api.v2.doctors.dto.DoctorHiringDto;
 import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
-import com.api.v2.doctors.utils.DoctorResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
 import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
@@ -50,8 +49,8 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         Doctor savedDoctor = doctorRepository.save(doctor);
         String medicalLicenseNumber = hiringDto.medicalLicenseNumber().licenseNumber();
         String state = hiringDto.medicalLicenseNumber().state().toString();
-        DoctorResponseResource responseResource = DoctorResponseMapper
-                .toResource(savedDoctor)
+        DoctorResponseResource responseResource = savedDoctor
+                .toResource()
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)

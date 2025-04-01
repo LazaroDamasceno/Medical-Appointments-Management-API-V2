@@ -1,7 +1,7 @@
 package com.api.v2.medical_slots.utils;
 
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
-import com.api.v2.medical_slots.domain.MedicalSlot;
+import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.NonExistentMedicalSlotException;
 import org.springframework.stereotype.Component;

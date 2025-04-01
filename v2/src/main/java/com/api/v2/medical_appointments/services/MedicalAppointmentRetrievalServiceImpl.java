@@ -8,7 +8,6 @@ import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
-import com.api.v2.medical_appointments.utils.MedicalAppointmentResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +37,8 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
         Customer customer = customerFinder.findById(customerId);
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         onNonAssociatedMedicalAppointmentWithCustomer(customer, medicalAppointment);
-        MedicalAppointmentResponseResource responseResource = MedicalAppointmentResponseMapper
-                .toResource(medicalAppointment)
+        MedicalAppointmentResponseResource responseResource = medicalAppointment
+                .toResource()
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(
@@ -75,7 +74,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
                 .findAll()
                 .stream()
                 .filter(medicalAppointment -> medicalAppointment.getCustomer().getId().equals(customer.getId()))
-                .map(MedicalAppointmentResponseMapper::toResource)
+                .map(MedicalAppointment::toResource)
                 .peek(resource ->
                         resource.add(
                                 linkTo(
@@ -107,7 +106,7 @@ public class MedicalAppointmentRetrievalServiceImpl implements MedicalAppointmen
         List<MedicalAppointmentResponseResource> list = medicalAppointmentRepository
                 .findAll()
                 .stream()
-                .map(MedicalAppointmentResponseMapper::toResource)
+                .map(MedicalAppointment::toResource)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -2,9 +2,9 @@ package com.api.v2.doctors.services;
 
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
+import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.resources.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
-import com.api.v2.doctors.utils.DoctorResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +28,8 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
 
     @Override
     public ResponseEntity<DoctorResponseResource> findByMedicalLicenseNumber(String medicalLicenseNumber, String state) {
-        DoctorResponseResource responseResource = DoctorResponseMapper
-                .toResource(doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state))
+        DoctorResponseResource responseResource = doctorFinder.findByMedicalLicenseNumber(medicalLicenseNumber, state)
+                .toResource()
                 .add(
                         linkTo(
                                 methodOn(DoctorController.class).findByMedicalLicenseNumber(medicalLicenseNumber, state)
@@ -46,7 +46,7 @@ public class DoctorRetrievalServiceImpl implements DoctorRetrievalService {
         List<DoctorResponseResource> list = doctorRepository
                 .findAll()
                 .stream()
-                .map(DoctorResponseMapper::toResource)
+                .map(Doctor::toResource)
                 .toList();
         if (list.isEmpty()) {
             return ResponseEntity.noContent().build();

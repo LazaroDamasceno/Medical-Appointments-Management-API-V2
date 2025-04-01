@@ -4,7 +4,6 @@ import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.domain.CustomerRepository;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
-import com.api.v2.customers.utils.CustomerResponseMapper;
 import com.api.v2.people.domain.exposed.Person;
 import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
@@ -36,7 +35,7 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
         Person savedPerson = personRegistrationService.register(registrationDto.personRegistrationDto());
         Customer customer = Customer.of(registrationDto.address(), savedPerson);
         Customer savedCustomer = customerRepository.save(customer);
-        CustomerResponseDto responseDto = CustomerResponseMapper.toDto(savedCustomer);
+        CustomerResponseDto responseDto = savedCustomer.toDto();
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
