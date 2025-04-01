@@ -49,7 +49,7 @@ public class MedicalAppointmentController {
     }
 
     @Operation(summary = "Cancel a medical appointment")
-    @PatchMapping("{customerId}/{medicalAppointmentId}/cancellation")
+    @PostMapping("{customerId}/{medicalAppointmentId}/cancellation")
     public ResponseEntity<ResourceResponse> cancel(@PathVariable String customerId,
                                                    @PathVariable String medicalAppointmentId) {
         return managementService.cancelById(customerId, medicalAppointmentId);

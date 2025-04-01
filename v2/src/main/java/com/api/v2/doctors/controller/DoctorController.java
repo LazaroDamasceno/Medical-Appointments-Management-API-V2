@@ -41,7 +41,7 @@ public class DoctorController {
     }
 
     @Operation(summary = "Terminate a doctor")
-    @PatchMapping("{medicalLicenseNumber}/{state}/rehiring")
+    @PostMapping("{medicalLicenseNumber}/{state}/rehiring")
     public ResponseEntity<ResourceResponse> rehire(@PathVariable String medicalLicenseNumber,
                                                    @PathVariable String state
     ) {
