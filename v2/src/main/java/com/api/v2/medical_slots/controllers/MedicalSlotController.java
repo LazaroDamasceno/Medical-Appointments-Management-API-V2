@@ -37,7 +37,7 @@ public class MedicalSlotController {
     }
 
     @Operation(summary = "Cancel a medical slot")
-    @PostMapping("{medicalLicenseNumber}/{state}/{slotId}/cancellation")
+    @PatchMapping("{medicalLicenseNumber}/{state}/{slotId}/cancellation")
     public ResponseEntity<ResourceResponse> cancel(@PathVariable String medicalLicenseNumber,
                                                    @PathVariable String state,
                                                    @PathVariable String slotId
@@ -46,7 +46,7 @@ public class MedicalSlotController {
     }
 
     @Operation(summary = "Complete a medical slot")
-    @PostMapping("{medicalLicenseNumber}/{state}/{slotId}/completion")
+    @PatchMapping("{medicalLicenseNumber}/{state}/{slotId}/completion")
     public ResponseEntity<ResourceResponse> complete(@PathVariable String medicalLicenseNumber,
                                                      @PathVariable String state,
                                                      @PathVariable String slotId
