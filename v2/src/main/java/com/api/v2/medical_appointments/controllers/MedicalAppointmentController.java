@@ -55,7 +55,7 @@ public class MedicalAppointmentController {
         return managementService.cancelById(customerId, medicalAppointmentId);
     }
 
-    @Operation(summary = "Complete a medical appointment")
+    @Operation(summary = "Retrieve a medical appointment by its id and customer")
     @GetMapping("{customerId}/{medicalAppointmentId}")
     public ResponseEntity<MedicalAppointmentResponseResource> findById(@PathVariable String customerId,
                                                        @PathVariable String medicalAppointmentId
