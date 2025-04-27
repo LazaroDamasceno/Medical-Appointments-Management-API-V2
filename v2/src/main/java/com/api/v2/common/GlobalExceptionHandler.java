@@ -5,6 +5,7 @@ import com.api.v2.customers.exceptions.NonExistentCustomerException;
 import com.api.v2.doctors.exceptions.DuplicatedMedicalLicenseNumberException;
 import com.api.v2.doctors.exceptions.ImmutableDoctorStatusException;
 import com.api.v2.doctors.exceptions.NonExistentDoctorException;
+import com.api.v2.doctors.exceptions.UnavailableDoctorException;
 import com.api.v2.medical_appointments.exceptions.ImmutableMedicalAppointmentStatusException;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
 import com.api.v2.medical_appointments.exceptions.NonExistentMedicalAppointmentException;
@@ -44,6 +45,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InaccessibleMedicalAppointmentException.class)
     public ResponseEntity<String> handleException(InaccessibleMedicalAppointmentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UnavailableDoctorException.class)
+    public ResponseEntity<String> handleException(UnavailableDoctorException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 

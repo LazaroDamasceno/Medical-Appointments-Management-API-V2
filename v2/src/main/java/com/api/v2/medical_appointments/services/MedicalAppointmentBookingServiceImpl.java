@@ -6,6 +6,7 @@ import com.api.v2.common.UnavailableBookingDateTimeException;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.customers.utils.CustomerFinder;
 import com.api.v2.doctors.domain.exposed.Doctor;
+import com.api.v2.doctors.exceptions.UnavailableDoctorException;
 import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
@@ -124,6 +125,10 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
     ) {
         if (PastDateChecker.isBeforeToday(availableAt.toLocalDate())) {
             throw new PastBookingDateException();
+        }
+
+        if (doctor.getTerminatedAt() != null) {
+            throw new UnavailableDoctorException();
         }
 
         if (medicalSlot.getDoctor().getPerson().getId().equals(customer.getId())) {

@@ -5,7 +5,6 @@ import com.api.v2.common.States;
 import com.api.v2.customers.dtos.CustomerRegistrationDto;
 import com.api.v2.people.dtos.PersonRegistrationDto;
 import com.api.v2.people.enums.Gender;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
@@ -27,10 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CustomerRegistrationTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private WebTestClient webTestClient;
 
     CustomerRegistrationDto registrationDto = new CustomerRegistrationDto(
             new PersonRegistrationDto(
@@ -53,12 +49,14 @@ class CustomerRegistrationTest {
 
     @Test
     @Order(1)
-    void testSuccessfulRegistration() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/customers")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDto))
-        ).andExpect(status().is2xxSuccessful());
+    void testSuccessfulRegistration() {
+        webTestClient
+                .post()
+                .uri("api/v2/customers")
+                .bodyValue(registrationDto)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
     }
 
     CustomerRegistrationDto registrationDtoWithDuplicatedSsn = new CustomerRegistrationDto(
@@ -82,12 +80,14 @@ class CustomerRegistrationTest {
 
     @Test
     @Order(2)
-    void testUnSuccessfulRegistrationForDuplicatedSsn() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/v2/customers")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registrationDtoWithDuplicatedSsn))
-        ).andExpect(status().is4xxClientError());
+    void testUnSuccessfulRegistrationForDuplicatedSsn() {
+        webTestClient
+                .post()
+                .uri("api/v2/customers")
+                .bodyValue(registrationDtoWithDuplicatedSsn)
+                .exchange()
+                .expectStatus()
+                .is4xxClientError();
     }
 
     CustomerRegistrationDto registrationDtoWithDuplicatedEmail = new CustomerRegistrationDto(
