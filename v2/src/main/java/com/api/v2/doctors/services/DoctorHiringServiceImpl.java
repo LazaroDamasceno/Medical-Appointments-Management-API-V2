@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -39,11 +41,6 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
                 hiringDto.personRegistrationDto().email(),
                 hiringDto.medicalLicenseNumber()
         );
-        validateRegistration(
-                hiringDto.personRegistrationDto().ssn(),
-                hiringDto.personRegistrationDto().email(),
-                hiringDto.medicalLicenseNumber()
-        );
         Person savedPerson = personRegistrationService.register(hiringDto.personRegistrationDto());
         Doctor doctor = Doctor.of(savedPerson, hiringDto.medicalLicenseNumber());
         Doctor savedDoctor = doctorRepository.save(doctor);
@@ -62,7 +59,7 @@ public class DoctorHiringServiceImpl implements DoctorHiringService {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseResource);
     }
 
-    private void validateRegistration(String ssn, String email, MedicalLicenseNumber medicalLicenseNumber) {
+    private void validateRegistration(BigInteger ssn, String email, MedicalLicenseNumber medicalLicenseNumber) {
         boolean isSsnDuplicated = doctorRepository
                 .findAll()
                 .stream()
