@@ -92,7 +92,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
                 zoneOffset
         );
         MedicalAppointment savedMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
-        var changedMedicalSlot = medicalAppointmentSetterService.set(medicalSlot, medicalAppointment);
+        medicalAppointmentSetterService.set(medicalSlot, medicalAppointment);
         MedicalAppointmentResponseResource responseResource = savedMedicalAppointment
                 .toResource()
                 .add(

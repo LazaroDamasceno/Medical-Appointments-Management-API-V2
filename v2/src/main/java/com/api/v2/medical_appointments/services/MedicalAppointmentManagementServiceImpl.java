@@ -57,20 +57,20 @@ public class MedicalAppointmentManagementServiceImpl implements MedicalAppointme
         medicalAppointment.markAsCanceled();
         MedicalAppointment canceledMedicalAppointment = medicalAppointmentRepository.save(medicalAppointment);
         medicalSlot.markAsCanceled();
-        MedicalSlot canceledMedicalSlot = medicalSlotUpdatingService.set(medicalSlot);
+        medicalSlotUpdatingService.set(medicalSlot);
         ResourceResponse responseResource = ResourceResponse
                 .createEmpty()
                 .add(
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).cancel(
                                         customer.getId(),
-                                        canceledMedicalSlot.getId()
+                                        medicalSlot.getId()
                                 )
                         ).withSelfRel(),
                         linkTo(
                                 methodOn(MedicalAppointmentController.class).findById(
                                         customer.getId(),
-                                        canceledMedicalSlot.getId()
+                                        medicalSlot.getId()
                                 )
                         ).withRel("find_medical_appointment_by_id"),
                         linkTo(

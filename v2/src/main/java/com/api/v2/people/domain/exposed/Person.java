@@ -6,6 +6,7 @@ import com.api.v2.people.enums.Gender;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigInteger;
 import java.time.*;
 import java.util.UUID;
 
@@ -18,9 +19,9 @@ public class Person {
     private String middleName;
     private String lastName;
     private LocalDate birthDate;
-    private String ssn;
+    private BigInteger ssn;
     private String email;
-    private String phoneNumber;
+    private BigInteger phoneNumber;
     private Gender gender;
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
@@ -70,7 +71,7 @@ public class Person {
         return birthDate;
     }
 
-    public String getSsn() {
+    public BigInteger getSsn() {
         return ssn;
     }
 
@@ -78,7 +79,7 @@ public class Person {
         return email;
     }
 
-    public String getPhoneNumber() {
+    public BigInteger getPhoneNumber() {
         return phoneNumber;
     }
 

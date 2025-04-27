@@ -15,8 +15,8 @@ public class MedicalAppointmentUpdatingServiceImpl implements MedicalAppointment
     }
 
     @Override
-    public MedicalAppointment set(MedicalAppointment medicalAppointment) {
+    public void set(MedicalAppointment medicalAppointment) {
         medicalAppointment.markAsPaid();
-        return medicalAppointmentRepository.save(medicalAppointment);
+        MedicalAppointment savedAppointment = medicalAppointmentRepository.save(medicalAppointment);
     }
 }

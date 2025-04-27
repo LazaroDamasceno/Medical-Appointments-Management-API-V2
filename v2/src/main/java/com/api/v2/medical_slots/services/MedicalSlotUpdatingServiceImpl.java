@@ -16,13 +16,13 @@ public class MedicalSlotUpdatingServiceImpl implements MedicalSlotUpdatingServic
     }
 
     @Override
-    public MedicalSlot set(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
+    public void set(MedicalSlot medicalSlot, MedicalAppointment medicalAppointment) {
         medicalSlot.setMedicalAppointment(medicalAppointment);
-        return medicalSlotRepository.save(medicalSlot);
+        MedicalSlot savedSlot = medicalSlotRepository.save(medicalSlot);
     }
 
     @Override
-    public MedicalSlot set(MedicalSlot medicalSlot) {
-        return medicalSlotRepository.save(medicalSlot);
+    public void set(MedicalSlot medicalSlot) {
+        MedicalSlot savedSlot = medicalSlotRepository.save(medicalSlot);
     }
 }

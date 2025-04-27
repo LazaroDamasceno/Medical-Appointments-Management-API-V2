@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 public record PersonRegistrationDto(
@@ -17,13 +18,15 @@ public record PersonRegistrationDto(
         @NotNull
         LocalDate birthDate,
         @Size(min = 9, max = 9, message = "SSN has 9 digits.")
-        String ssn,
+        @NotNull
+        BigInteger ssn,
         @Email(message = "Type a proper type of email")
         @NotBlank
         String email,
         @NotBlank
         @Size(min = 10, max = 10, message = "Phone number has 10 digits.")
-        String phoneNumber,
+        @NotNull
+        BigInteger phoneNumber,
         @NotNull
         Gender gender
 ) {

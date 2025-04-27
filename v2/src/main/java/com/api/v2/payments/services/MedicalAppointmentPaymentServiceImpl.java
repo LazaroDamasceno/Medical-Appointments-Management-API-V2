@@ -43,7 +43,7 @@ public class MedicalAppointmentPaymentServiceImpl implements MedicalAppointmentP
         MedicalAppointment medicalAppointment = medicalAppointmentFinder.findById(medicalAppointmentId);
         Card card = cardFinder.findById(cardId);
         validate(medicalAppointment);
-        MedicalAppointment paidMedicalAppointment = medicalAppointmentUpdatingService.set(medicalAppointment);
+        medicalAppointmentUpdatingService.set(medicalAppointment);
         Payment payment = Payment.of(card, BigDecimal.valueOf(price), medicalAppointment);
         Payment savedPayment = paymentRepository.save(payment);
         return PaymentResponseMapper.toDto(savedPayment);
