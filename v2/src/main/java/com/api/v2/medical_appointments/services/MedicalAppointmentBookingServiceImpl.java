@@ -131,7 +131,7 @@ public class MedicalAppointmentBookingServiceImpl implements MedicalAppointmentB
             throw new UnavailableDoctorException();
         }
 
-        if (medicalSlot.getDoctor().getPerson().getId().equals(customer.getId())) {
+        if (medicalSlot.getDoctor().getPerson().getId().equals(customer.getPerson().getId())) {
             String message = "Customer cannot book a medical appointment which they're the related medical slot's doctor.";
             throw new InaccessibleMedicalAppointmentException(message);
         }
