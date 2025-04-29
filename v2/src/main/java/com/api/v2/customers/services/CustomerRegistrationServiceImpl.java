@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-
 @Service
 public class CustomerRegistrationServiceImpl implements CustomerRegistrationService {
 
@@ -41,7 +39,7 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    private void validateRegistration(BigInteger ssn, String email) {
+    private void validateRegistration(String ssn, String email) {
         boolean isSsnDuplicated = customerRepository
                 .findAll()
                 .stream()
