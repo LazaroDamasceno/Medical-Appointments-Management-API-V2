@@ -1,6 +1,6 @@
 package com.api.v2.medical_appointments.services;
 
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.responses.MedicalAppointmentResponseResource;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

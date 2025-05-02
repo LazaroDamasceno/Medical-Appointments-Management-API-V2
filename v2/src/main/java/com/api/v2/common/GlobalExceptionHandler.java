@@ -12,7 +12,7 @@ import com.api.v2.medical_appointments.exceptions.NonExistentMedicalAppointmentE
 import com.api.v2.medical_slots.exceptions.ImmutableMedicalSlotStatusException;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
 import com.api.v2.medical_slots.exceptions.NonExistentMedicalSlotException;
-import com.api.v2.payments.exception.IllegalChargingException;
+import com.api.v2.payments.exceptions.IllegalChargingException;
 import com.api.v2.people.exceptions.DuplicatedEmailException;
 import com.api.v2.people.exceptions.DuplicatedSsnException;
 import org.springframework.http.HttpStatus;

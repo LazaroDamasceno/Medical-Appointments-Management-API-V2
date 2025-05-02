@@ -6,7 +6,7 @@ import com.api.v2.medical_slots.controllers.MedicalSlotController;
 import com.api.v2.medical_slots.domain.exposed.MedicalSlot;
 import com.api.v2.medical_slots.domain.MedicalSlotRepository;
 import com.api.v2.medical_slots.exceptions.InaccessibleMedicalSlotException;
-import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
+import com.api.v2.medical_slots.responses.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.utils.MedicalSlotFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

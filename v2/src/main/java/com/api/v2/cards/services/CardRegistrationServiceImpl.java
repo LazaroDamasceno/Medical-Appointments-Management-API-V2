@@ -2,8 +2,8 @@ package com.api.v2.cards.services;
 
 import com.api.v2.cards.domain.exposed.Card;
 import com.api.v2.cards.domain.CardRepository;
-import com.api.v2.cards.dtos.CardRegistrationDto;
-import com.api.v2.cards.dtos.exposed.CardResponseDto;
+import com.api.v2.cards.requests.CardRegistrationDto;
+import com.api.v2.cards.responses.CardResponseDto;
 import com.api.v2.cards.utils.CardResponseMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

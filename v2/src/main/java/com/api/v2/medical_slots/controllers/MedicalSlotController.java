@@ -1,8 +1,8 @@
 package com.api.v2.medical_slots.controllers;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.medical_slots.dto.MedicalSlotRegistrationDto;
-import com.api.v2.medical_slots.resources.MedicalSlotResponseResource;
+import com.api.v2.medical_slots.requests.MedicalSlotRegistrationDto;
+import com.api.v2.medical_slots.responses.MedicalSlotResponseResource;
 import com.api.v2.medical_slots.services.MedicalSlotManagementService;
 import com.api.v2.medical_slots.services.MedicalSlotRegistrationService;
 import com.api.v2.medical_slots.services.MedicalSlotRetrievalService;

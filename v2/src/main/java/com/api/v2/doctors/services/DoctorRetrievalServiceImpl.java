@@ -3,7 +3,7 @@ package com.api.v2.doctors.services;
 import com.api.v2.doctors.controller.DoctorController;
 import com.api.v2.doctors.domain.DoctorRepository;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.doctors.responses.DoctorResponseResource;
 import com.api.v2.doctors.utils.DoctorFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.api.v2.cards.services;
 
-import com.api.v2.cards.dtos.exposed.CardResponseDto;
+import com.api.v2.cards.responses.CardResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

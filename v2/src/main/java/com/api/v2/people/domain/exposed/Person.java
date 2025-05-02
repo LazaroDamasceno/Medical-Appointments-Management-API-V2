@@ -1,12 +1,11 @@
 package com.api.v2.people.domain.exposed;
 
 import com.api.v2.common.DstChecker;
-import com.api.v2.people.dtos.PersonRegistrationDto;
+import com.api.v2.people.requests.PersonRegistrationDto;
 import com.api.v2.people.enums.Gender;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigInteger;
 import java.time.*;
 import java.util.UUID;
 
@@ -19,9 +18,9 @@ public class Person {
     private String middleName;
     private String lastName;
     private LocalDate birthDate;
-    private BigInteger ssn;
+    private String ssn;
     private String email;
-    private BigInteger phoneNumber;
+    private String phoneNumber;
     private Gender gender;
     private LocalDateTime createdAt;
     private ZoneId createdAtZoneId;
@@ -71,7 +70,7 @@ public class Person {
         return birthDate;
     }
 
-    public BigInteger getSsn() {
+    public String getSsn() {
         return ssn;
     }
 
@@ -79,7 +78,7 @@ public class Person {
         return email;
     }
 
-    public BigInteger getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 

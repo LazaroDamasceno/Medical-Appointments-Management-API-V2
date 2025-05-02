@@ -1,6 +1,6 @@
 package com.api.v2.payments.controllers;
 
-import com.api.v2.payments.dtos.PaymentResponseDto;
+import com.api.v2.payments.responses.PaymentResponseDto;
 import com.api.v2.payments.services.MedicalAppointmentPaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.PathVariable;

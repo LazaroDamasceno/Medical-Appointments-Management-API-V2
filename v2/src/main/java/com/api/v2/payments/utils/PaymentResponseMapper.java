@@ -2,7 +2,7 @@ package com.api.v2.payments.utils;
 
 import com.api.v2.cards.utils.CardResponseMapper;
 import com.api.v2.payments.domain.Payment;
-import com.api.v2.payments.dtos.PaymentResponseDto;
+import com.api.v2.payments.responses.PaymentResponseDto;
 
 public final class PaymentResponseMapper {
 

@@ -3,10 +3,9 @@ package com.api.v2.medical_appointments.domain.exposed;
 import com.api.v2.common.DstChecker;
 import com.api.v2.customers.domain.exposed.Customer;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
-import com.api.v2.medical_appointments.dtos.SimplifiedMedicalAppointmentResponseDto;
+import com.api.v2.medical_appointments.responses.SimplifiedMedicalAppointmentResponseDto;
 import com.api.v2.medical_appointments.enums.MedicalAppointmentType;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.responses.MedicalAppointmentResponseResource;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

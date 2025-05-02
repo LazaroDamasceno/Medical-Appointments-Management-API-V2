@@ -1,6 +1,6 @@
 package com.api.v2.doctors.services;
 
-import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.doctors.responses.DoctorResponseResource;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

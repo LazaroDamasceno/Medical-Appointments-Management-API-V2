@@ -1,7 +1,7 @@
 package com.api.v2.customers.controller;
 
-import com.api.v2.customers.dtos.CustomerRegistrationDto;
-import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
+import com.api.v2.customers.requests.CustomerRegistrationDto;
+import com.api.v2.customers.responses.CustomerResponseDto;
 import com.api.v2.customers.services.CustomerRegistrationService;
 import com.api.v2.customers.services.CustomerRetrievalService;
 import io.swagger.v3.oas.annotations.Operation;

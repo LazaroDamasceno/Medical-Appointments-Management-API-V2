@@ -2,7 +2,7 @@ package com.api.v2.customers.domain.exposed;
 
 import com.api.v2.common.Address;
 import com.api.v2.common.DstChecker;
-import com.api.v2.customers.dtos.exposed.CustomerResponseDto;
+import com.api.v2.customers.responses.CustomerResponseDto;
 import com.api.v2.people.domain.exposed.Person;
 import com.api.v2.people.utils.FullNameFormatter;
 import org.springframework.data.annotation.Id;

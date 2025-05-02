@@ -1,8 +1,8 @@
 package com.api.v2.doctors.controller;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.doctors.dto.DoctorHiringDto;
-import com.api.v2.doctors.resources.DoctorResponseResource;
+import com.api.v2.doctors.requests.DoctorHiringDto;
+import com.api.v2.doctors.responses.DoctorResponseResource;
 import com.api.v2.doctors.services.DoctorHiringService;
 import com.api.v2.doctors.services.DoctorRehireService;
 import com.api.v2.doctors.services.DoctorRetrievalService;

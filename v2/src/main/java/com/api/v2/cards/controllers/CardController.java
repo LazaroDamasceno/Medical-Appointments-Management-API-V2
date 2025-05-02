@@ -1,7 +1,7 @@
 package com.api.v2.cards.controllers;
 
-import com.api.v2.cards.dtos.CardRegistrationDto;
-import com.api.v2.cards.dtos.exposed.CardResponseDto;
+import com.api.v2.cards.requests.CardRegistrationDto;
+import com.api.v2.cards.responses.CardResponseDto;
 import com.api.v2.cards.services.CardDeletionService;
 import com.api.v2.cards.services.CardRegistrationService;
 import com.api.v2.cards.services.CardRetrievalService;

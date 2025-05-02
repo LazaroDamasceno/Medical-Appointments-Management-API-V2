@@ -9,8 +9,8 @@ import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentUpdati
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import com.api.v2.payments.domain.Payment;
 import com.api.v2.payments.domain.PaymentRepository;
-import com.api.v2.payments.dtos.PaymentResponseDto;
-import com.api.v2.payments.exception.IllegalChargingException;
+import com.api.v2.payments.responses.PaymentResponseDto;
+import com.api.v2.payments.exceptions.IllegalChargingException;
 import com.api.v2.payments.utils.PaymentResponseMapper;
 import org.springframework.stereotype.Service;
 

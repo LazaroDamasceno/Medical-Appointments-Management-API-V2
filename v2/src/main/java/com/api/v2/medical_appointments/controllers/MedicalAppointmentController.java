@@ -1,8 +1,8 @@
 package com.api.v2.medical_appointments.controllers;
 
 import com.api.v2.common.ResourceResponse;
-import com.api.v2.medical_appointments.dtos.MedicalAppointmentBookingDto;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.requests.MedicalAppointmentBookingDto;
+import com.api.v2.medical_appointments.responses.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.services.MedicalAppointmentBookingService;
 import com.api.v2.medical_appointments.services.MedicalAppointmentRetrievalService;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;

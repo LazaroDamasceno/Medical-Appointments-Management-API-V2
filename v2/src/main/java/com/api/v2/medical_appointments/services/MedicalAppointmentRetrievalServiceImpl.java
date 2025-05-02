@@ -6,7 +6,7 @@ import com.api.v2.medical_appointments.controllers.MedicalAppointmentController;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.domain.MedicalAppointmentRepository;
 import com.api.v2.medical_appointments.exceptions.InaccessibleMedicalAppointmentException;
-import com.api.v2.medical_appointments.resources.MedicalAppointmentResponseResource;
+import com.api.v2.medical_appointments.responses.MedicalAppointmentResponseResource;
 import com.api.v2.medical_appointments.utils.MedicalAppointmentFinder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@ package com.api.v2.doctors.utils;
 import com.api.v2.common.States;
 import com.api.v2.doctors.domain.exposed.Doctor;
 import com.api.v2.doctors.domain.DoctorRepository;
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
+import com.api.v2.doctors.dtos.MedicalLicenseNumber;
 import com.api.v2.doctors.exceptions.NonExistentDoctorException;
 import org.springframework.stereotype.Component;
 

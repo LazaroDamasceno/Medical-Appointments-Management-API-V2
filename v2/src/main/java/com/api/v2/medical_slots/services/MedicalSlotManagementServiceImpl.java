@@ -2,7 +2,7 @@ package com.api.v2.medical_slots.services;
 
 import com.api.v2.common.ResourceResponse;
 import com.api.v2.doctors.domain.exposed.Doctor;
-import com.api.v2.doctors.dto.exposed.MedicalLicenseNumber;
+import com.api.v2.doctors.dtos.MedicalLicenseNumber;
 import com.api.v2.doctors.utils.DoctorFinder;
 import com.api.v2.medical_appointments.domain.exposed.MedicalAppointment;
 import com.api.v2.medical_appointments.services.exposed.MedicalAppointmentManagementService;
